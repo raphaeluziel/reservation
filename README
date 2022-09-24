@@ -1,0 +1,31 @@
+#Quick start
+
+$ mkdir reservation
+$ cd reservation
+$ python3 -m venv myvenv
+$ source myvenv/bin/activate
+
+##install django before that make sure pip is update
+
+~$ python3 -m pip install --upgrade pip
+
+(myvenv) ~$ pip3 install -r requirements.txt
+
+~$ git init
+
+~$ django-admin startproject reservation .
+
+~$ pip3 install python-decouple
+
+~$ pip3 install python_extensions
+
+~$ python3 manage.py runserver
+
+~$ python3 manage.py migrate
+
+~$ pip3 freeze > requirements.txt
+
+~$ deactivate
+
+//how store django secret keys in development and production
+//or how to setup a django 4.0 proejct with Heroku and AWS S3

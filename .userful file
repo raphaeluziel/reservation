@@ -1,0 +1,33 @@
+https://stackoverflow.com/questions/60733143/how-to-get-python-decouple-to-work-on-a-live-server
+
+From my findings I think there is just one way using every environment, either local and live server. First you need to install python-decouple library in conjunction with .env file as follows:
+
+    Install Python-Decouple:
+
+    pip install python-decouple
+
+    Create a .env file in the root directorate of your project and follow this format to define your Environment Variables inside the file.
+
+    SECRET_KEY = secret_key_for_app_you_may_use_code_to_it_unique
+
+    DATABASE_NAME = name_of_your_database
+
+    DATABASE_USER = your_database_username
+
+    DATABASE_PASSWORD = your_database_password
+
+Notice there are no quotation marks in the values for the variables. 3. Import the config method in settings.py and use it to call these variables as follows:
+
+from decouple import config
+
+Now Call the variables in the appropriate places using the config method
+
+DATABASES = {
+'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': config('DATABASE_NAME'),
+    'USER': config('DATABASE_USER'),
+    'PASSWORD': config('DATABASE_PASS'),
+    'HOST': 'localhost'
+}
+}
