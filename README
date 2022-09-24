@@ -29,3 +29,9 @@ $ source myvenv/bin/activate
 
 //how store django secret keys in development and production
 //or how to setup a django 4.0 proejct with Heroku and AWS S3
+
+
+
+python3 manage.py runserver --settings=reservation.settings.prod
+
+python3 manage.py runserver --settings=reservation.settings.dev

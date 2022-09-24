@@ -31,3 +31,38 @@ DATABASES = {
     'HOST': 'localhost'
 }
 }
+-------------------------------------------------
+https://stackoverflow.com/questions/49235486/how-to-properly-runserver-on-different-settings-for-django
+
+how to switch between different settings
+
+
+config/
+    commonsettings.py
+    dev.py
+    prod.py
+
+make sure that in dev.py and prod.py you import everything from commonsettings.py like this:
+
+from .commonsettings import * 
+
+then if you want to run the dev.py settings:
+
+python manage.py runserver --settings=config.dev
+
+if you want to run prod.py:
+
+python manage.py runserver --settings=config.prod
+
+NOTE:
+
+For more readable files many developers call their settings files: local.py (for the local settings) production.py (for the production settings) and base.py (the common settings for both)
+
+Personally I place my setting files in:
+
+config/
+    settings/
+        base.py
+        local.py
+        production.py
+        test.py (For tests)

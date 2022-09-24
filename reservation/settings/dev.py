@@ -7,7 +7,7 @@ SECRET_KEY = config('SECRET_KEY2')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
-STATIC_URL=
-STATIC_ROOT=
+#STATIC_URL=
+#STATIC_ROOT=
