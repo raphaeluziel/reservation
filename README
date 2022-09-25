@@ -25,7 +25,13 @@ $ source myvenv/bin/activate
 
 ~$ pip3 freeze > requirements.txt
 
+~$ python manage.py startapp core
+
 ~$ deactivate
+
+# restart 
+
+$ source myvenv/bin/activate
 
 //how store django secret keys in development and production
 //or how to setup a django 4.0 proejct with Heroku and AWS S3
@@ -35,3 +41,6 @@ $ source myvenv/bin/activate
 python3 manage.py runserver --settings=reservation.settings.prod
 
 python3 manage.py runserver --settings=reservation.settings.dev
+
+
+
