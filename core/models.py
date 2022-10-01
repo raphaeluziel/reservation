@@ -9,37 +9,36 @@ from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
 class CustomUserManager(BaseUserManager):
-    """
-    Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
-    """
-    def create_user(self, email, password, **extra_fields):
-        """
-        Create and save a User with the given email and password.
-        """
-        if not email:
-            raise ValueError(_('The Email must be set'))
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save()
-        return user
-    #def create_nurse...
-    #def create_employer...
+	"""
+	Custom user model manager where email is the unique identifiers
+	for authentication instead of usernames.
+	"""
+	def create_user(self, email, password, **extra_fields):
+		"""
+		Create and save a User with the given email and password.
+		"""
+		if not email:
+			raise ValueError(_('The Email must be set'))
+		email = self.normalize_email(email)
+		user = self.model(email=email, **extra_fields)
+		user.set_password(password)
+		user.save()
+		return user
 
-    def create_superuser(self, email, password, **extra_fields):
-        """
-        Create and save a SuperUser with the given email and password.
-        """
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('Superuser must have is_staff=True.'))
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('Superuser must have is_superuser=True.'))
-        return self.create_user(email, password, **extra_fields)
+	def create_superuser(self, email, password, **extra_fields):
+		"""
+		Create and save a SuperUser with the given email and password.
+		"""
+		extra_fields.setdefault('is_staff', True)
+		extra_fields.setdefault('is_superuser', True)
+		extra_fields.setdefault('is_active', True)
+
+		if extra_fields.get('is_staff') is not True:
+			raise ValueError(_('Superuser must have is_staff=True.'))
+		if extra_fields.get('is_superuser') is not True:
+			raise ValueError(_('Superuser must have is_superuser=True.'))
+		return self.create_user(email, password, **extra_fields)
 
 
 
@@ -55,51 +54,60 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = []
 	objects = CustomUserManager()
-	
+
 	def __str__(self):
 		return self.email
+
+	def has_perm(self, perm, obj=None):
+		return self.is_staff
 
 
 class AddressBook(models.Model):
 
-    street = models.CharField(max_length=64)
-    alt_line = models.CharField(max_length=64)
-    postcode= models.CharField(max_length=64)
-    city = models.CharField(max_length=64)
-    state = models.CharField(max_length=64)
-    country = models.CharField(max_length=64)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="address_book_user")
-    
-    class Meta:
-    	verbose_name = 'Address'
-    
+	street = models.CharField(max_length=64,blank=False)
+	alt_line = models.CharField(max_length=64, blank=True)
+	postcode= models.CharField(max_length=64,blank=False)
+	city = models.CharField(max_length=64, blank=False)
+	state = models.CharField(max_length=64,blank=True)
+	country = models.CharField(max_length=64, default="Suomi")
+	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="address_book_user")
+	
+
+	class Meta:
+		verbose_name = 'Address'
+
+	def __str__(self):
+		return self.city
+	
 
 class Nurse(CustomUser):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="nurse_user")
-    phone_number = PhoneNumberField(blank=True, help_text='Contact phone number')
+	
+	phone = PhoneNumberField(blank=True, help_text='Contact phone number',null=True)
 
-    ROLES= (
-        ('Sh', 'Reigstered Nurse'),
-        ('Lh', 'Practical Nurse'),
-        ('HA', 'Assistant'), 
+	ROLES= (
+		('Sh', 'RN'),
+		('Lh', 'PN'),
+		('HA', 'AS'), 
 
-    )
-    EXPERIENCES= (
-        (0, 'Less than five years'),
-        (1, 'Less than ten years'),
-        (2, 'More than ten years'), 
+	)
+	EXPERIENCES= (
+		(0, '<5'),
+		(1, '<10'),
+		(2, '>=10'), 
 
-    )
-    role = models.CharField(max_length=2, choices=ROLES,blank=False)
-    experience=models.IntegerField(choices=EXPERIENCES,blank=False)
-    class Meta:
-    	verbose_name = 'Nurse'
+	)
+	role = models.CharField(max_length=2, choices=ROLES,blank=False)
+	experience=models.IntegerField(choices=EXPERIENCES,blank=False)
+	city=models.ForeignKey(AddressBook, on_delete=models.CASCADE,null=True)
+	class Meta:
+		verbose_name = 'Nurse'
 
 
 class Employer(CustomUser):
-	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="employer_user")
-	phone_number = PhoneNumberField(blank=True, help_text='Contact phone number')
+	
+	phone= PhoneNumberField(blank=True, help_text='Contact phone number')
 	org_name=models.CharField(max_length=64)
+	city=models.ForeignKey(AddressBook, on_delete=models.CASCADE,null=True)
 
 	class Meta:
 		verbose_name = 'Employer'
