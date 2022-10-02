@@ -119,9 +119,30 @@ class Employer(CustomUser,AddressBook):
 
 	class Meta:
 		verbose_name = 'Employer'
+	def __str__(self):
+		return self.org_name
 	
+class Shift(AddressBook,models.Model):
+
+	pub_date=models.DateTimeField('Date published',auto_now_add=True)
+	updated_date = models.DateTimeField(auto_now=True)
+	org_name=models.ForeignKey(Employer, on_delete=models.CASCADE)
+	role=ROLES= (
+		('Sh', 'RN'),
+		('Lh', 'PN'),
+		('HA', 'AS'), 
+
+	)
+	role = models.CharField(max_length=2, choices=ROLES,blank=False)
+	date=models.DateTimeField('Date')
+
+	#weekday=
+	#start_time=
+	#finish_time=
+	details=models.CharField(max_length=200, blank=True, null=True)
 
 
 
-#class Shift()
+
+
 

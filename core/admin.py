@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 #from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
-from .models import CustomUser,Nurse, Employer,AddressBook
+from .models import CustomUser,Nurse, Employer,AddressBook,Shift
 
 import datetime
 from datetime import datetime, timedelta
@@ -105,6 +105,7 @@ class NurseAdmin(BaseUserAdmin):
 
 
 
+
 class EmployerAdmin(BaseUserAdmin):
 
     list_display = ('email','org_name','city','phone','email','date_joined')
@@ -125,10 +126,23 @@ class EmployerAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 
+
+class ShiftAdmin(admin.ModelAdmin):
+
+    list_display=('org_name','pub_date')
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('pub_date','role','description')},
+        ),
+    )
+
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Nurse, NurseAdmin)
 #admin.site.register(AddressBook, AddressBookAdmin)
 admin.site.register(Employer, EmployerAdmin)
+admin.site.register(Shift, ShiftAdmin)
 
 
 
