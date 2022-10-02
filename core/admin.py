@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 #from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
-from .models import CustomUser,Nurse, Employer, AddressBook
+from .models import CustomUser,Nurse, Employer,AddressBook
 
 
 
@@ -48,7 +48,7 @@ class CustomUserChangeForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email','password','is_active','is_staff')
+        fields = ('email','password','is_active','is_staff','is_nurse','is_employer')
 
 
 
@@ -58,8 +58,8 @@ class CustomUserAdmin(BaseUserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
-    list_display = ('email', 'is_staff', 'is_active','is_nurse','is_employer')
-    list_filter = ('email', 'is_staff', 'is_active',)
+    list_display = ('email', 'is_staff', 'is_active','is_nurse','is_employer','is_superuser')
+    list_filter = ('email', 'is_staff', 'is_active','is_nurse','is_employer','is_superuser')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Permissions', {'fields': ('is_staff', 'is_active','is_superuser')}),
@@ -67,13 +67,15 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}
+            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active','is_nurse','is_employer')}
         ),
     )
     search_fields = ('email',)
     ordering = ('email',)
 
-
+class AddressBookAdmin(admin.ModelAdmin):
+    list_display = ('street','alt_line','postcode','city','state')
+    list_filter = ('postcode', 'city')
 
 class NurseAdmin(BaseUserAdmin):
 
@@ -83,25 +85,23 @@ class NurseAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Permissions', {'fields': ('is_nurse', 'is_active')}),
+        ('Permissions', {'fields': ('is_nurse', 'is_rn','is_active')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2','phone','role','experience','city')}
+            'fields': ('email', 'password1', 'password2','phone','role','experience','street','postcode','city')}
         ),
     )
     search_fields = ('email','experience','city','role')
     ordering = ('email',)
 
-class AddressBookAdmin(admin.ModelAdmin):
-    list_display = ('street','alt_line','postcode','city','state')
-    list_filter = ('postcode', 'city')
 
 
 class EmployerAdmin(BaseUserAdmin):
 
     list_display = ('email','org_name','city','phone','email')
+    name__iexact='company'
     list_filter = ('org_name','city', 'is_active')
 
     fieldsets = (
@@ -111,7 +111,7 @@ class EmployerAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2','phone','org_name','city')}
+            'fields': ('email', 'password1', 'password2','phone','org_name','street','postcode','city')}
         ),
     )
     search_fields = ('org_name','city')
@@ -120,7 +120,7 @@ class EmployerAdmin(BaseUserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Nurse, NurseAdmin)
-admin.site.register(AddressBook, AddressBookAdmin)
+#admin.site.register(AddressBook, AddressBookAdmin)
 admin.site.register(Employer, EmployerAdmin)
 
 
