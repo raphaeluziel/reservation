@@ -80,9 +80,9 @@ class CustomUserAdmin(BaseUserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
 
-class AddressBookAdmin(admin.ModelAdmin):
-    list_display = ('street','alt_line','postcode','city','state')
-    list_filter = ('postcode', 'city')
+# class AddressBookAdmin(admin.ModelAdmin):
+#     list_display = ('street','alt_line','postcode','city','state')
+#     list_filter = ('postcode', 'city')
 
 class NurseAdmin(BaseUserAdmin):
 
@@ -131,12 +131,15 @@ class ShiftAdmin(admin.ModelAdmin):
 
     list_display=('org_name','pub_date')
 
+    
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('pub_date','role','description')},
+            'fields': ('pub_date','role','start_time','finish_time','description')},
         ),
     )
+
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Nurse, NurseAdmin)

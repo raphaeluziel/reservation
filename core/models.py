@@ -8,6 +8,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
 import datetime
 from datetime import datetime, timedelta
+
+
 # Create your models here.
 
 
@@ -117,6 +119,7 @@ class Employer(CustomUser,AddressBook):
 	bank_account_name=models.CharField(max_length=30, blank=True, null=True)
 	bank_account_number=models.CharField(max_length=20, blank=True, null=True)
 
+
 	class Meta:
 		verbose_name = 'Employer'
 	def __str__(self):
@@ -136,9 +139,10 @@ class Shift(AddressBook,models.Model):
 	role = models.CharField(max_length=2, choices=ROLES,blank=False)
 	date=models.DateTimeField('Date')
 
-	#weekday=
-	#start_time=
-	#finish_time=
+
+	start_time = models.TimeField()
+	finish_time = models.TimeField()
+
 	details=models.CharField(max_length=200, blank=True, null=True)
 
 

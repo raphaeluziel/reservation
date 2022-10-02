@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
 PHONENUMBER_DEFAULT_REGION = "FI"
 
+TIME_INPUT_FORMATS = [ '%I:%M']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
