@@ -21,9 +21,7 @@ from django.contrib.auth import views as auth_views# reset password
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('core.urls'))
+    path('',include('core.urls')),
 ]
-
-
 
 #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

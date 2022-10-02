@@ -1,0 +1,11 @@
+{% if shift_list %}
+	<ul>
+	{% for shift in shift_list ‰}
+	  <li><a href="/shifts/{{shift.id}}/">{{shift.date}}</a><li>
+	 {% endfor ‰}
+	<ul>
+{% else %}
+
+ <p> No shift is available</p>
+
+ {% endif ‰}

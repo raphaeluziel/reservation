@@ -129,7 +129,7 @@ class EmployerAdmin(BaseUserAdmin):
 
 class ShiftAdmin(admin.ModelAdmin):
 
-    list_display=('org_name','pub_date')
+    list_display=('org_name','date','pub_date','updated_date')
 
     
     add_fieldsets = (
