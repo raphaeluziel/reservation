@@ -12,15 +12,22 @@ from django.core.exceptions import ValidationError
 
 from .models import CustomUser,Nurse, Employer,AddressBook
 
+import datetime
+from datetime import datetime, timedelta
+
 
 
 class CustomUserCreationForm(forms.ModelForm):
 
     """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
+    fields, plus a repeated password.
+
+    Note: at the moment, this form is only meant for creating staff users, 
+    for adding other user roles, do it in nurse /employer admin panel. 
+
+    """
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
 
     class Meta:
         model = CustomUser
@@ -58,16 +65,16 @@ class CustomUserAdmin(BaseUserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
-    list_display = ('email', 'is_staff', 'is_active','is_nurse','is_employer','is_superuser')
+    list_display = ('email', 'last_name','is_staff', 'is_active','is_nurse','is_employer','is_superuser','last_login')
     list_filter = ('email', 'is_staff', 'is_active','is_nurse','is_employer','is_superuser')
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'first_name', 'last_name', 'password')}),
         ('Permissions', {'fields': ('is_staff', 'is_active','is_superuser')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active','is_nurse','is_employer')}
+            'fields': ('email', 'first_name','last_name','password1', 'password2', 'is_staff', 'is_active')}
         ),
     )
     search_fields = ('email',)
@@ -80,17 +87,17 @@ class AddressBookAdmin(admin.ModelAdmin):
 class NurseAdmin(BaseUserAdmin):
 
   
-    list_display = ('email','role','experience','city','phone')
+    list_display = ('last_name','role','experience','city','phone','date_joined')
     list_filter = ('role', 'experience','city', 'is_active')
 
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email','password')}),
         ('Permissions', {'fields': ('is_nurse', 'is_rn','is_active')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2','phone','role','experience','street','postcode','city')}
+            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','role','experience','bank_account_name','bank_account_number','street','postcode','city')}
         ),
     )
     search_fields = ('email','experience','city','role')
@@ -100,7 +107,7 @@ class NurseAdmin(BaseUserAdmin):
 
 class EmployerAdmin(BaseUserAdmin):
 
-    list_display = ('email','org_name','city','phone','email')
+    list_display = ('email','org_name','city','phone','email','date_joined')
     name__iexact='company'
     list_filter = ('org_name','city', 'is_active')
 
@@ -111,7 +118,7 @@ class EmployerAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2','phone','org_name','street','postcode','city')}
+            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','org_name','bank_account_name','bank_account_number','street','postcode','city')}
         ),
     )
     search_fields = ('org_name','city')

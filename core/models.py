@@ -6,7 +6,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
-
+import datetime
+from datetime import datetime, timedelta
 # Create your models here.
 
 
@@ -36,7 +37,8 @@ class CustomUserManager(BaseUserManager):
 	Custom user model manager where email is the unique identifiers
 	for authentication instead of usernames.
 	"""
-	def create_user(self, email, password, **extra_fields):
+
+	def create_user(self, email, password, last_login=datetime.now(),date_joined=datetime.now(), **extra_fields):
 		"""
 		Create and save a User with the given email and password.
 		"""
@@ -49,7 +51,7 @@ class CustomUserManager(BaseUserManager):
 		return user
 
 
-	def create_superuser(self, email, password, **extra_fields):
+	def create_superuser(self, email, password, last_login=datetime.now(),date_joined=datetime.now(),**extra_fields):
 		"""
 		Create and save a SuperUser with the given email and password.
 		"""
@@ -99,6 +101,8 @@ class Nurse(CustomUser,AddressBook):
 		(2, '>=10'), 
 
 	)
+	bank_account_name=models.CharField(max_length=30, blank=True, null=True)
+	bank_account_number=models.CharField(max_length=20, blank=True, null=True)
 	role = models.CharField(max_length=2, choices=ROLES,blank=False)
 	experience=models.IntegerField(choices=EXPERIENCES,blank=False)
 	is_rn= models.BooleanField(default=False)
@@ -110,8 +114,14 @@ class Nurse(CustomUser,AddressBook):
 class Employer(CustomUser,AddressBook):
 	
 	org_name=models.CharField(max_length=64)
+	bank_account_name=models.CharField(max_length=30, blank=True, null=True)
+	bank_account_number=models.CharField(max_length=20, blank=True, null=True)
 
 	class Meta:
 		verbose_name = 'Employer'
 	
+
+
+
+#class Shift()
 
