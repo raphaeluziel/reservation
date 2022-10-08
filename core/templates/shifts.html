@@ -1,11 +1,25 @@
-{% if shift_list %}
+{% if shifts %}
 	<ul>
-	{% for shift in shift_list ‰}
-	  <li><a href="/shifts/{{shift.id}}/">{{shift.date}}</a><li>
-	 {% endfor ‰}
+	{% for shift in shifts %}
+	 
+            <li>{{shift.org_name}}</li>
+            <li>{{shift.phone}}</li>
+       
+            <li>{{shift.date}}</li>
+            <li>{{shift.role}}</li>
+            <li>{{shift.start_time}}</li>
+            <li>{{shift.finish_time}}</li>
+            <li>{{shift.details}}</li>
+            <li>{{shift.street}}</li>
+            <li>{{shift.postcode}}</li>
+            <li>{{shift.city}}</li>
+            <p> -----------------</p>
+     
+
+	 {% endfor %}
 	<ul>
 {% else %}
 
  <p> No shift is available</p>
 
- {% endif ‰}
+{% endif %}

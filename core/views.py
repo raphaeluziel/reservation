@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404,render
 from django.http import HttpResponse,Http404
 from django.http import JsonResponse
 from django.db import models
-from .models import Shift
+from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager
 
 # Create your views here.
 def shift_detail(request,shift_id):
@@ -18,9 +18,11 @@ def shift_detail(request,shift_id):
 	return render(request, 'shift_detail.html',{'shift':shift})
 
 def shifts(request):
-	shift_list=Shift.objects.order_by('-pub_date')[:5]
-	output = ','.join(q.details for q in shift_list)
-	return HttpResponse(output)
+	shifts=Shift.objects.all().order_by('-pub_date')[:5]
+	employers=Employer.objects.all()
+	context={'shifts':shifts,'employers':employers}
+
+	return render(request,'shifts.html',context)
 
 
 def error_404_view(request, exception):
