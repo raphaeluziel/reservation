@@ -2,17 +2,19 @@
 	<ul>
 	{% for shift in shifts %}
 	 
-            <li>{{shift.org_name}}</li>
-            <li>{{shift.phone}}</li>
+            <li>organization name: {{shift.org_name}}</li>
+          
+            <li>shift id is: {{shift.id}}</li>
+             <li> {{shift.employer_id}}</li>
        
-            <li>{{shift.date}}</li>
-            <li>{{shift.role}}</li>
-            <li>{{shift.start_time}}</li>
-            <li>{{shift.finish_time}}</li>
-            <li>{{shift.details}}</li>
-            <li>{{shift.street}}</li>
-            <li>{{shift.postcode}}</li>
-            <li>{{shift.city}}</li>
+            <li>shift date: {{shift.date}}</li>
+            <li>shift role: {{shift.role}}</li>
+            <li>shift start time: {{shift.start_time}}</li>
+            <li>shift finish time:{{shift.finish_time}}</li>
+            <li>shift details: {{shift.details}}</li>
+            <li>organiztion address: {{shift.street}}</li>
+            <li>postcode: {{shift.postcode}}</li>
+            <li>city: {{shift.city}}</li>
             <p> -----------------</p>
      
 

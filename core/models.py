@@ -114,7 +114,7 @@ class Nurse(CustomUser,AddressBook):
 
 
 class Employer(CustomUser,AddressBook):
-	
+
 	org_name=models.CharField(max_length=64)
 	bank_account_name=models.CharField(max_length=30, blank=True, null=True)
 	bank_account_number=models.CharField(max_length=20, blank=True, null=True)
@@ -122,15 +122,20 @@ class Employer(CustomUser,AddressBook):
 
 	class Meta:
 		verbose_name = 'Employer'
+
+	#def __init__(self, *args, **kwargs):
+		#super().__init__(*args,**kwargs)
+
 	def __str__(self):
 		return self.org_name
 	
 class Shift(AddressBook,models.Model):
-
+	
+	#employer_id=core_employer.customuser_ptr_id
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now=True)
-	org_name=models.ForeignKey(Employer, on_delete=models.CASCADE)
-	
+	org_name=models.ForeignKey(Employer, on_delete=models.CASCADE,related_name="employer_org_name")
+
 	role=ROLES= (
 		('Sh', 'RN'),
 		('Lh', 'PN'),
