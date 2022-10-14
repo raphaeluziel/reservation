@@ -1,9 +1,6 @@
 {% block content %}
   <p>Logged out!</p>
   <a href="{% url 'login'%}">Click here to login again.</a>
-  <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
+ 
 
 {% endblock %}

@@ -13,9 +13,7 @@ urlpatterns = [
     path('shifts/',views.shifts, name="shifts"),
     path('login/',views.login_view, name="login"),
     path('logout/',views.logout_view, name="logout"),
-
-   # path("password_reset/", views.password_reset_request, name="password_reset"),
-    
+    path('password_reset/', views.password_reset_view, name="password_reset"),
 
 ]
 

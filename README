@@ -43,4 +43,13 @@ python3 manage.py runserver --settings=reservation.settings.prod
 python3 manage.py runserver --settings=reservation.settings.dev
 
 
+>python3 manage.py shell
+
+>>> from django.contrib.auth import get_user_model
+>>> User=get_user_model()
+>>> User.objects.all()
+<QuerySet [<CustomUser: admin@gmail.com>, <CustomUser: nurse1@gmail.com>, <CustomUser: hospital1@gmail.com>]>
+>>> 
+
+
 
