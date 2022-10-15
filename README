@@ -51,5 +51,7 @@ python3 manage.py runserver --settings=reservation.settings.dev
 <QuerySet [<CustomUser: admin@gmail.com>, <CustomUser: nurse1@gmail.com>, <CustomUser: hospital1@gmail.com>]>
 >>> 
 
-
+##### for allowing password reset email notifications, add authentication_backend part in settings. 
+### add also auth_authentication.py in app 
+### add email settings in base.py
 

@@ -1,3 +1,8 @@
+
+
+{% extends "base.html" %}
+{% block title %}here will add double"{{section.title}}"{% endblock %}
+
 <h1>{{shift.org_name}}</h1>
 <h2>{{shift.date}}</h2>
 <h2>{{shift.start_time}}</h2>
@@ -5,3 +10,6 @@
 <h2>{{shift.role}}</h2>
 <h2>{{shift.detail}}</h2>
 <h2>{{shift.id}}</h2>
+
+
+{% endblock %}
