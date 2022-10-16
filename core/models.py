@@ -2,6 +2,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -15,7 +16,7 @@ from datetime import datetime, timedelta
 
 
 class AddressBook(models.Model):
-	phone = PhoneNumberField(blank=True, help_text='Contact phone number',null=True)
+	
 
 	street = models.CharField(max_length=64,blank=False)
 	alt_line = models.CharField(max_length=64, blank=True)
@@ -70,9 +71,11 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-	first_name = models.CharField(max_length=250, default="lala", blank=False)
-	last_name = models.CharField(max_length=250, default="land", blank=False)
+	first_name = models.CharField(max_length=250, blank=False)
+	last_name = models.CharField(max_length=250, blank=False)
 	email = models.EmailField(('email address'), unique=True)
+	phone = PhoneNumberField(blank=True, help_text='Contact phone number',null=True)
+
 	is_nurse = models.BooleanField(default=False)
 	is_employer = models.BooleanField(default=False)
 	is_staff=models.BooleanField(default=False)
@@ -131,7 +134,7 @@ class Employer(CustomUser,AddressBook):
 	
 class Shift(AddressBook,models.Model):
 	
-	#employer_id=core_employer.customuser_ptr_id
+	employer=models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now=True)
 	org_name=models.ForeignKey(Employer, on_delete=models.CASCADE,related_name="employer_org_name")

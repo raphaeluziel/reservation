@@ -97,7 +97,15 @@ class PasswordResetForm(PasswordResetForm):
 
     #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
+class UserUpdateForm(forms.ModelForm):
+    email=forms.EmailField()
 
+    class Meta:
+        model=get_user_model()
+        fields=['first_name','last_name','email','phone']
+
+
+ 
 # class SignUpForm(UserCreationForm):
 
 

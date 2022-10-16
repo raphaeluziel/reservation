@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
+{% extends "header.html" %}
 {% block title %}Home{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
+  Hi {{ user.first_name }}!
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 
  <P>For first time user, please reset your password</P>

@@ -7,7 +7,7 @@ from django.db.models.query_utils import Q
 from django.core.mail import EmailMessage
 from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager
 
-from django.contrib.auth.forms import  SetPasswordForm, PasswordResetForm,AuthenticationForm 
+from django.contrib.auth.forms import  SetPasswordForm, PasswordResetForm,AuthenticationForm
 from django.contrib.auth import authenticate, login,logout,get_user_model,password_validation
 from django.contrib.auth.tokens import default_token_generator
 
@@ -16,10 +16,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
 
-from .decorators import allowed_users,user_not_authenticated
+from .decorators import allowed_users,user_not_authenticated, is_customer
 
 from django import forms
-from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm
+from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm
 
 from django.core.mail import send_mail, BadHeaderError
 from django.utils.http import urlsafe_base64_encode
@@ -31,31 +31,11 @@ from .tokens import account_activation_token
 
 
 # Create your views here.
-def shift_detail(request,shift_id):
-	return HttpResponse("hello this is shift detail page")
+
 
 def index(request):
 
 	return render(request, 'index.html')
-
-def shift_detail(request,shift_id):
-	shift=get_object_or_404(Shift, pk=shift_id)
-	return render(request, 'shift_detail.html',{'shift':shift})
-
-def shifts(request):
-	shifts=Shift.objects.all().order_by('-pub_date')[:5]
-	employers=Employer.objects.all()
-
-	context={'shifts':shifts,'employers':employers}
-
-	return render(request,'shifts.html',context)
-
-
-
-def error_404_view(request, exception):
-	return render(request, 'core/404.html')
-
-
 
 def login_view(request):
     error = None
@@ -209,3 +189,49 @@ def passwordResetConfirm(request, uidb64, token):
 
     messages.error(request, 'Something went wrong, redirecting back to Homepage')
     return redirect("/")
+
+
+@login_required
+
+def profile(request, id):
+
+	if request.method=="POST":
+		user=request.user
+		form=UserUpdateForm(request.POST, request.FILES, instance=user)
+		if form.is_valid():
+			user_form=form.save()
+			messages.success(request, f'{user_form.firstname},your profile has been updated')
+			return redirect("profile",user_form.firstname)
+		for error in list(form.errors.values()):
+			messages.error(request,error)
+	user=get_user_model().objects.filter(id=id).first()
+	if user:
+		form=UserUpdateForm(instance=user)
+
+		return render(
+	 		request=request,
+	 		template_name="profile.html",
+	 		context={"form":form})
+	return redirect("/")
+
+@login_required
+def shift_detail(request,shift_id):
+	shift=get_object_or_404(Shift, pk=shift_id)
+	return render(request, 'shift_detail.html',{'shift':shift})
+
+
+@login_required
+def shifts(request):
+	shifts=Shift.objects.all().order_by('-pub_date')[:5]
+	employers=Employer.objects.all()
+
+	context={'shifts':shifts,'employers':employers}
+
+	return render(request,'shifts.html',context)
+
+
+def error_404_view(request, exception):
+	return render(request, 'core/404.html')
+
+    
+ 	

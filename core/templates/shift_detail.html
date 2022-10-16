@@ -1,7 +1,11 @@
-
-
-{% extends "base.html" %}
+{% extends "header.html" %}
 {% block title %}here will add double"{{section.title}}"{% endblock %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+{% if user.is_authenticated %}
+  Hi {{ user.first_name }}!
 
 <h1>{{shift.org_name}}</h1>
 <h2>{{shift.date}}</h2>
@@ -11,5 +15,5 @@
 <h2>{{shift.detail}}</h2>
 <h2>{{shift.id}}</h2>
 
-
+{% endif %}
 {% endblock %}

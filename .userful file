@@ -90,3 +90,5 @@ config/
   <button type="submit">Log In</button>
 </form>
 
+profile.html line 9  {% if user.id == form.instance.id %}
+and profile view 219 user=request.user without it, a user could update other user's profile

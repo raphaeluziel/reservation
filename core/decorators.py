@@ -15,6 +15,13 @@ def allowed_users(view, redirect_to='/'):
 from django.shortcuts import redirect
 
 
+def is_customer(user):
+    # how do you tell the user is a customer?
+    if user.is_staff or user.is_superuser:
+        return False
+    return True
+
+
 
 def user_not_authenticated(function=None, redirect_url='/'):
     """
