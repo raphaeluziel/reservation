@@ -69,7 +69,7 @@ def login_view(request):
         		login(request, user)
         		return redirect('/')
         	else:
-        		error = 'Invalid Credentials'
+        		messages.info(request, 'Username or Password is incorrect')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form, 'error': error})
@@ -160,10 +160,16 @@ def password_reset_request(request):
                         </p>
                         """
                     )
-                else:
-                    messages.error(request, "Problem sending reset password email or we did not find such a user")
 
-            return redirect('/password_reset_request')
+                    return redirect('login')
+                else:
+                	messages.error(request,"something went wrong, wait some minutes and check again later")
+
+            else:
+                messages.error(request, "we did not find such a user.")
+                  
+
+            return redirect('password_reset_request')
 
         # for key, error in list(form.errors.items()):
         #     if key == 'captcha' and error[0] == 'This field is required.':
@@ -191,7 +197,7 @@ def passwordResetConfirm(request, uidb64, token):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Your password has been set. You may go ahead and <b>log in </b> now.")
-                return redirect('/')
+                return redirect('login')
             else:
                 for error in list(form.errors.values()):
                     messages.error(request, error)

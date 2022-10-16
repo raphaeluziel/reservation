@@ -9,7 +9,7 @@
         {% elif message.tags == 'error' %}
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                {{ message|safe }}
+                {{ message|safe|escape }}
             </div>
         {% elif message.tags == 'info' %}
             <div class="alert alert-info alert-dismissible" role="alert">
