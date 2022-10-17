@@ -224,8 +224,10 @@ def shift_detail(request,shift_id):
 def shifts(request):
 	shifts=Shift.objects.all().order_by('-pub_date')[:5]
 	employers=Employer.objects.all()
+	Addresses=AddressBook.objects.all()
 
-	context={'shifts':shifts,'employers':employers}
+	
+	context={'shifts':shifts,'employers':employers,'addresses':addresses}
 
 	return render(request,'shifts.html',context)
 

@@ -80,15 +80,27 @@ class CustomUserAdmin(BaseUserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
 
-# class AddressBookAdmin(admin.ModelAdmin):
-#     list_display = ('street','alt_line','postcode','city','state')
-#     list_filter = ('postcode', 'city')
+class AddressBookAdmin(admin.ModelAdmin):
+
+     list_display = ('user','street','alt_line','postcode','city','state')
+     list_filter = ('postcode', 'city')
+     fieldsets = (
+        (None, {'fields': ('user','street','alt_line','postcode','city','state')}),
+    )
+     add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('user','street', 'alt_line','postcode','city', 'state')}
+        )
+    )
+     search_fields = ('city','postcode')
+     ordering = ('city',)
 
 class NurseAdmin(BaseUserAdmin):
 
   
-    list_display = ('last_name','role','experience','city','phone','date_joined')
-    list_filter = ('role', 'experience','city', 'is_active')
+    list_display = ('last_name','role','experience','phone','date_joined')
+    list_filter = ('role', 'experience','is_active')
 
     fieldsets = (
         (None, {'fields': ('email','password')}),
@@ -97,10 +109,10 @@ class NurseAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','role','experience','bank_account_name','bank_account_number','street','postcode','city')}
+            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','role','experience','bank_account_name','bank_account_number')}
         ),
     )
-    search_fields = ('email','experience','city','role')
+    search_fields = ('email','experience','role')
     ordering = ('email',)
 
 
@@ -108,9 +120,9 @@ class NurseAdmin(BaseUserAdmin):
 
 class EmployerAdmin(BaseUserAdmin):
 
-    list_display = ('email','org_name','city','phone','email','date_joined')
+    list_display = ('email','org_name','phone','email','date_joined')
     name__iexact='company'
-    list_filter = ('org_name','city', 'is_active')
+    list_filter = ('org_name','is_active')
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
@@ -119,7 +131,7 @@ class EmployerAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','org_name','bank_account_name','bank_account_number','street','postcode','city')}
+            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','org_name','bank_account_name','bank_account_number')}
         ),
     )
     search_fields = ('org_name','city')
@@ -143,7 +155,7 @@ class ShiftAdmin(admin.ModelAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Nurse, NurseAdmin)
-#admin.site.register(AddressBook, AddressBookAdmin)
+admin.site.register(AddressBook, AddressBookAdmin)
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Shift, ShiftAdmin)
 

@@ -13,28 +13,6 @@ from datetime import datetime, timedelta
 
 # Create your models here.
 
-
-
-class AddressBook(models.Model):
-	
-
-	street = models.CharField(max_length=64,blank=False)
-	alt_line = models.CharField(max_length=64, blank=True)
-	postcode= models.CharField(max_length=5,
-	  validators=[RegexValidator('^[0-9]{5}$', _('Invalid postal code'))],
-    blank=False)
-	city = models.CharField(max_length=64, blank=False)
-	state = models.CharField(max_length=64,blank=True)
-	country = models.CharField(max_length=64, default="Suomi")
-	#user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="address_book_user")
-
-	class Meta:
-		abstract = True
-
-	def __str__(self):
-		return self.city
-
-
 class CustomUserManager(BaseUserManager):
 	"""
 	Custom user model manager where email is the unique identifiers
@@ -91,8 +69,26 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 	def has_perm(self, perm, obj=None):
 		return self.is_staff
 
+class AddressBook(models.Model):
+	
+	user=models.OneToOneField(CustomUser, default="00000",related_name='user_address',primary_key=True,on_delete=models.CASCADE)
+	street = models.CharField(max_length=64,blank=False)
+	alt_line = models.CharField(max_length=64, blank=True)
+	postcode= models.CharField(max_length=5,
+	  validators=[RegexValidator('^[0-9]{5}$', _('Invalid postal code'))],
+    blank=False)
+	city = models.CharField(max_length=64, blank=False)
+	state = models.CharField(max_length=64,blank=True,default='Uusimaa')
+	country = models.CharField(max_length=64, default="Suomi")
+	#user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="address_book_user")
 
-class Nurse(CustomUser,AddressBook):
+	class Meta:
+		verbose_name = 'AddressBook'
+
+	def __str__(self):
+		return self.city
+
+class Nurse(CustomUser):
 
 	ROLES= (
 		('Sh', 'RN'),
@@ -116,7 +112,7 @@ class Nurse(CustomUser,AddressBook):
 		verbose_name = 'Nurse'
 
 
-class Employer(CustomUser,AddressBook):
+class Employer(CustomUser):
 
 	org_name=models.CharField(max_length=64)
 	bank_account_name=models.CharField(max_length=30, blank=True, null=True)
@@ -132,11 +128,12 @@ class Employer(CustomUser,AddressBook):
 	def __str__(self):
 		return self.org_name
 	
-class Shift(AddressBook,models.Model):
+class Shift(models.Model):
 	
 	employer=models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now=True)
+	addressbook=models.ForeignKey(AddressBook,on_delete=models.CASCADE,related_name="shift_addressbook")
 	org_name=models.ForeignKey(Employer, on_delete=models.CASCADE,related_name="employer_org_name")
 
 	role=ROLES= (
@@ -155,7 +152,7 @@ class Shift(AddressBook,models.Model):
 	details=models.CharField(max_length=200, blank=True, null=True)
 
 	def __str__(self):
-		return f'{self.pub_date}{self.org_name}{self.role}'
+		return f'{self.pub_date}{self.org_name}{self.role}{self.street}{self.postcode}{self.city}'
 
 
 
