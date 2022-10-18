@@ -82,6 +82,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
 class AddressBookAdmin(admin.ModelAdmin):
 
+
      list_display = ('user','street','alt_line','postcode','city','state')
      list_filter = ('postcode', 'city')
      fieldsets = (
@@ -120,7 +121,7 @@ class NurseAdmin(BaseUserAdmin):
 
 class EmployerAdmin(BaseUserAdmin):
 
-    list_display = ('email','org_name','phone','email','date_joined')
+    list_display = ('email','org_name','phone','date_joined')
     name__iexact='company'
     list_filter = ('org_name','is_active')
 
@@ -141,7 +142,7 @@ class EmployerAdmin(BaseUserAdmin):
 
 class ShiftAdmin(admin.ModelAdmin):
 
-    list_display=('org_name','date','pub_date','updated_date')
+    list_display=('employer','shift_date','pub_date','updated_date')
 
     
     add_fieldsets = (
@@ -150,6 +151,7 @@ class ShiftAdmin(admin.ModelAdmin):
             'fields': ('pub_date','role','start_time','finish_time','description')},
         ),
     )
+ 
 
 
 

@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm,SetPasswordForm,PasswordResetForm
 from django.contrib.auth import get_user_model, password_validation
 from django.core.exceptions import ValidationError
-from django.forms import widgets
+from django.forms import widgets,ModelForm
+
+from .models import Shift
 
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
@@ -105,6 +107,10 @@ class UserUpdateForm(forms.ModelForm):
         fields=['first_name','last_name','email','phone']
 
 
+class ShiftForm(ModelForm):
+    class Meta:
+        model = Shift
+        fields = '__all__'
  
 # class SignUpForm(UserCreationForm):
 

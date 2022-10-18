@@ -18,6 +18,9 @@ urlpatterns = [
     path('password_reset/', views.password_reset_view, name="password_reset"),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='password_reset_confirm'),
     path("profile/<id>/",views.profile, name="profile"),
+    path('create_shift/', views.createShift, name="create_shift"),
+    path('update_shift/<str:pk>/', views.updateShift, name="update_shift"),
+    path('delete_shift/<str:pk>/', views.deleteShift, name="delete_shift"),
 
 ]
 

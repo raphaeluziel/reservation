@@ -71,7 +71,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class AddressBook(models.Model):
 	
-	user=models.OneToOneField(CustomUser, default="00000",related_name='user_address',primary_key=True,on_delete=models.CASCADE)
+	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
 	street = models.CharField(max_length=64,blank=False)
 	alt_line = models.CharField(max_length=64, blank=True)
 	postcode= models.CharField(max_length=5,
@@ -86,7 +86,7 @@ class AddressBook(models.Model):
 		verbose_name = 'AddressBook'
 
 	def __str__(self):
-		return self.city
+		return '{} {} ,{},{}'.format(self.street,self.alt_line,self.postcode,self.city)
 
 class Nurse(CustomUser):
 
@@ -126,15 +126,14 @@ class Employer(CustomUser):
 		#super().__init__(*args,**kwargs)
 
 	def __str__(self):
-		return self.org_name
-	
+		return '{}'.format(self.org_name,self.phone)	
 class Shift(models.Model):
-	
-	employer=models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
+
+	employer=models.ForeignKey(Employer,on_delete=models.CASCADE)
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
-	updated_date = models.DateTimeField(auto_now=True)
-	addressbook=models.ForeignKey(AddressBook,on_delete=models.CASCADE,related_name="shift_addressbook")
-	org_name=models.ForeignKey(Employer, on_delete=models.CASCADE,related_name="employer_org_name")
+	updated_date = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+	address=models.ForeignKey(AddressBook,on_delete=models.CASCADE,related_name="shift_street")
+	shift_date=models.DateTimeField('Date')
 
 	role=ROLES= (
 		('Sh', 'RN'),
@@ -142,20 +141,26 @@ class Shift(models.Model):
 		('HA', 'AS'), 
 
 	)
-	role = models.CharField(max_length=2, choices=ROLES,blank=False)
-	date=models.DateTimeField('Date')
 
+	STATUS = (
+			('Open', 'Open'),
+			('Reserved', 'Reserved'),
+			('Done', 'Done'),
+			('Unfilled', 'Unfilled'),
+			('Cancelled', 'Cancelled'),
+			)
+
+	role = models.CharField(max_length=2, choices=ROLES,blank=False)
 
 	start_time = models.TimeField()
 	finish_time = models.TimeField()
+	
 
 	details=models.CharField(max_length=200, blank=True, null=True)
+	status = models.CharField(max_length=200, null=True, choices=STATUS)
 
 	def __str__(self):
-		return f'{self.pub_date}{self.org_name}{self.role}{self.street}{self.postcode}{self.city}'
-
-
-
+		return f'{self.pub_date}'
 
 
 

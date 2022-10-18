@@ -19,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from .decorators import allowed_users,user_not_authenticated, is_customer
 
 from django import forms
-from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm
+from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
 
 from django.core.mail import send_mail, BadHeaderError
 from django.utils.http import urlsafe_base64_encode
@@ -222,18 +222,49 @@ def shift_detail(request,shift_id):
 
 @login_required
 def shifts(request):
-	shifts=Shift.objects.all().order_by('-pub_date')[:5]
 	employers=Employer.objects.all()
-	Addresses=AddressBook.objects.all()
-
-	
-	context={'shifts':shifts,'employers':employers,'addresses':addresses}
+	shifts=Shift.objects.all().order_by('-pub_date')[:5]
+	context={'shifts':shifts,'employers':employers}
 
 	return render(request,'shifts.html',context)
 
 
+
+def createShift(request):
+	form = ShiftForm()
+	if request.method == 'POST':
+		#print('Printing POST:', request.POST)
+		form = ShiftForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('/')
+
+	context = {'form':form}
+	return render(request, 'shift_form.html', context)
+
+def updateShift(request, pk):
+
+	shift = Shift.objects.get(id=pk)
+	form = ShiftForm(instance=shift)
+
+	if request.method == 'POST':
+		form = ShiftForm(request.POST, instance=shift)
+		if form.is_valid():
+			form.save()
+			return redirect('/')
+
+	context = {'form':form}
+	return render(request, 'shift_form.html', context)
+
+def deleteShift(request, pk):
+	shift = Shift.objects.get(id=pk)
+	if request.method == "POST":
+		shift.delete()
+		return redirect('/')
+
+	context = {'item':shift}
+	return render(request, 'delete_shift.html', context)
+
+
 def error_404_view(request, exception):
 	return render(request, 'core/404.html')
-
-    
- 	
