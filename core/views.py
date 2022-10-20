@@ -229,7 +229,9 @@ def shifts(request):
 	return render(request,'shifts.html',context)
 
 
+### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
 
+@login_required
 def createShift(request):
 	form = ShiftForm()
 	if request.method == 'POST':
@@ -241,6 +243,12 @@ def createShift(request):
 
 	context = {'form':form}
 	return render(request, 'shift_form.html', context)
+
+
+
+def post_draft_list(request):
+    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+    return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
 def updateShift(request, pk):
 
@@ -262,9 +270,18 @@ def deleteShift(request, pk):
 		shift.delete()
 		return redirect('/')
 
-	context = {'item':shift}
+	context = {'shift':shift}
 	return render(request, 'delete_shift.html', context)
 
-
-def error_404_view(request, exception):
-	return render(request, 'core/404.html')
+###### This is the taking shifts part done by nurse. Only reservation rights is allowed ###
+check... check....
+@login_required
+def book_shift(request,pk):
+	shift = Shift.objects.get(id=pk)
+	if request.method == "POST":
+		form = ShiftForm(request.POST, instance=shift)
+		if form.is_valid():
+			form.save()
+			return redirect('404.html')
+		
+		 

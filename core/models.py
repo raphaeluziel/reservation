@@ -52,7 +52,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 	first_name = models.CharField(max_length=250, blank=False)
 	last_name = models.CharField(max_length=250, blank=False)
 	email = models.EmailField(('email address'), unique=True)
-	phone = PhoneNumberField(blank=True, help_text='Contact phone number',null=True)
+	phone = PhoneNumberField(blank=True, help_text='Contact phone number', unique = True,null=True)
 
 	is_nurse = models.BooleanField(default=False)
 	is_employer = models.BooleanField(default=False)
@@ -80,7 +80,7 @@ class AddressBook(models.Model):
 	city = models.CharField(max_length=64, blank=False)
 	state = models.CharField(max_length=64,blank=True,default='Uusimaa')
 	country = models.CharField(max_length=64, default="Suomi")
-	#user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="address_book_user")
+
 
 	class Meta:
 		verbose_name = 'AddressBook'
@@ -116,7 +116,7 @@ class Employer(CustomUser):
 
 	org_name=models.CharField(max_length=64)
 	bank_account_name=models.CharField(max_length=30, blank=True, null=True)
-	bank_account_number=models.CharField(max_length=20, blank=True, null=True)
+	bank_account_number=models.CharField(max_length=20,unique = True, blank=True, null=True)
 
 
 	class Meta:
@@ -154,7 +154,7 @@ class Shift(models.Model):
 
 	start_time = models.TimeField()
 	finish_time = models.TimeField()
-	
+	published = models.BooleanField(default=False)
 
 	details=models.CharField(max_length=200, blank=True, null=True)
 	status = models.CharField(max_length=200, null=True, choices=STATUS)

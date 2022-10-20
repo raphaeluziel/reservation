@@ -4,6 +4,7 @@
 {% if shifts %}
 	<ul>
 	{% for shift in shifts %}
+    {% if shift.published %}
 	 
             <li>organization name: {{shift.employer}}</li>
           
@@ -19,10 +20,13 @@
             <li>shift finish time:{{shift.finish_time}}</li>
             <li>shift details: {{shift.details}}</li>
             <li>organiztion address: {{shift.address}}</li>
+            <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
+
+                <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
            
             <p> -----------------</p>
      
-
+            {% endif %}
 	 {% endfor %}
 	<ul>
 {% else %}

@@ -62,10 +62,11 @@ class CustomUserChangeForm(forms.ModelForm):
 class CustomUserAdmin(BaseUserAdmin):
 
      # The forms to add and change user instances
+
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
-    list_display = ('email','last_name','is_staff', 'is_active','is_nurse','is_employer','is_superuser','last_login')
+    list_display = ('id','email','last_name','is_staff', 'is_active','is_nurse','is_employer','is_superuser','last_login')
     list_filter = ('email', 'is_staff', 'is_active','is_nurse','is_employer','is_superuser')
     fieldsets = (
         (None, {'fields': ('email', 'first_name', 'last_name', 'password')}),
@@ -83,7 +84,7 @@ class CustomUserAdmin(BaseUserAdmin):
 class AddressBookAdmin(admin.ModelAdmin):
 
 
-     list_display = ('user','street','alt_line','postcode','city','state')
+     list_display = ('id','street','alt_line','postcode','city','state')
      list_filter = ('postcode', 'city')
      fieldsets = (
         (None, {'fields': ('user','street','alt_line','postcode','city','state')}),
@@ -100,11 +101,11 @@ class AddressBookAdmin(admin.ModelAdmin):
 class NurseAdmin(BaseUserAdmin):
 
   
-    list_display = ('last_name','role','experience','phone','date_joined')
+    list_display = ('id','last_name','role','experience','phone','date_joined')
     list_filter = ('role', 'experience','is_active')
 
     fieldsets = (
-        (None, {'fields': ('email','password')}),
+        (None, {'fields': ('email','password','phone')}),#show the fields that could edit in admin panel
         ('Permissions', {'fields': ('is_nurse', 'is_rn','is_active')}),
     )
     add_fieldsets = (
@@ -121,7 +122,7 @@ class NurseAdmin(BaseUserAdmin):
 
 class EmployerAdmin(BaseUserAdmin):
 
-    list_display = ('email','org_name','phone','date_joined')
+    list_display = ('id','email','org_name','phone','date_joined')
     name__iexact='company'
     list_filter = ('org_name','is_active')
 
@@ -142,7 +143,7 @@ class EmployerAdmin(BaseUserAdmin):
 
 class ShiftAdmin(admin.ModelAdmin):
 
-    list_display=('employer','shift_date','pub_date','updated_date')
+    list_display=('id','employer','shift_date','pub_date','updated_date')
 
     
     add_fieldsets = (
