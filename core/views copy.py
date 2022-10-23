@@ -5,7 +5,7 @@ from django.http import HttpResponse,Http404,JsonResponse
 from django.db import models
 from django.db.models.query_utils import Q
 from django.core.mail import EmailMessage
-from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager
+from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager,Shift_plan
 
 from django.contrib.auth.forms import  SetPasswordForm, PasswordResetForm,AuthenticationForm
 from django.contrib.auth import authenticate, login,logout,get_user_model,password_validation
@@ -245,8 +245,8 @@ def updateShift(request, pk):
 	context = {'form':form}
 	return render(request, 'shift_form.html', context)
 
-def deleteShift(request, pk):
-	shift = Shift.objects.get(id=pk)
+def deleteShift(request, shift_id):
+	shift = Shift.objects.get(id=shift_id)
 	if request.method == "POST":
 		shift.delete()
 		return redirect('/')
@@ -254,28 +254,31 @@ def deleteShift(request, pk):
 	context = {'shift':shift}
 	return render(request, 'delete_shift.html', context)
 
-# reserve one shift and then redirect to all reversed_shifts list view
-@login_required #here employee reserves that offered jobs on job list
-def reserve_shift(request, pk):
-    
+
+@login_required
+def shift_plan(request):
+	user=request.user
+
+	shift_plan=Shift_plan.objects.all()
+	context={'shift_plan':shift_plan}
+
+	return render(request,'shift_plan.html',context)
+
+
+
+@login_required #reserve shift
+def add_to_shift_plan(request,pk):
     shift = Shift.objects.get(id=pk)
-    if request.method == 'POST':
-        shift.user = request.user
-        shift.time_reserved = datetime.datetime.now()
-        shift.save()
-    return redirect('reserved_shifts')
-
-
-#list all reserved shifts by that employee
-
-
-@login_required 
-def reversed_shifts(request):
-    shifts=Shift.objects.filter(user=request.user)
-    context = {'reserved_shifts': shifts,}
-    return render(request,'reserved_shifts.html', context=context)
-
+    if request.method == "POST":
+    	if request.session.get("add_to_shift_plan"):
+    		requst.session['add_to_shift_plan'].append(pk)
+    	else:
+    		requst.session['add_to_shift_plan']=[pk]
+    	shift_plan.save()
+    	messages.success(request, "Shift plan updated!")
+    	#some other messages
+    	#messages.success(request, f'{nurse} was successfully reserved our shift!')
+    return redirect('shift_plan')
 
 def error_404_view(request, exception):
 	return render(request, 'core/404.html')
-

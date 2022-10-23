@@ -1,3 +1,19 @@
+
+Update:
+
+create database
+
+1.Start add data from employer, click is employer selection. Otherwise the created user will not have employer permission
+2. then nurse, rn means registered nurse, pn indicated practical nurse and AS is assistant
+3. Then add data on dressbook
+4. CustomUser meanly add admin and staff
+5. Shift if pubished, the authenticated users(staff, nurses, admins) will see those job vacancies list and details
+6. when adding shifts, status would be open, employee is null, after potentail employee viewed the job and reserved it,  then job status will be shown as reserved. 
+
+7. After job reserved, it will redirect to reserved shifts list view, which list all shift that reserved by that nurse. 
+
+
+
 #Quick start
 
 $ mkdir reservation

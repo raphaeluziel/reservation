@@ -1,11 +1,14 @@
 {% extends "header.html" %}
 {% block title %}here will add double"{{section.title}}"{% endblock %}
 {% block content %}
-{% if shifts %}
+{% if reserved_shifts %}
+
+
+
+
 	<ul>
-	{% for shift in shifts %}
-        {% if shift.published %}
-	 
+	{% for shift in reserved_shifts %}
+ 
             <li>organization name: {{shift.employer}}</li>
           
             <li>shift id is: {{shift.id}}</li>
@@ -20,14 +23,12 @@
             <li>shift finish time:{{shift.finish_time}}</li>
             <li>shift details: {{shift.details}}</li>
             <li>organiztion address: {{shift.address}}</li>
-            <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
-
-            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
-            <td><a class="btn btn-sm btn-success" href="{% url 'shift_detail' shift.id %}">View</a></td>
+          
+        
            
             <p> -----------------</p>
      
-            {% endif %}
+  
 	 {% endfor %}
 	<ul>
 {% else %}

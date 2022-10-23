@@ -1,5 +1,5 @@
 {% extends "header.html" %}
-{% block title %}here will add double"{{section.title}}"{% endblock %}
+{% block title %}reserveshift-tobedeleted{% endblock %}
 {% block content %}
 
 {% load crispy_forms_tags %}
@@ -21,21 +21,10 @@
 <li>shift finish time:{{shift.finish_time}}</li>
 <li>shift details: {{shift.details}}</li>
 <li>organiztion address: {{shift.address}}</li>
-<td><a class="btn btn-sm btn-success" href="{% url 'reserved_shifts'%}">reserve</a></td>
+<td><a class="btn btn-sm btn-success" href="{% url 'reserved_shifts' shift.id%}">reserve</a></td>
 
 
-<!-- alternative to line 24 <form method="post">
-        {% csrf_token %}
-        <div class="buttons has-addons">
-       
-            <button class="button is-success" name="reserve" value="reserve" href="{% url 'reserved_shifts' %}">
-                reserve
-            </button>
-        
-        </div>
-    </form>
-</div>
- -->
+
 
 
 {% endif %}

@@ -70,7 +70,7 @@ class CustomUserAdmin(BaseUserAdmin):
     list_filter = ('email', 'is_staff', 'is_active','is_nurse','is_employer','is_superuser')
     fieldsets = (
         (None, {'fields': ('email', 'first_name', 'last_name', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active','is_superuser')}),
+        ('Permissions', {'fields': ('is_staff', 'is_nurse','is_employer','is_active','is_superuser')}),
     )
     add_fieldsets = (
         (None, {
@@ -153,14 +153,26 @@ class ShiftAdmin(admin.ModelAdmin):
         ),
     )
  
+"""
+class ShiftReservationAdmin(admin.ModelAdmin):
+    exclude = ('published','status','date')
 
+    list_display=('id','employer','shift_date','role',)
 
-
+    
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('role','phone','email')},
+        ),
+    )
+ 
+"""
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Nurse, NurseAdmin)
 admin.site.register(AddressBook, AddressBookAdmin)
 admin.site.register(Employer, EmployerAdmin)
 admin.site.register(Shift, ShiftAdmin)
-
+#admin.site.register(ShiftReservation, ShiftReservationAdmin)
 
 
