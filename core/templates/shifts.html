@@ -22,7 +22,8 @@
             <li>organiztion address: {{shift.address}}</li>
             <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
 
-                <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
+            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
+             <td><a class="btn btn-sm btn-success" href="{% url 'shift_detail' shift.id %}">View</a></td>
            
             <p> -----------------</p>
      

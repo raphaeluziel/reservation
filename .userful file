@@ -37,6 +37,9 @@ https://stackoverflow.com/questions/49235486/how-to-properly-runserver-on-differ
 how to switch between different settings
 
 
+shift detail.html <td><a class="btn btn-sm btn-success" href="{% url 'reserve_shift' shift.id%}">reserve</a></td>
+
+
 config/
     commonsettings.py
     dev.py
@@ -92,3 +95,31 @@ config/
 
 profile.html line 9  {% if user.id == form.instance.id %}
 and profile view 219 user=request.user without it, a user could update other user's profile
+
+
+
+# reserve one shift and then redirect to all reversed_shifts list view
+@login_required #here employee reserves that offered jobs on job list
+def reserve_shift(request, pk):
+    
+    shift = Shift.objects.get(id=pk)
+    if request.method == 'GET':
+        shift.user = request.user
+        shift.status = 'Reserved'
+        shift.time_reserved = datetime.datetime.now()
+        shift.save()
+    return redirect('reserved_shifts')
+
+
+#list all reserved shifts by that employee
+
+
+@login_required 
+def reversed_shifts(request):
+    shifts=Shift.objects.filter(user=request.user)
+    context = {'reserved_shifts': shifts}
+    return render(request,'reserved_shifts.html', context=context)
+
+
+def error_404_view(request, exception):
+    return render(request, 'core/404.html')

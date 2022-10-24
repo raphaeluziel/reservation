@@ -129,7 +129,7 @@ class Employer(CustomUser):
 		return '{}'.format(self.org_name,self.phone)	
 class Shift(models.Model):
 
-	employer=models.ForeignKey(Employer,on_delete=models.CASCADE)
+	employer=models.ForeignKey(Employer,on_delete=models.CASCADE, related_name="shift_employer")
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 	address=models.ForeignKey(AddressBook,on_delete=models.CASCADE,related_name="shift_street")
@@ -155,9 +155,9 @@ class Shift(models.Model):
 	start_time = models.TimeField()
 	finish_time = models.TimeField()
 	published = models.BooleanField(default=False)
-
 	details=models.CharField(max_length=200, blank=True, null=True)
 	status = models.CharField(max_length=200, null=True, choices=STATUS)
+	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
 
 	def __str__(self):
 		return f'{self.pub_date}'

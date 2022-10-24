@@ -28,14 +28,23 @@ from django.utils.encoding import force_bytes, force_str
 from django.conf import settings
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
+import datetime
+
 
 
 # Create your views here.
+
+def landing(request):
+
+	return render(request, 'landing.html')
+
 
 
 def index(request):
 
 	return render(request, 'index.html')
+
+
 
 def login_view(request):
     error = None
@@ -47,7 +56,7 @@ def login_view(request):
         	user = authenticate(request,username=username, password=password)
         	if user is not None:
         		login(request, user)
-        		return redirect('/')
+        		return redirect("/")
         	else:
         		messages.info(request, 'Username or Password is incorrect')
     else:
@@ -273,15 +282,31 @@ def deleteShift(request, pk):
 	context = {'shift':shift}
 	return render(request, 'delete_shift.html', context)
 
-###### This is the taking shifts part done by nurse. Only reservation rights is allowed ###
-check... check....
-@login_required
-def book_shift(request,pk):
-	shift = Shift.objects.get(id=pk)
-	if request.method == "POST":
-		form = ShiftForm(request.POST, instance=shift)
-		if form.is_valid():
-			form.save()
-			return redirect('404.html')
-		
-		 
+
+# reserve one shift and then redirect to all reversed_shifts list view
+@login_required #here employee reserves that offered jobs on job list
+def reserve_shift(request, pk):
+    
+    shift = Shift.objects.get(id=pk)
+    if request.method == 'GET':
+        shift.user = request.user
+        shift.status = 'Reserved'
+        shift.time_reserved = datetime.datetime.now()
+        shift.save()
+    return redirect('reserved_shifts')
+
+
+#list all reserved shifts by that employee
+
+
+@login_required 
+def reversed_shifts(request):
+    shifts=Shift.objects.filter(user=request.user)
+    context = {'reserved_shifts': shifts}
+    return render(request,'reserved_shifts.html', context=context)
+
+
+def error_404_view(request, exception):
+	return render(request, 'core/404.html')
+
+
