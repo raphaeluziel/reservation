@@ -1,19 +1,18 @@
 {% extends "header.html" %}
 {% block title %}here will add double"{{section.title}}"{% endblock %}
 {% block content %}
-{% if shifts %}
+{% if shifts  %}
 	<ul>
 	{% for shift in shifts %}
-    {% if shift.published %}
+    {% if  shift.published and shift.status == "Open" %}
 	 
             <li>organization name: {{shift.employer}}</li>
           
             <li>shift id is: {{shift.id}}</li>
-             <li> shift_employer_id:{{shift.employer_id}}</li>
-             <li> employer phone:{{shift.employer.phone}}</li>
-              <li> employer email:{{shift.employer.email}}</li>
-             <li>shift status: {{shift.status}}</li>
-       
+            <li> shift_employer_id:{{shift.employer_id}}</li>
+            <li> employer phone:{{shift.employer.phone}}</li>
+            <li> employer email:{{shift.employer.email}}</li>
+            <li>shift status: {{shift.status}}</li>
             <li>shift date: {{shift.shift_date}}</li>
             <li>shift role: {{shift.role}}</li>
             <li>shift start time: {{shift.start_time}}</li>
@@ -27,12 +26,14 @@
            
             <p> -----------------</p>
      
-            {% endif %}
+        {% endif %}
+
 	 {% endfor %}
 	<ul>
+     
 {% else %}
 
- <p> No shift is available</p>
+ <p> There is no shift available at the moment, come back later...</p>
 
 {% endif %}
 

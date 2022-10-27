@@ -39,9 +39,11 @@ def landing(request):
 	return render(request, 'landing.html')
 
 
+
 def index(request):
 
 	return render(request, 'index.html')
+
 
 
 def login_view(request):
@@ -139,7 +141,7 @@ def password_reset_request(request):
 
             return redirect('password_reset_request')
 
-  
+     
     form = PasswordResetForm()
     return render(
         request=request, 
@@ -206,38 +208,12 @@ def shift_detail(request,shift_id):
 
 @login_required
 def shifts(request):
-	user=request.user
 	employers=Employer.objects.all()
-	if request.user.is_employer:
-	
-	#if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
-	
-		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-		shifts=Shift.objects.all().filter(employer_id=user.id)
-		context={'shifts':shifts}
+	shifts=Shift.objects.all().order_by('-pub_date')[:5]
+	context={'shifts':shifts,'employers':employers}
 
-	#if user is admin, job agency staff or nurse, then all shifts are visible
-	else:
-		
-		shifts=Shift.objects.all().order_by('-pub_date')[:5]
-		context={'shifts':shifts,'employers':employers}
 
- 
 	return render(request,'shifts.html',context)
-
-
-	"""
-	In shifts view, one more condition between if and else
-	elif request.user.is_nurse:
-		if self.request.user.has_perm('register RN jobs then show all vacanies'):
-    			# do this
-		else:
-   			 #show only Practical nurse or assistance vacancies
-
-    """
-
-
-
 
 
 ### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
@@ -291,7 +267,7 @@ def reserve_shift(request, pk):
     
     shift = Shift.objects.get(id=pk)
     if request.method == 'GET':
-        shift.user = request.user #shift.reserved_by=request.user
+        shift.user = request.user
         shift.status = 'Reserved'
         shift.time_reserved = datetime.datetime.now()
         shift.save()

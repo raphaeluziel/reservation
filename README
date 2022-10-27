@@ -55,3 +55,27 @@ python3 manage.py runserver --settings=reservation.settings.dev
 ### add also auth_authentication.py in app 
 ### add email settings in base.py
 
+
+--revert migartions
+
+
+	#delete anywanted migrations
+	then run command
+    showmigrations to see where I am
+    migrate 0003 (to go one step back)
+    showmigrations to verify that it worked and I am one version behind
+    migrate 0004 to migrate correctly
+
+
+
+---shifts view
+
+1) if user is employer, employer could view his/her own shifts both published and unpublished. This employer could not view the other employers offered shifts
+
+2) if user is a nurse but not RN, then no RN shifts is visible. All employers published job vacancies could be reserved based on role permissions. RN, PN or Assistant
+
+3) Admin and Staff could access all published shifts, update and remove it.
+
+
+3) 
+
