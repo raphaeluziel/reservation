@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404,render,redirect,HttpResponseRedir
 from django.http import HttpResponse,Http404,JsonResponse
 
 from django.db import models
-from django.db.models.query_utils import Q
+from django.db.models import Q
+#from django.db.models.query_utils import Q
 from django.core.mail import EmailMessage
 from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager
 
@@ -29,6 +30,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 import datetime
+
 
 
 
@@ -306,6 +308,30 @@ def reversed_shifts(request):
     shifts=Shift.objects.filter(user=request.user)
     context = {'reserved_shifts': shifts}
     return render(request,'reserved_shifts.html', context=context)
+
+
+
+@login_required 
+def search(request):
+    query = request.GET.get('query')
+    if not query:
+    	
+    	return HttpResponse("There is no result")
+    
+    else:
+
+	    search_results = Shift.objects.filter(
+	         Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
+	    )
+
+
+	    context = {
+	        'search_results': search_results,
+	        'query': query,
+	    }
+	    return render(request, 'search.html', context)
+
+
 
 
 def error_404_view(request, exception):

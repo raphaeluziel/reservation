@@ -4,6 +4,9 @@
 {% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.first_name }}!
+
+
+
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 
  <P>For first time user, please reset your password</P>

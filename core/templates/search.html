@@ -1,0 +1,16 @@
+
+{% if search_results|length == 0 %}
+    <p style="color: red;">Your search <span style="color: black;">'{{ query }}'</span> did not match any result!</p>
+{% else %}
+
+
+    {% for result in search_results %}
+        <ul>
+            <li>address: {{ result.address}}</li>
+            <li>role: {{ result.role }}</li>
+             <li>details: {{ result.details }}</li>
+        </ul>
+    {% endfor %}
+
+
+ {% endif %}

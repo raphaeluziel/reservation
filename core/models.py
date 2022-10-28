@@ -91,9 +91,9 @@ class AddressBook(models.Model):
 class Nurse(CustomUser):
 
 	ROLES= (
-		('Sh', 'RN'),
-		('Lh', 'PN'),
-		('HA', 'AS'), 
+		('RN', 'RN'),
+		('PN', 'PN'),
+		('AS', 'AS'), 
 
 	)
 	EXPERIENCES= (
@@ -136,9 +136,9 @@ class Shift(models.Model):
 	shift_date=models.DateTimeField('Date')
 
 	ROLES= (
-		('Sh', 'RN'),
-		('Lh', 'PN'),
-		('HA', 'AS'), 
+		('RN', 'RN'),
+		('PN', 'PN'),
+		('AS', 'AS'), 
 
 	)
 
