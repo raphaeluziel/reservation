@@ -17,7 +17,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required,user_passes_test
 
-from .decorators import allowed_users,user_not_authenticated, employer_only
+from .decorators import user_not_authenticated,admin_staff_employer_required,employer_only,staff_only
 
 from django import forms
 from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
@@ -31,9 +31,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 import datetime
 from itertools import chain
-
-
-
+from django.urls import reverse,reverse_lazy
 
 
 # Create your views here.
@@ -241,12 +239,10 @@ def shifts(request):
     """
 
 
-
-
-
 ### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
 #to add if nurse, then it's not allowed to create shift
 @login_required
+@admin_staff_employer_required
 def createShift(request):
 	form = ShiftForm()
 	if request.method == 'POST':
@@ -276,11 +272,15 @@ def updateShift(request, pk):
 	return render(request, 'create_shift.html', context)
 
 @login_required
+@admin_staff_employer_required
 def deleteShift(request, pk):
 	shift = Shift.objects.get(id=pk)
 	if request.method == "POST":
-		shift.delete()
-		return redirect('/')
+		if request.user.is_employer and shift.status=="Reserved":
+			messages.error(request,"This shift has already been reserved, please contact our customer service for further information.")
+		else:
+			shift.delete()
+			return redirect('/')
 
 	context = {'shift':shift}
 	return render(request, 'delete_shift.html', context)

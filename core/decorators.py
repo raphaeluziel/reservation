@@ -1,21 +1,11 @@
 from django.shortcuts import redirect
 from functools import wraps
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
+from django.urls import reverse
+from django.core.exceptions import PermissionDenied
 
 
-
-def allowed_users(view, redirect_to='/'):
-    @wraps(view)
-    def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect(redirect_to)
-        else:
-            return view(request, *args, **kwargs)
-    return wrapper
-from django.shortcuts import redirect
-
-
-def user_not_authenticated(function=None, redirect_url='/'):
+def user_not_authenticated(function=None, redirect_url='404.html'):
     """
     Decorator for views that checks that the user is NOT logged in, redirecting
     to the homepage if necessary by default.
@@ -35,21 +25,31 @@ def user_not_authenticated(function=None, redirect_url='/'):
     return decorator
 
 
-
-
-def employer_only(view):
-  @wraps(view)
-  def wrapper(request, *args, **kwargs):
-
-        if request.user.customuser.is_employer:
-            return view(request, *args, **kwargs)
+def admin_staff_employer_required(view_func):
+    def wrap(request, *args, **kwargs):
+               
+        if request.user.is_employer or request.user.is_staff:
+            return view_func(request, *args, **kwargs)
         else:
-            return HttpResponse('<h1>You are not employer, not allowed access</h1>')
-  return wrapper
+            return HttpResponseRedirect(reverse('login'))
+    return wrap
 
+def employer_only(view_func):
+    def wrap(request, *args, **kwargs):
+        if request.user.is_employer:
+            return view_func(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('login'))
+    return wrap
+        
 
-
-
+def staff_only(view_func):
+    def wrap(request, *args, **kwargs):
+        if request.user.is_staff:
+            return view_func(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('login'))
+    return wrap
 
 
 

@@ -1,0 +1,35 @@
+<ul>
+	{% for shift in shifts %}
+    {% if  shift.published and shift.status == "Open" %}
+	 
+            <li>organization name: {{shift.employer}}</li>
+          
+            <li>shift id is: {{shift.id}}</li>
+            <li> shift_employer_id:{{shift.employer_id}}</li>
+            <li> employer phone:{{shift.employer.phone}}</li>
+            <li> employer email:{{shift.employer.email}}</li>
+            <li>shift status: {{shift.status}}</li>
+            <li>shift date: {{shift.shift_date}}</li>
+            <li>shift role: {{shift.role}}</li>
+            <li>shift start time: {{shift.start_time}}</li>
+            <li>shift finish time:{{shift.finish_time}}</li>
+            <li>shift details: {{shift.details}}</li>
+            <li>organiztion address: {{shift.address}}</li>
+
+            {% if not request.user.is_nurse %}
+   
+            <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
+
+            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
+
+            {% endif %}
+             <td><a class="btn btn-sm btn-success" href="{% url 'shift_detail' shift.id %}">View</a></td>
+            
+           
+
+            <p> -----------------</p>
+     
+        {% endif %}
+
+	 {% endfor %}
+	<ul>
