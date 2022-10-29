@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+	<div class="form-row form-group col-md-6 mb-0">
+	
+
+			<form action="" class="form-group col-md-6 mb-0" method="POST">
+				{% csrf_token %}
+				{{form.email}}
+				
+				{{form | crispy}}
+
+				<br>
+				
+				
+				<button class="btn btn-outline-info" name="Submit" type="submit">Create</button>
+			</form>
+
+	</div>
+
+
+{% endblock %}

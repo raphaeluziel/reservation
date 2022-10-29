@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404,render,redirect,HttpResponseRedir
 from django.http import HttpResponse,Http404,JsonResponse
 
 from django.db import models
-from django.db.models.query_utils import Q
+from django.db.models import Q
+#from django.db.models.query_utils import Q
 from django.core.mail import EmailMessage
 from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager
 
@@ -14,9 +15,9 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 
-from .decorators import allowed_users,user_not_authenticated, is_customer
+from .decorators import allowed_users,user_not_authenticated, employer_only
 
 from django import forms
 from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
@@ -29,6 +30,9 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 import datetime
+from itertools import chain
+
+
 
 
 
@@ -36,14 +40,12 @@ import datetime
 
 def landing(request):
 
-	return render(request, 'landing.html')
-
+    return render(request, 'landing.html')
 
 
 def index(request):
 
-	return render(request, 'index.html')
-
+    return render(request, 'index.html')
 
 
 def login_view(request):
@@ -51,22 +53,22 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST or None)
         if form.is_valid():
-        	username = form.cleaned_data.get("email")
-        	password = form.cleaned_data.get("password")
-        	user = authenticate(request,username=username, password=password)
-        	if user is not None:
-        		login(request, user)
-        		return redirect("/")
-        	else:
-        		messages.info(request, 'Username or Password is incorrect')
+            username = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request,username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("shifts")
+            else:
+                messages.info(request, 'Username or Password is incorrect')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form, 'error': error})
 
 
 def logout_view(request):
-	logout(request)
-	return render(request, 'index.html')
+    logout(request)
+    return render(request, 'index.html')
 
 @login_required
 def password_change(request):
@@ -133,7 +135,7 @@ def password_reset_request(request):
 
                     return redirect('login')
                 else:
-                	messages.error(request,"something went wrong, wait some minutes and check again later")
+                    messages.error(request,"something went wrong, wait some minutes and check again later")
 
             else:
                 messages.error(request, "we did not find such a user.")
@@ -141,7 +143,7 @@ def password_reset_request(request):
 
             return redirect('password_reset_request')
 
-     
+  
     form = PasswordResetForm()
     return render(
         request=request, 
@@ -179,86 +181,109 @@ def passwordResetConfirm(request, uidb64, token):
 
 @login_required
 
-def profile(request, id):
+def profile(request,id):
 
-	if request.method=="POST":
-		user=request.user
-		form=UserUpdateForm(request.POST, request.FILES, instance=user)
-		if form.is_valid():
-			user_form=form.save()
-			messages.success(request, f'{user_form.firstname},your profile has been updated')
-			return redirect("profile",user_form.firstname)
-		for error in list(form.errors.values()):
-			messages.error(request,error)
-	user=get_user_model().objects.filter(id=id).first()
-	if user:
-		form=UserUpdateForm(instance=user)
+    if request.method=="POST":
+        user=request.user
+        form=UserUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user_form=form.save()
+            messages.success(request, f'{user_form.first_name},your profile has been updated')
+            return redirect("profile",user_form.id)
+        for error in list(form.errors.values()):
+            messages.error(request,error)
+    user=get_user_model().objects.filter(id=id).first()
+    if user:
+        form=UserUpdateForm(instance=user)
 
-		return render(
-	 		request=request,
-	 		template_name="profile.html",
-	 		context={"form":form})
-	return redirect("/")
+        return render(
+            request=request,
+            template_name="profile.html",
+            context={"form":form})
+    return redirect("/")
 
 @login_required
 def shift_detail(request,shift_id):
-	shift=get_object_or_404(Shift, pk=shift_id)
-	return render(request, 'shift_detail.html',{'shift':shift})
+    shift=get_object_or_404(Shift, pk=shift_id)
+    return render(request, 'shift_detail.html',{'shift':shift})
 
 
 @login_required
 def shifts(request):
-	employers=Employer.objects.all()
-	shifts=Shift.objects.all().order_by('-pub_date')[:5]
-	context={'shifts':shifts,'employers':employers}
+    user=request.user
+    employers=Employer.objects.all()
+    if request.user.is_employer:
+    
+    #if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
+    
+        #e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
+        shifts=Shift.objects.all().filter(employer_id=user.id)
+        context={'shifts':shifts}
+
+    #if user is admin, job agency staff or nurse, then all shifts are visible
+    else:
+        
+        shifts=Shift.objects.all().order_by('-pub_date')[:5]
+        context={'shifts':shifts,'employers':employers}
+
+ 
+    return render(request,'shifts.html',context)
 
 
-	return render(request,'shifts.html',context)
+    """
+    In shifts view, one more condition between if and else
+    elif request.user.is_nurse:
+        if self.request.user.has_perm('register RN jobs then show all vacanies'):
+                # do this
+        else:
+             #show only Practical nurse or assistance vacancies
+
+    """
+
+
+
 
 
 ### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
-
+#to add if nurse, then it's not allowed to create shift
 @login_required
 def createShift(request):
-	form = ShiftForm()
-	if request.method == 'POST':
-		#print('Printing POST:', request.POST)
-		form = ShiftForm(request.POST)
-		if form.is_valid():
-			form.save()
-			return redirect('/')
+    form = ShiftForm()
+    if request.method == 'POST':
+        #print('Printing POST:', request.POST)
+        form = ShiftForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
 
-	context = {'form':form}
-	return render(request, 'shift_form.html', context)
+    context = {'form':form}
+    return render(request, 'create_shift.html', context)
 
 
-
-def post_draft_list(request):
-    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-    return render(request, 'blog/post_draft_list.html', {'posts': posts})
-
+@login_required
 def updateShift(request, pk):
 
-	shift = Shift.objects.get(id=pk)
-	form = ShiftForm(instance=shift)
+    shift = Shift.objects.get(id=pk)
+    form = ShiftForm(instance=shift)
 
-	if request.method == 'POST':
-		form = ShiftForm(request.POST, instance=shift)
-		if form.is_valid():
-			form.save()
-			return redirect('/')
+    if request.method == 'POST':
+        form = ShiftForm(request.POST, instance=shift)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
 
-	context = {'form':form}
-	return render(request, 'shift_form.html', context)
+    context = {'form':form}
+    return render(request, 'create_shift.html', context)
 
+@login_required
 def deleteShift(request, pk):
-	shift = Shift.objects.get(id=pk)
-	if request.method == "POST":
-		shift.delete()
-		return redirect('/')
+    shift = Shift.objects.get(id=pk)
+    if request.method == "POST":
+        shift.delete()
+        return redirect('/')
 
-	context = {'shift':shift}
-	return render(request, 'delete_shift.html', context)
+    context = {'shift':shift}
+    return render(request, 'delete_shift.html', context)
 
 
 # reserve one shift and then redirect to all reversed_shifts list view
@@ -267,7 +292,7 @@ def reserve_shift(request, pk):
     
     shift = Shift.objects.get(id=pk)
     if request.method == 'GET':
-        shift.user = request.user
+        shift.user = request.user #shift.reserved_by=request.user
         shift.status = 'Reserved'
         shift.time_reserved = datetime.datetime.now()
         shift.save()
@@ -284,7 +309,61 @@ def reversed_shifts(request):
     return render(request,'reserved_shifts.html', context=context)
 
 
+@login_required
+
+
+# search function
+
+# case 1.
+
+#   If login_user=="employer", then the search result shows only user name and email. For instance, employer could find a nurse 
+#   quickly and add that nurse to both agreed shift. The employer could not however view other employers' shift info, etc.
+
+# case 2.
+
+#   If login_user =="admin" or "staff " or "nurse", the user could search for avaible job place, employer org name, job details, etc. 
+
+
+def search(request):
+
+    user=request.user
+    employers=Employer.objects.all()
+    query = request.GET.get('query')
+    if not query:
+        return HttpResponse("There is no result")
+    else:
+        if request.user.is_employer:
+
+            results = CustomUser.objects.filter(
+                 Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
+            )
+
+        else:
+
+            shift_results = Shift.objects.filter(
+                 Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
+            )
+            #print(type(shift_results))
+            customuser_results = CustomUser.objects.filter(
+                 Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
+            )
+
+            employer_results = Employer.objects.filter(
+                 Q(org_name__icontains=query)
+            )
+            results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
+            print(type(results))
+
+        context={
+            "results": results,
+            "query": query,
+
+            }
+        
+        return render(request, "search.html", context)
+
+
 def error_404_view(request, exception):
-	return render(request, 'core/404.html')
+    return render(request, 'core/404.html')
 
 

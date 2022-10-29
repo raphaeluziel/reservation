@@ -11,8 +11,18 @@
              <li>details: {{ result.details }}</li>
              <li>employer_org_name: {{ result.org_name }}</li>
              <li>user_last_name: {{ result.last_name }}</li>
+             <li>user_email: {{ result.email }}</li>
         </ul>
     {% endfor %}
+
+    {% for result in customuser_results %}
+        <ul>
+        
+             <li>user_last_name: {{ customuser_result.last_name }}</li>
+             <li>user_email: {{ customuser_result.email }}</li>
+        </ul>
+    {% endfor %}
+
 
 
  {% endif %}

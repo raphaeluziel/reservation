@@ -15,9 +15,9 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 
-from .decorators import allowed_users,user_not_authenticated, is_customer
+from .decorators import allowed_users,user_not_authenticated, employer_only
 
 from django import forms
 from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
@@ -58,7 +58,7 @@ def login_view(request):
         	user = authenticate(request,username=username, password=password)
         	if user is not None:
         		login(request, user)
-        		return redirect("/")
+        		return redirect("shifts")
         	else:
         		messages.info(request, 'Username or Password is incorrect')
     else:
@@ -181,15 +181,15 @@ def passwordResetConfirm(request, uidb64, token):
 
 @login_required
 
-def profile(request, id):
+def profile(request,id):
 
 	if request.method=="POST":
 		user=request.user
 		form=UserUpdateForm(request.POST, request.FILES, instance=user)
 		if form.is_valid():
 			user_form=form.save()
-			messages.success(request, f'{user_form.firstname},your profile has been updated')
-			return redirect("profile",user_form.firstname)
+			messages.success(request, f'{user_form.first_name},your profile has been updated')
+			return redirect("profile",user_form.id)
 		for error in list(form.errors.values()):
 			messages.error(request,error)
 	user=get_user_model().objects.filter(id=id).first()
@@ -245,7 +245,7 @@ def shifts(request):
 
 
 ### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
-
+#to add if nurse, then it's not allowed to create shift
 @login_required
 def createShift(request):
 	form = ShiftForm()
@@ -257,14 +257,10 @@ def createShift(request):
 			return redirect('/')
 
 	context = {'form':form}
-	return render(request, 'shift_form.html', context)
+	return render(request, 'create_shift.html', context)
 
 
-
-def post_draft_list(request):
-    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-    return render(request, 'blog/post_draft_list.html', {'posts': posts})
-
+@login_required
 def updateShift(request, pk):
 
 	shift = Shift.objects.get(id=pk)
@@ -277,8 +273,9 @@ def updateShift(request, pk):
 			return redirect('/')
 
 	context = {'form':form}
-	return render(request, 'shift_form.html', context)
+	return render(request, 'create_shift.html', context)
 
+@login_required
 def deleteShift(request, pk):
 	shift = Shift.objects.get(id=pk)
 	if request.method == "POST":
@@ -312,59 +309,58 @@ def reversed_shifts(request):
     return render(request,'reserved_shifts.html', context=context)
 
 
-"""
-@login_required 
+@login_required
+
+
+# search function
+
+# case 1.
+
+# 	If login_user=="employer", then the search result shows only user name and email. For instance, employer could find a nurse 
+# 	quickly and add that nurse to both agreed shift. The employer could not however view other employers' shift info, etc.
+
+# case 2.
+
+# 	If login_user =="admin" or "staff " or "nurse", the user could search for avaible job place, employer org name, job details, etc. 
+
+
 def search(request):
-    query = request.GET.get('query')
-    if not query:
-    	
-    	return HttpResponse("There is no result")
-    
-    else:
 
-	    search_results = CustomUser.objects.filter(
-	         Q(last_name__icontains=query)
-	    )
-
-	    context = {
-	        'search_results': search_results,
-	        'query': query,
-	    }
-	    return render(request, 'search.html', context)
-
-
-"""
-
-@login_required 
-def search(request):
-	
+	user=request.user
+	employers=Employer.objects.all()
 	query = request.GET.get('query')
 	if not query:
 		return HttpResponse("There is no result")
 	else:
+		if request.user.is_employer:
 
-	    shift_results = Shift.objects.filter(
-	         Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
-	    )
-	    print(type(shift_results))
-	    customuser_results = CustomUser.objects.filter(
-	         Q(last_name__icontains=query)| Q(first_name__icontains=query)
-	    )
+		    results = CustomUser.objects.filter(
+		         Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
+		    )
 
-	    employer_results = Employer.objects.filter(
-	         Q(org_name__icontains=query)
-	    )
-	   
-	    results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
-	    print(type(results))
-	    context={
-	    	"results": results,
-	    	'query': query,
+		else:
 
-	    }
+		    shift_results = Shift.objects.filter(
+		         Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
+		    )
+		    #print(type(shift_results))
+		    customuser_results = CustomUser.objects.filter(
+		         Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
+		    )
+
+		    employer_results = Employer.objects.filter(
+		         Q(org_name__icontains=query)
+		    )
+		    results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
+		    print(type(results))
+
+		context={
+		   	"results": results,
+		    "query": query,
+
+		    }
 		
-	return render(request, "search.html", context)
-
+		return render(request, "search.html", context)
 
 
 def error_404_view(request, exception):

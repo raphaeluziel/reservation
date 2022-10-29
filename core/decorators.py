@@ -15,14 +15,6 @@ def allowed_users(view, redirect_to='/'):
 from django.shortcuts import redirect
 
 
-def is_customer(user):
-    # how do you tell the user is a customer?
-    if user.is_staff or user.is_superuser:
-        return False
-    return True
-
-
-
 def user_not_authenticated(function=None, redirect_url='/'):
     """
     Decorator for views that checks that the user is NOT logged in, redirecting
@@ -41,3 +33,23 @@ def user_not_authenticated(function=None, redirect_url='/'):
         return decorator(function)
 
     return decorator
+
+
+
+
+def employer_only(view):
+  @wraps(view)
+  def wrapper(request, *args, **kwargs):
+
+        if request.user.customuser.is_employer:
+            return view(request, *args, **kwargs)
+        else:
+            return HttpResponse('<h1>You are not employer, not allowed access</h1>')
+  return wrapper
+
+
+
+
+
+
+

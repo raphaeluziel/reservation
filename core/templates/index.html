@@ -1,9 +1,10 @@
-{% extends "header.html" %}
+{% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.first_name }}!
+
+  Hi {{user.first_name }}!
 
 
 

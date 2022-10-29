@@ -70,12 +70,15 @@ python3 manage.py runserver --settings=reservation.settings.dev
 
 ---shifts view
 
-1) if user is employer, employer could view his/her own shifts both published and unpublished. This employer could not view the other employers offered shifts
+1) if user is employer, employer could view,edit, remove his/her own shifts both published and unpublished. This employer could not view the other employers offered shifts
 
 2) if user is a nurse but not RN, then no RN shifts is visible. All employers published job vacancies could be reserved based on role permissions. RN, PN or Assistant
 
-3) Admin and Staff could access all published shifts, update and remove it.
+3) Admin and Staff could access all published shifts, update and remove shifts
 
 
-3) 
+#insert to base.html under line 6 when has favicon
 
+
+    <!-- Link to page favicon.ico to display in location Bar-->
+    <!-- <link rel="icon" href="{% static 'images/favicon.png' %}"> -->

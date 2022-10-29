@@ -6,9 +6,9 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="media">
-            {% if user.id == form.instance.id %}
-                <input id="id_image" type="file" name="image" hidden/>
-                    <label for="id_image">
+            <!-- {% if user.id == form.instance.id %}
+             <input id="id_image" type="file" name="image" hidden/>
+                     <label for="id_image">
                         <img class="rounded-circle account-img profile-image"
                             style="cursor: pointer"
                             src="{{ form.instance.image.url }}"
@@ -16,7 +16,7 @@
                     </label>
             {% else %}
                 <img class="rounded-circle account-img profile-image", src="{{ form.instance.image.url }}">
-            {% endif %}
+            {% endif %}  -->
             <div class="media-body">
              
                 <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>

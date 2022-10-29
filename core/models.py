@@ -86,14 +86,14 @@ class AddressBook(models.Model):
 		verbose_name = 'AddressBook'
 
 	def __str__(self):
-		return '{} {} ,{},{}'.format(self.street,self.alt_line,self.postcode,self.city)
+		return '{} {}, {}, {}'.format(self.street, self.alt_line, self.postcode, self.city)
 
 class Nurse(CustomUser):
 
 	ROLES= (
 		('RN', 'RN'),
 		('PN', 'PN'),
-		('AS', 'AS'), 
+		('ASST', 'ASST'), 
 
 	)
 	EXPERIENCES= (
@@ -104,7 +104,7 @@ class Nurse(CustomUser):
 	)
 	bank_account_name=models.CharField(max_length=30, blank=True, null=True)
 	bank_account_number=models.CharField(max_length=20, blank=True, null=True)
-	role = models.CharField(max_length=2, choices=ROLES,blank=False)
+	role = models.CharField(max_length=4, choices=ROLES,blank=False)
 	experience=models.IntegerField(choices=EXPERIENCES,blank=False)
 	is_rn= models.BooleanField(default=False)
 
@@ -138,7 +138,7 @@ class Shift(models.Model):
 	ROLES= (
 		('RN', 'RN'),
 		('PN', 'PN'),
-		('AS', 'AS'), 
+		('ASST', 'ASST'), 
 
 	)
 
@@ -150,7 +150,7 @@ class Shift(models.Model):
 			('Cancelled', 'Cancelled'),
 			)
 
-	role = models.CharField(max_length=2, choices=ROLES,blank=False)
+	role = models.CharField(max_length=4, choices=ROLES,blank=False)
 
 	start_time = models.TimeField()
 	finish_time = models.TimeField()
