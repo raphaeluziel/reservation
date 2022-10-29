@@ -30,6 +30,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 import datetime
+from itertools import chain
+
 
 
 
@@ -310,7 +312,7 @@ def reversed_shifts(request):
     return render(request,'reserved_shifts.html', context=context)
 
 
-
+"""
 @login_required 
 def search(request):
     query = request.GET.get('query')
@@ -320,10 +322,9 @@ def search(request):
     
     else:
 
-	    search_results = Shift.objects.filter(
-	         Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
+	    search_results = CustomUser.objects.filter(
+	         Q(last_name__icontains=query)
 	    )
-
 
 	    context = {
 	        'search_results': search_results,
@@ -331,6 +332,38 @@ def search(request):
 	    }
 	    return render(request, 'search.html', context)
 
+
+"""
+
+@login_required 
+def search(request):
+	
+	query = request.GET.get('query')
+	if not query:
+		return HttpResponse("There is no result")
+	else:
+
+	    shift_results = Shift.objects.filter(
+	         Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
+	    )
+	    print(type(shift_results))
+	    customuser_results = CustomUser.objects.filter(
+	         Q(last_name__icontains=query)| Q(first_name__icontains=query)
+	    )
+
+	    employer_results = Employer.objects.filter(
+	         Q(org_name__icontains=query)
+	    )
+	   
+	    results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
+	    print(type(results))
+	    context={
+	    	"results": results,
+	    	'query': query,
+
+	    }
+		
+	return render(request, "search.html", context)
 
 
 

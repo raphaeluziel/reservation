@@ -123,3 +123,27 @@ def reversed_shifts(request):
 
 def error_404_view(request, exception):
     return render(request, 'core/404.html')
+
+
+#search results from a single model (if wants to get results from multiple models, use chain method)
+
+
+@login_required 
+def search(request):
+    query = request.GET.get('query')
+    if not query:
+        
+        return HttpResponse("There is no result")
+    
+    else:
+
+        search_results = CustomUser.objects.filter(
+             Q(last_name__icontains=query)
+        )
+
+        context = {
+            'search_results': search_results,
+            'query': query,
+        }
+        return render(request, 'search.html', context)
+

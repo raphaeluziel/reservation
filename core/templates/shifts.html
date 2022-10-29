@@ -2,6 +2,7 @@
 {% block title %}here will add double"{{section.title}}"{% endblock %}
 {% block content %}
 {% if shifts  %}
+
   <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}">
     <input class="form-control mr-sm-2" type="query"   placeholder="Search" aria-label="query" name="query">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
