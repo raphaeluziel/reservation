@@ -82,3 +82,8 @@ python3 manage.py runserver --settings=reservation.settings.dev
 
     <!-- Link to page favicon.ico to display in location Bar-->
     <!-- <link rel="icon" href="{% static 'images/favicon.png' %}"> -->
+
+https://stackoverflow.com/questions/73564800/django-query-to-filter-date-range
+
+query from core.models.blabala
+

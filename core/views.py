@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from .decorators import user_not_authenticated,admin_staff_employer_required,employer_only,staff_only
 
 from django import forms
-from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
+from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm,SearchShiftForm
 
 from django.core.mail import send_mail, BadHeaderError
 from django.utils.http import urlsafe_base64_encode
@@ -30,6 +30,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 import datetime
+
 from itertools import chain
 from django.urls import reverse,reverse_lazy
 
@@ -210,13 +211,15 @@ def shift_detail(request,shift_id):
 def shifts(request):
 	user=request.user
 	employers=Employer.objects.all()
+	form=SearchShiftForm(request.POST or None)
+	print(Shift.objects)
 	if request.user.is_employer:
 	
 	#if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
 	
 		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-		shifts=Shift.objects.all().filter(employer_id=user.id)
-		context={'shifts':shifts}
+		shifts=Shift.objects.all().filter(employer_id=user.id).filter(shift_date__range=[form['start_date'].value(),form['end_date'].value()])
+		context={'shifts':shifts,"form":form}
 
 	#if user is admin, job agency staff or nurse, then all shifts are visible
 	else:
@@ -330,7 +333,7 @@ def search(request):
 	employers=Employer.objects.all()
 	query = request.GET.get('query')
 	if not query:
-		return HttpResponse("There is no result")
+		return HttpResponse("Please input search text..")
 	else:
 		if request.user.is_employer:
 

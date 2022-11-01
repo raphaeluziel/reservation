@@ -2,6 +2,27 @@
 {% block title %}shifts{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+<div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-12">set a date range and search</legend>
+                <label for="start_date">start date</label>
+                <input type="date" id="start_date" name="start_date" value="start_date"/>
+                
+                <label for="end_date">end date</label>
+                <input type="date" id="end_date" name="end_date" value="end_date"/>
+                <button class="btn btn-outline-info" type="submit">Search</button>
+      
+               
+            </fieldset>
+    
+          </form>
+</div>
+
+
+
 {% if shifts  %}
     {% if request.user.is_employer %}
 	   {% include 'includes/employer_shifts.html' %}
