@@ -1,5 +1,5 @@
+{% load static %}
 <!DOCTYPE html>
- {% load static %}
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -14,7 +14,10 @@
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'static/css/main.css' %}">
+    
+     
+
 
     <!-- Jquery JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,8 +26,8 @@
 <body>
 
     
-    {% include 'includes/navbar.html' %}
-    <main role="main" class="container-xl">
+{% include 'includes/navbar.html' %}
+    <main role="main" class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-md-12-p-0 col-sm-12">
                 {% include 'includes/messaging.html' %}
@@ -41,12 +44,91 @@
         integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
 <!-- Optional JavaScript -->
-    
-</body>
+
+
+
+<!-- Footer -->
+
+
+  <footer class="text-center text-white" style="background-color: #f1f1f1;">
+  <!-- Grid container -->
+  <div class="container pt-4">
+    <!-- Section: Social media -->
+    <section class="mb-4">
+      <!-- Facebook -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-dark m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-facebook-f"></i
+      ></a>
+
+      <!-- Twitter -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-dark m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-twitter"></i
+      ></a>
+
+      <!-- Google -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-dark m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-google"></i
+      ></a>
+
+      <!-- Instagram -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-dark m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-instagram"></i
+      ></a>
+
+      <!-- Linkedin -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-dark m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-linkedin"></i
+      ></a>
+      <!-- Github -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-dark m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-github"></i
+      ></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2020 Copyright:
+    <a class="text-dark" href="https://mdbootstrap.com/">blabla.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!-- Font Awesome 5 links-->
+    <script src="https://kit.fontawesome.com/fddf5c0916.js" crossorigin="anonymous"></script>
+</body>
 </html>
+
 
