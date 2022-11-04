@@ -100,7 +100,7 @@ class AddressBookAdmin(admin.ModelAdmin):
 
 class NurseAdmin(BaseUserAdmin):
 
-  
+    
     list_display = ('id','last_name','role','experience','phone','date_joined')
     list_filter = ('role', 'experience','is_active')
 
@@ -114,6 +114,7 @@ class NurseAdmin(BaseUserAdmin):
             'fields': ('email', 'first_name','last_name','password1', 'password2','phone','role','experience','bank_account_name','bank_account_number')}
         ),
     )
+
     search_fields = ('email','experience','role')
     ordering = ('email',)
 

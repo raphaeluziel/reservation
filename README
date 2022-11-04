@@ -86,4 +86,55 @@ python3 manage.py runserver --settings=reservation.settings.dev
 https://stackoverflow.com/questions/73564800/django-query-to-filter-date-range
 
 query from core.models.blabala
+>> from core.models import Shift
+>>> Shift.objects.all()
 
+
+
+#render html based on user role 
+
+
+example https://stackoverflow.com/questions/54158999/django-show-different-content-based-on-user
+ from django.shortcuts import render
+
+def my_view(request):
+    #you can check user here with request.user
+    #example
+    if request.user.is_superuser:
+        return render('your_template_for_admin.html', {})
+    return render('your_template_for_basic_user.html', {})
+
+
+shifts html
+
+
+            <li>organization name: {{shift.employer}}</li>
+          
+            <li>shift id is: {{shift.id}}</li>
+            <li> shift_employer_id:{{shift.employer_id}}</li>
+            <li> employer phone:{{shift.employer.phone}}</li>
+            <li> employer email:{{shift.employer.email}}</li>
+            <li>shift status: {{shift.status}}</li>
+            <li>shift date: {{shift.shift_date}}</li>
+            <li>shift role: {{shift.role}}</li>
+            <li>shift start time: {{shift.start_time}}</li>
+            <li>shift finish time:{{shift.finish_time}}</li>
+            <li>shift details: {{shift.details}}</li>
+            <li>organiztion address: {{shift.address}}</li>
+
+
+
+ {% for role in shift.role.all%}
+              <option value="{{ role }}">{{ role }}</option>
+              {{ person.get_gender_display }}
+              {% endfor %}
+
+
+view 
+
+def index(request):
+    latest_person_list2 = Person.objects.filter(to_be_listed=True)
+    return object_list(request, template_name='polls/schol.html',
+                       queryset=latest_person_list, paginate_by=5)
+
+ paginate_by=5

@@ -1,0 +1,76 @@
+{% extends "header.html" %}
+{% load static %}
+{% block title %}shifts{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-12">set a date range and search</legend>
+                <label for="start_date">start date</label>
+                <input type="date" id="start_date" name="start_date" value="start_date"/>
+                
+                <label for="end_date">end date</label>
+                <input type="date" id="end_date" name="end_date" value="end_date"/>
+                <button class="btn btn-outline-info" type="submit">Search</button>
+      
+               
+            </fieldset>
+    
+          </form>
+</div>
+
+
+
+	<div class="mt-5">
+      <div class="d-style btn btn-brc-tp border-2 bgc-white btn-outline-blue btn-h-outline-blue btn-a-outline-blue w-100 my-2 py-3 shadow-sm">
+        <!-- Basic Plan -->
+        <div class="row align-items-center">
+
+        
+          <div class="col-12 col-md-4">
+            <h4 class="pt-3 text-170 text-600 text-primary-d1 letter-spacing">
+              {{shift.shift_date|date}}
+            </h4>
+
+            <div class="text-secondary-d1 text-120">
+              <span class="text-180"><{{shift.role}}>{{shift.start_time}}-{{shift.finish_time}}</span>
+            </div>
+          </div>
+
+          <ul class="list-unstyled mb-0 col-12 col-md-4 text-dark-l1 text-90 text-left my-4 my-md-0">
+            <li>
+              <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
+              <span>
+                <span class="text-110"><b>{{shift.employer}}</b></span>
+             
+              </span>
+            </li>
+
+            <li class="mt-25">
+              <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
+              <span class="text-110">
+                {{shift.address}}
+            </span>
+            </li>
+
+            <li class="mt-25">
+              <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
+              <span class="text-110">
+                {{shift.status}}
+            </span>
+            </li>
+          </ul>
+
+          <div class="col-12 col-md-4 text-center">
+            <a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-info btn-raised px-4 py-25 w-75 text-600">View Details</a>
+        
+          </div>
+        </div>
+
+      </div>
+
+
+{% endblock %}

@@ -1,25 +1,90 @@
 {% extends "header.html" %}
+{% load static %}
 {% block title %}shifts{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
 
-<div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-12">set a date range and search</legend>
-                <label for="start_date">start date</label>
-                <input type="date" id="start_date" name="start_date" value="start_date"/>
-                
-                <label for="end_date">end date</label>
-                <input type="date" id="end_date" name="end_date" value="end_date"/>
-                <button class="btn btn-outline-info" type="submit">Search</button>
+<main role="main" class="container">
+
+      <h3>Filter Shifts</h3>
+      <form method="GET" action=".">
+        <div class="form-row">
+            <div class="form-group col-4">
+                <div class="input-group">
+                    <input class="form-control py-2 border-right-0 border" type="search" name="address_contains" placeholder="City contains..." />
+                    <span class="input-group-append">
+                        <div class="input-group-text bg-transparent">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </span>
+                </div>
+            </div>        
+
+
+     
+            <div class="form-group col-4">
+                <div class="input-group">
+                    <input class="form-control py-2 border-right-0 border" type="search" name="org_name_contains" placeholder="Org_name contains..." />
+                    <span class="input-group-append">
+                        <div class="input-group-text bg-transparent">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </span>
+                </div>
+            </div>        
+ 
       
-               
-            </fieldset>
-    
-          </form>
-</div>
+            <div class="form-group col-4">
+                <div class="input-group">
+                    <input class="form-control py-2 border-right-0 border" type="search" name="nurse_id_exact" placeholder="Nurse id exact..." />
+                    <span class="input-group-append">
+                        <div class="input-group-text bg-transparent">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </span>
+                </div>
+            </div>        
+        </div>
+     
+        <div class="form-row">
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="shitf_date_min">Start Date</label>
+            <input type="date" class="form-control" id="shift_date_min" name="shift_date_min">
+          </div>
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="shift_date_max">Finish Date</label>
+            <input type="date" class="form-control" id="shift_date_max" name="shift_date_max">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="role">Role</label>
+            <select id="role" class="form-control" name="role">
+              <option selected>Choose...</option>
+              {% for role in shift.role.choices %}
+              <option value="{{ role }}">{{role}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        
+        
+          <div class="form-group col-md-2">
+            <label for="status">Status</label>
+            <select id="shift_status" class="form-control" name="shift.status">
+              <option selected>Choose...</option>
+             
+              <option value="{{status}}">{{ shift.get_status_display }}</option>
+
+          
+            </select>
+
+          </div>
+     
+        <div class="form-group col-4">
+          <br>
+          <button type="submit" class="btn btn-primary">Search</button>
+  
+        </div>
+      </form>
+    </div>
 
 
 

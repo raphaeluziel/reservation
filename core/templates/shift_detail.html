@@ -24,6 +24,16 @@
 <td><a class="btn btn-sm btn-success" href="{% url 'reserve_shift' shift.id%}">reserve</a></td>
 
 
+  {% if not request.user.is_nurse %}
+   
+  <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
+
+  <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
+
+  {% endif %}
+         
+
+
 <!-- alternative to line 24 <form method="post">
         {% csrf_token %}
         <div class="buttons has-addons">

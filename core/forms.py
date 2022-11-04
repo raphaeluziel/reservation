@@ -114,16 +114,6 @@ class ShiftForm(ModelForm):
         fields = '__all__'
  
 
-class SearchShiftForm(forms.ModelForm):
-    #export_to_CSV=forms.BooleanField(required=False)
-    start_date=forms.DateTimeField(required=False)
-    end_date=forms.DateTimeField(required=False)
-    class Meta:
-        model=Shift
-        fields=['start_date','end_date']
-
-
-
 
 
 

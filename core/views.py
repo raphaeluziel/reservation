@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import Q
 #from django.db.models.query_utils import Q
 from django.core.mail import EmailMessage
-from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager
+from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager,Nurse
 
 from django.contrib.auth.forms import  SetPasswordForm, PasswordResetForm,AuthenticationForm
 from django.contrib.auth import authenticate, login,logout,get_user_model,password_validation
@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from .decorators import user_not_authenticated,admin_staff_employer_required,employer_only,staff_only
 
 from django import forms
-from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm,SearchShiftForm
+from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
 
 from django.core.mail import send_mail, BadHeaderError
 from django.utils.http import urlsafe_base64_encode
@@ -201,31 +201,86 @@ def profile(request,id):
 	 		context={"form":form})
 	return redirect("/")
 
+
+
+def is_valid_queryparam(param):
+    return param != '' and param is not None
+
 @login_required
-def shift_detail(request,shift_id):
-	shift=get_object_or_404(Shift, pk=shift_id)
-	return render(request, 'shift_detail.html',{'shift':shift})
+def shift_filter(request):
+    user=request.user
+    if request.user.is_employer:
+    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
+    else:
+    	qs = Shift.objects.all()
+
+    nurse = Nurse.objects.all()
+
+    employer=Employer.objects.all()
+    address_contains_query = request.GET.get('address_contains')
+    org_name_contains_query = request.GET.get('org_name_contains')
+    
+    #id_exact_query = request.GET.get('id_exact')
+    nurse_id_exact_query=request.GET.get('nurse_id_exact')
+    role= request.GET.get('role')
+    status= request.GET.get('status')
+
+    shift_date_min = request.GET.get('shift_date_min')
+    shift_date_max = request.GET.get('shift_date_max')
+   
+
+    if is_valid_queryparam(address_contains_query):
+        qs = qs.filter(address__city__icontains=address_contains_query)
+
+    if is_valid_queryparam(org_name_contains_query):
+        qs = qs.filter(employer__org_name__icontains=org_name_contains_query)
+
+    if is_valid_queryparam(nurse_id_exact_query):
+        qs = qs.filter(nurse=nurse_id_exact_query)
+
+    #elif is_valid_queryparam(city_or_org_name_query): example do not use
+        #qs = qs.filter(Q(city__icontains=city_or_org_name_query)
+                #       | Q(org__name__icontains=city_or_org_query)
+                  #     ).distinct()
+
+
+    if is_valid_queryparam(shift_date_min):
+        qs = qs.filter(shift_date__gte=shift_date_min)
+
+    if is_valid_queryparam(shift_date_max):
+        qs = qs.filter(shift_date__lte=shift_date_max)
+
+    if is_valid_queryparam(role) and role!='Choose...':
+       qs = qs.filter(role=role.display())
+    
+
+    if is_valid_queryparam(status) and status != 'Choose...':
+        qs = qs.filter(status=status)
+
+    return qs
 
 
 @login_required
 def shifts(request):
 	user=request.user
-	employers=Employer.objects.all()
-	form=SearchShiftForm(request.POST or None)
-	print(Shift.objects)
+	employer=Employer.objects.all()
+	qs=shift_filter(request)
+	
+	#print(Shift.objects)
 	if request.user.is_employer:
 	
 	#if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
 	
 		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-		shifts=Shift.objects.all().filter(employer_id=user.id).filter(shift_date__range=[form['start_date'].value(),form['end_date'].value()])
-		context={'shifts':shifts,"form":form}
+		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
+		context={'shifts':shifts,'queryset':qs}
+
 
 	#if user is admin, job agency staff or nurse, then all shifts are visible
 	else:
 		
-		shifts=Shift.objects.all().order_by('-pub_date')[:5]
-		context={'shifts':shifts,'employers':employers}
+		shifts=Shift.objects.all().order_by('shift_date')[:5]
+		context={'shifts':shifts,'queryset':qs}
 
  
 	return render(request,'shifts.html',context)
@@ -244,6 +299,12 @@ def shifts(request):
 
 ### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
 #to add if nurse, then it's not allowed to create shift
+
+@login_required
+def shift_detail(request,shift_id):
+	shift=get_object_or_404(Shift, pk=shift_id)
+	return render(request, 'shift_detail.html',{'shift':shift})
+
 @login_required
 @admin_staff_employer_required
 def createShift(request):
@@ -312,6 +373,7 @@ def reversed_shifts(request):
     return render(request,'reserved_shifts.html', context=context)
 
 
+
 @login_required
 
 
@@ -356,7 +418,6 @@ def search(request):
 		    )
 		    results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
 		    print(type(results))
-
 		context={
 		   	"results": results,
 		    "query": query,

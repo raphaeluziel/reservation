@@ -63,11 +63,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 	REQUIRED_FIELDS = []
 	objects = CustomUserManager()
 
-	def __str__(self):
-		return self.email
+
+	def get_fullname(self):
+		return first_name+last_name
 
 	def has_perm(self, perm, obj=None):
 		return self.is_staff
+
+	def __str__(self):
+		return self.email
 
 class AddressBook(models.Model):
 	
@@ -89,7 +93,8 @@ class AddressBook(models.Model):
 		return '{} {}, {}, {}'.format(self.street, self.alt_line, self.postcode, self.city)
 
 class Nurse(CustomUser):
-
+	
+    
 	ROLES= (
 		('RN', 'RN'),
 		('PN', 'PN'),
@@ -110,6 +115,8 @@ class Nurse(CustomUser):
 
 	class Meta:
 		verbose_name = 'Nurse'
+	def __str__(self):
+		return f'{self.id}'
 
 
 class Employer(CustomUser):

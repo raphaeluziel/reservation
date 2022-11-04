@@ -115,7 +115,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-TIME_FORMAT = 'H:i'
+#TIME_FORMAT = 'H:i'
+TIME_INPUT_FORMATS = ('%H:%M')
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -144,9 +146,6 @@ STATICFILES_DIRS=[
 ]
 STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 MEDIA_ROOT= BASE_DIR/'static/imgs'
-
-
-
 
 
 
