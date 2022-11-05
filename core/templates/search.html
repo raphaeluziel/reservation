@@ -1,28 +1,40 @@
+{% extends "base.html" %}
 {% load static %}
+{% block title %}here will add double"{{section.title}}"{% endblock %}
+{% block content %}
+
 {% if results|length == 0 %}
     <p style="color: red;">Your search <span style="color: black;">'{{ query }}'</span> did not match any result!</p>
 {% else %}
 
 
     {% for result in results %}
+
         <ul>
+         {% if not request.user.is_employer %}
             <li>address: {{ result.address}}</li>
             <li>role: {{ result.role }}</li>
              <li>details: {{ result.details }}</li>
              <li>employer_org_name: {{ result.org_name }}</li>
-             <li>user_last_name: {{ result.last_name }}</li>
-             <li>user_email: {{ result.email }}</li>
-        </ul>
-    {% endfor %}
+             <li>lastname: {{ result.last_name }}</li>
+             <li>email: {{ result.email }}</li>
+         
+         {% else %}
+         
+            <ul class="list-unstyled card-columns" style="column-count: 2;">
+                <li><i class="fa fa-user"></i>  {{result.last_name}}</li>
+                <hr>
+                <li>{{result.email}}</li>
+                <hr>
 
-    {% for result in customuser_results %}
-        <ul>
-        
-             <li>user_last_name: {{ customuser_result.last_name }}</li>
-             <li>user_email: {{ customuser_result.email }}</li>
+            </ul>
+                          
         </ul>
-    {% endfor %}
 
+         {% endif %}
+        {% endfor %}
 
 
  {% endif %}
+ {% endblock %}
+
