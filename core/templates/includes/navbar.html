@@ -1,5 +1,5 @@
 <header class="site-header" style="margin-bottom: 5px">
-    <nav class="navbar navbar-expand-md navbar-color">
+    <nav class="navbar navbar-expand-md navbar-light" style="background-color: rgba(0, 0, 0, 0.2);">
         <div class="container">
             <!-- Navbar Left Side -->
             <div class="navbar-nav">
@@ -16,11 +16,11 @@
                 </div>
                 <!-- Nav bar search -->
                  {% if user.is_authenticated %}
-                <nav class="navbar navbar-light bg-light">
+                <nav class="navbar navbar-light">
                  
                   <form class="form-inline" action="{% url 'search' %}">
                     <input class="form-control mr-sm-2" type="query"   placeholder="Search" aria-label="query" name="query">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
                   </form>
                 </nav>
                 {% endif %}
