@@ -6,7 +6,6 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
 
 
-
 urlpatterns = [
     path('', views.index, name="index"),
     path('landing/', views.landing, name="landing"),
@@ -25,7 +24,7 @@ urlpatterns = [
     path('reserved_shifts', views.reversed_shifts, name="reserved_shifts"),
     path('reserve_shift/<str:pk>/', views.reserve_shift, name="reserve_shift"),
     path('search/', views.search, name='search'),
-  
+
 
 ]
 
