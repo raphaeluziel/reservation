@@ -1,11 +1,11 @@
-{% extends "header.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% block title %}shifts{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
 
 <main role="main" class="container">
-
+ 
       <h3>Filter Shifts</h3>
       <form method="GET" action=".">
         {% csrf_token %}
@@ -56,25 +56,31 @@
             <label for="shift_date_max">Finish Date</label>
             <input type="date" class="form-control" id="shift_date_max" name="shift_date_max">
           </div>
+
+
           <div class="form-group col-md-2">
             <label for="role">Role</label>
             <select id="role" class="form-control" name="role">
               <option selected>Choose...</option>
-              {% for role in shift.role.choices %}
-              <option value="{{ role }}">{{role}}</option>
-              {% endfor %}
+            
+            {% for val in role%}
+          
+              <option value="{{val}}">{{val}}</option>
+               {% endfor %}
+                      
             </select>
+
           </div>
-        
-        
+          
           <div class="form-group col-md-2">
             <label for="status">Status</label>
-            <select id="shift_status" class="form-control" name="shift.status">
-              <option selected>Choose...</option>
+            <select id="status" class="form-control" name="status">
              
-              <option value="{{status}}">{{ shift.get_status_display }}</option>
-
-          
+              <option selected>Choose...</option>
+                {% for val in shift.status%}
+              <option value="{{val}}">{{val}}</option>
+               {% endfor %}
+        
             </select>
 
           </div>
@@ -89,7 +95,6 @@
     </div>
 
 
-
 {% if shifts  %}
     {% if request.user.is_employer %}
 	   {% include 'includes/employer_shifts.html' %}
@@ -102,6 +107,6 @@
  <p> There is no shift available at the moment, come back later...</p>
 
 {% endif %}
-</main>
 
+</main>
 {% endblock %}

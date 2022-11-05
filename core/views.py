@@ -209,24 +209,25 @@ def is_valid_queryparam(param):
 @login_required
 def shift_filter(request):
     user=request.user
+    employer=Employer.objects.all()
+    nurse = Nurse.objects.all()
     if request.user.is_employer:
     	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
     else:
     	qs = Shift.objects.all()
 
-    nurse = Nurse.objects.all()
-
-    employer=Employer.objects.all()
     address_contains_query = request.GET.get('address_contains')
     org_name_contains_query = request.GET.get('org_name_contains')
     
     #id_exact_query = request.GET.get('id_exact')
     nurse_id_exact_query=request.GET.get('nurse_id_exact')
     role= request.GET.get('role')
+    print(role)
     status= request.GET.get('status')
 
     shift_date_min = request.GET.get('shift_date_min')
     shift_date_max = request.GET.get('shift_date_max')
+
    
 
     if is_valid_queryparam(address_contains_query):
@@ -251,7 +252,7 @@ def shift_filter(request):
         qs = qs.filter(shift_date__lte=shift_date_max)
 
     if is_valid_queryparam(role) and role!='Choose...':
-       qs = qs.filter(role=role.display())
+       qs = qs.filter(role=role)
     
 
     if is_valid_queryparam(status) and status != 'Choose...':
@@ -282,7 +283,6 @@ def shifts(request):
 		shifts=Shift.objects.all().order_by('shift_date')[:5]
 		context={'shifts':shifts,'queryset':qs}
 
- 
 	return render(request,'shifts.html',context)
 
 
@@ -325,10 +325,16 @@ def updateShift(request, pk):
 
 	shift = Shift.objects.get(id=pk)
 	form = ShiftForm(instance=shift)
+	#shift_date=request.shift_date
 
 	if request.method == 'POST':
 		form = ShiftForm(request.POST, instance=shift)
+
 		if form.is_valid():
+			#### to do-validate shift_date could not be ealier date than current date ###
+			#if shift_date < timezone.now().date():
+			#	raise forms.ValidationError("'to' date cannot be ealier than today.")
+			#else:
 			form.save()
 			return redirect('/')
 
