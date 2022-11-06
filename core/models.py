@@ -135,7 +135,7 @@ class Employer(CustomUser):
 	def __str__(self):
 		return '{}'.format(self.org_name,self.phone)	
 class Shift(models.Model):
-	nurse=models.ForeignKey(Nurse,on_delete=models.CASCADE,related_name="Shift_nurse", blank=True,null=True)
+	nurse=models.ForeignKey(Nurse,on_delete=models.CASCADE,related_name="Shift_nurse", blank=True,null=True) #The nurse field is empty when create shift because it 's unknown yet who will do the shift.
 	employer=models.ForeignKey(Employer,on_delete=models.CASCADE, related_name="shift_employer")
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now_add=True,null=True, blank=True)
@@ -164,7 +164,7 @@ class Shift(models.Model):
 	published = models.BooleanField(default=False)
 	details=models.CharField(max_length=200, blank=True, null=True)
 	status = models.CharField(max_length=200, null=True, choices=STATUS)
-	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
+	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True) # the user could be employer, admin, staff or nurse. And if nurse reserves the shift, this field will be the same as nurse field.
 	time_reserved = models.DateTimeField(auto_now_add=True,null=True)
 	#reserved_by=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
 	
