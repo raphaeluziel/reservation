@@ -221,9 +221,9 @@ def shift_filter(request):
     
     #id_exact_query = request.GET.get('id_exact')
     nurse_id_exact_query=request.GET.get('nurse_id_exact')
-    role= request.GET.get('role')
+    role= request.GET.get('role') #<--------check
     print(role)
-    status= request.GET.get('status')
+    status= request.GET.get('status')#<---------------check
 
     shift_date_min = request.GET.get('shift_date_min')
     shift_date_max = request.GET.get('shift_date_max')
@@ -239,12 +239,6 @@ def shift_filter(request):
     if is_valid_queryparam(nurse_id_exact_query):
         qs = qs.filter(nurse=nurse_id_exact_query)
 
-    #elif is_valid_queryparam(city_or_org_name_query): example do not use
-        #qs = qs.filter(Q(city__icontains=city_or_org_name_query)
-                #       | Q(org__name__icontains=city_or_org_query)
-                  #     ).distinct()
-
-
     if is_valid_queryparam(shift_date_min):
         qs = qs.filter(shift_date__gte=shift_date_min)
 
@@ -254,7 +248,6 @@ def shift_filter(request):
     if is_valid_queryparam(role) and role!='Choose...':
        qs = qs.filter(role=role)
     
-
     if is_valid_queryparam(status) and status != 'Choose...':
         qs = qs.filter(status=status)
 
@@ -274,14 +267,17 @@ def shifts(request):
 	
 		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
 		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
-		context={'shifts':shifts,'queryset':qs}
+		
 
 
 	#if user is admin, job agency staff or nurse, then all shifts are visible
 	else:
 		
-		shifts=Shift.objects.all().order_by('shift_date')[:5]
-		context={'shifts':shifts,'queryset':qs}
+		shifts=Shift.objects.all().order_by('shift_date')
+	
+	roles=Shift().ROLES 
+	statuses=Shift().STATUS
+	context={'shifts':shifts,'queryset':qs,'statuses':statuses,'roles':roles}
 
 	return render(request,'shifts.html',context)
 

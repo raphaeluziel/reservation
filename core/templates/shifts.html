@@ -62,10 +62,10 @@
             <label for="role">Role</label>
             <select id="role" class="form-control" name="role">
               <option selected>Choose...</option>
-            
-            {% for val in role%}
+
+                {% for val,text in roles %}              
           
-              <option value="{{val}}">{{val}}</option>
+              <option value="{{val}}">{{text}}</option>
                {% endfor %}
                       
             </select>
@@ -77,10 +77,10 @@
             <select id="status" class="form-control" name="status">
              
               <option selected>Choose...</option>
-                {% for val in shift.status%}
-              <option value="{{val}}">{{val}}</option>
-               {% endfor %}
-        
+                {% for val,text in statuses %}
+              <option value="{{val}}">{{text}}</option>
+              
+                {% endfor %}
             </select>
 
           </div>
