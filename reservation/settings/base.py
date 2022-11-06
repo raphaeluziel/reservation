@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 PHONENUMBER_DEFAULT_REGION = "FI"
 
@@ -132,7 +133,6 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL = "index"
 #LOGOUT_REDIRECT_URL = "login/"
-
 
 
 # Static files (CSS, JavaScript, Images)

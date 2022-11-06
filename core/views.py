@@ -308,12 +308,21 @@ def shift_detail(request,shift_id):
 @login_required
 @admin_staff_employer_required
 def createShift(request):
+	user=request.user
+	employer=Employer.objects.all()
 	form = ShiftForm()
 	if request.method == 'POST':
+		
 		#print('Printing POST:', request.POST)
 		form = ShiftForm(request.POST)
 		if form.is_valid():
+
+			#to do1, one employer could not create shift for other employers.#
+			#to do 2. date can't be past time, finish time could not be earlier than start time
+			if request.user.is_employer:
+				employer=request.user
 			form.save()
+			messages.success(request, "The shift has been created")
 			return redirect('/')
 
 	context = {'form':form}
@@ -366,6 +375,7 @@ def reserve_shift(request, pk):
         shift.status = 'Reserved'
         shift.time_reserved = datetime.datetime.now()
         shift.save()
+        messages.success(request, "The shift has been reserved")
     return redirect('reserved_shifts')
 
 

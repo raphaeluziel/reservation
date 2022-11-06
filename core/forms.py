@@ -52,42 +52,6 @@ class LoginForm(forms.Form):
             }
         ))
 
-
-# class ChangePasswordForm(forms.Form):
-
-#     class Meta:
-#         model = CustomUser
-#         fields = ('password1', 'password2')
-   
-
-#     new_password1 = forms.CharField(
-#         label="New password",
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'New password'
-#             }
-#         ),
-#     )
-#     new_password2 = forms.CharField(
-#         label="Confirm password",
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'Confirm password',
-#             }
-#         ),
-#     )
-
-#     def clean_new_password2(self):
-#         password1 = self.cleaned_data['new_password1']
-#         password2 = self.cleaned_data['new_password2']
-
-#         if password1 and password2 and password1 != password2:
-#             raise ValidationError(_('Passwords are not match'))
-#         password_validation.validate_password(password2)
-#         return password2
-
 class SetPasswordForm(SetPasswordForm):
     class Meta:
         model = get_user_model()
@@ -108,10 +72,22 @@ class UserUpdateForm(forms.ModelForm):
         fields=['first_name','last_name','email','phone']
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+class TimeInput(forms.DateInput):
+    input_type = 'time'
+
+
 class ShiftForm(ModelForm):
     class Meta:
         model = Shift
         fields = '__all__'
+        widgets = {
+            'shift_date': DateInput(),
+            'start_time':TimeInput(),
+            'finish_time':TimeInput(),
+        }
  
 
 

@@ -36,13 +36,13 @@
             <li class="mt-25">
               <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
               <span class="text-110">
-                {{shift.status}}
+                <mark>{{shift.status}}</mark>
             </span>
             </li>
           </ul>
 
           <div class="col-12 col-md-4 text-center">
-            <a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-info btn-raised px-4 py-25 w-75 text-600">View Details</a>
+            <a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-outline-secondary btn-raised px-4 py-25 w-75 text-600">View Details</a>
         
           </div>
         </div>
