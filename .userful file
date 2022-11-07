@@ -147,3 +147,27 @@ def search(request):
         }
         return render(request, 'search.html', context)
 
+# need to check out
+compare model time
+
+
+current_year=datetime.date.today().year
+current_datetime=datetime.datetime.now() #2022-11-07 09:12:12.473393
+current_date=datetime.date.today() #2022-11-07
+current_time=datetime.datetime.now().time() #07:35:38.047247
+shift_date=Shift.objects.filter(shift_date=shift_date)
+start_time = Shift.objects.filter(start_time__gt=time)
+finish_time = Shift.objects.filter(finish_time__gt=time)
+
+def compare_time(shift_date,current_date,start_time, current_time,finish_time):
+    if shift_date < current_date:
+        return False
+
+    elif shift_date = current_date:
+        if start_time < current_time:
+            return False
+    else:
+        if finish_time < start_time + datetime.timedelta(minutes = 300) # at least 5 hours pasted 
+        return False
+
+    return True
