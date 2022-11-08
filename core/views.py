@@ -33,6 +33,8 @@ import datetime
 
 from itertools import chain
 from django.urls import reverse,reverse_lazy
+import datetime
+from datetime import datetime, timedelta
 
 
 # Create your views here.
@@ -212,7 +214,7 @@ def shift_filter(request):
     employer=Employer.objects.all()
     nurse = Nurse.objects.all()
     if request.user.is_employer:
-    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
+    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_start_date')[:5]
     else:
     	qs = Shift.objects.all()
 
@@ -221,12 +223,12 @@ def shift_filter(request):
     
     #id_exact_query = request.GET.get('id_exact')
     nurse_id_exact_query=request.GET.get('nurse_id_exact')
-    role= request.GET.get('role') #<--------check
+    role= request.GET.get('role') 
     print(role)
-    status= request.GET.get('status')#<---------------check
+    status= request.GET.get('status')
 
-    shift_date_min = request.GET.get('shift_date_min')
-    shift_date_max = request.GET.get('shift_date_max')
+    shift_start_date_min = request.GET.get('shift_start_date_min')
+    shift_start_date_max = request.GET.get('shift_start_date_max')
 
    
 
@@ -239,11 +241,11 @@ def shift_filter(request):
     if is_valid_queryparam(nurse_id_exact_query):
         qs = qs.filter(nurse=nurse_id_exact_query)
 
-    if is_valid_queryparam(shift_date_min):
-        qs = qs.filter(shift_date__gte=shift_date_min)
+    if is_valid_queryparam(shift_start_date_min):
+        qs = qs.filter(shift_start_date__gte=shift_start_date_min)
 
-    if is_valid_queryparam(shift_date_max):
-        qs = qs.filter(shift_date__lte=shift_date_max)
+    if is_valid_queryparam(shift_start_date_max):
+        qs = qs.filter(shift_start_date__lte=shift_start_date_max)
 
     if is_valid_queryparam(role) and role!='Choose...':
        qs = qs.filter(role=role)
@@ -266,14 +268,14 @@ def shifts(request):
 	#if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
 	
 		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
+		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_start_date')[:5]
 		
 
 
 	#if user is admin, job agency staff or nurse, then all shifts are visible
 	else:
 		
-		shifts=Shift.objects.all().order_by('shift_date')
+		shifts=Shift.objects.all().order_by('shift_start_date')
 	
 	roles=Shift().ROLES 
 	statuses=Shift().STATUS
@@ -320,6 +322,11 @@ def createShift(request):
 			form.save()
 			messages.success(request, "The shift has been created")
 			return redirect('/')
+		else:
+			print(form.errors)
+			#form = ShiftForm()
+			
+			#messages.error(request,"something went wrong")
 
 	context = {'form':form}
 	return render(request, 'create_shift.html', context)
@@ -330,16 +337,13 @@ def updateShift(request, pk):
 
 	shift = Shift.objects.get(id=pk)
 	form = ShiftForm(instance=shift)
-	#shift_date=request.shift_date
+	#shift_start_date=request.shift_start_date
 
 	if request.method == 'POST':
 		form = ShiftForm(request.POST, instance=shift)
 
 		if form.is_valid():
-			#### to do-validate shift_date could not be ealier date than current date ###
-			#if shift_date < timezone.now().date():
-			#	raise forms.ValidationError("'to' date cannot be ealier than today.")
-			#else:
+			
 			form.save()
 			return redirect('/')
 

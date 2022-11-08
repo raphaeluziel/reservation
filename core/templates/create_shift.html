@@ -5,21 +5,28 @@
     <div class="form-group col-md-6">
 	<form method="POST">
 		
-		{% csrf_token %}
+		
 
+		{% csrf_token %}
+ 		
+		
 		 {{form.nurse |as_crispy_field}}
 		 {{form.employer |as_crispy_field}}
 		 {{form.address |as_crispy_field}}
-		 {{form.shift_date |as_crispy_field}}
+		 {{form.shift_start_date |as_crispy_field}}
+		 {{form.errors.shift_start_date}}
+		 {{form.shift_end_date |as_crispy_field}}
 		 {{form.role |as_crispy_field}}
 		 {{form.start_time|as_crispy_field}}
+		 {{ form.errors.start_time }}
 		 {{form.finish_time |as_crispy_field}}
+		 {{ form.errors.finish_time }}
 		 {{form.published |as_crispy_field}}
 		 {{form.details|as_crispy_field}}
 		 {{form.status|as_crispy_field}}
 		 {{form.user|as_crispy_field}}
-		
-	    <br>
+	
+
 		{% if '/create_shift/' in request.path %}
 			<button class="btn btn-outline-info text-dark" name="Submit" type="submit">Create</button>
 		{% else %}
@@ -30,3 +37,7 @@
 </div>
 </div>
 {% endblock %}
+
+
+
+		

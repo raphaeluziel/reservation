@@ -9,9 +9,15 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 from django import forms
 from django.conf import settings
+import datetime
 
+from django.utils import timezone
+from datetime import datetime, date, time, timedelta
+ 
 
-
+now = timezone.now()
+import pytz
+#from datetime import datetime, timedelta
 
 
 
@@ -79,26 +85,51 @@ class TimeInput(forms.DateInput):
     input_type = 'time'
 
 
+
 class ShiftForm(ModelForm):
     class Meta:
         model = Shift
         fields = '__all__'
+
         widgets = {
-            'shift_date': DateInput(),
+
+            'shift_start_date': DateInput(),
+            'shift_end_date': DateInput(),
             'start_time':TimeInput(),
             'finish_time':TimeInput(),
         }
- 
+
+
+    def clean(self):
+            cleaned_data = super(ShiftForm,self).clean()
+            shift_start_date = cleaned_data['shift_start_date']
+           
+            start_time = cleaned_data['start_time']
+            finish_time = cleaned_data['finish_time']
+
+
+            #current_date =datetime.now(tz=pytz.timezone('UTC'))
+
+            current_date =datetime.now()
+            
+            if shift_start_date is not None and shift_start_date < current_date.date():   
+                raise ValidationError("""shift start date should not be ealier than current_date""")
+            #this one does not work
+
+            elif shift_start_date == current_date and start_time.strftime<now:
+
+                raise ValidationError("""start_time can not be ealier than current_time""")
+               
+            elif finish_time is not None and finish_time <= start_time : 
+                #if shift_end_date is None:
+                raise ValidationError("finish_time can not be earlier than or equal to start time") 
+            else:
+
+                return cleaned_data
+
+    
 
 
 
 
-
-
-
-
-
-
-
-
-
+   
