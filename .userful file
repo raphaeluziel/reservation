@@ -241,6 +241,75 @@ def search(request):
         
      """ 
 
+//how store django secret keys in development and production
+//or how to setup a django 4.0 proejct with Heroku and AWS S3
+
+
+
+python3 manage.py runserver --settings=reservation.settings.prod
+
+python3 manage.py runserver --settings=reservation.settings.dev
+
+
+>python3 manage.py shell
+
+>>> from django.contrib.auth import get_user_model
+>>> User=get_user_model()
+>>> User.objects.all()
+<QuerySet [<CustomUser: admin@gmail.com>, <CustomUser: nurse1@gmail.com>, <CustomUser: hospital1@gmail.com>]>
+>>> 
+
+##### for allowing password reset email notifications, add authentication_backend part in settings. 
+### add also auth_authentication.py in app 
+### add email settings in base.py
+
+
+--revert migartions
+
+
+#delete anywanted migrations
+then run command
+    showmigrations to see where I am
+    migrate 0003 (to go one step back)
+    showmigrations to verify that it worked and I am one version behind
+    migrate 0004 to migrate correctly
+
+
+
+    <!-- Link to page favicon.ico to display in location Bar-->
+    <!-- <link rel="icon" href="{% static 'images/favicon.png' %}"> -->
+
+https://stackoverflow.com/questions/73564800/django-query-to-filter-date-range
+
+query from core.models.blabala
+>> from core.models import Shift
+>>> Shift.objects.all()
+
+
+
+#render html based on user role 
+
+
+example https://stackoverflow.com/questions/54158999/django-show-different-content-based-on-user
+ from django.shortcuts import render
+
+def my_view(request):
+    #you can check user here with request.user
+    #example
+    if request.user.is_superuser:
+        return render('your_template_for_admin.html', {})
+    return render('your_template_for_basic_user.html', {})
+
+
+
+view 
+
+def index(request):
+    latest_person_list2 = Person.objects.filter(to_be_listed=True)
+    return object_list(request, template_name='polls/schol.html',
+                       queryset=latest_person_list, paginate_by=5)
+
+ paginate_by=5
 
 
 
