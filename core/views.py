@@ -268,14 +268,14 @@ def shifts(request):
 	#if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
 	
 		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_start_date')[:5]
+		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
 		
 
 
 	#if user is admin, job agency staff or nurse, then all shifts are visible
 	else:
 		
-		shifts=Shift.objects.all().order_by('shift_start_date')
+		shifts=Shift.objects.all().order_by('shift_date')
 	
 	roles=Shift().ROLES 
 	statuses=Shift().STATUS
@@ -315,8 +315,6 @@ def createShift(request):
 		form = ShiftForm(request.POST)
 		if form.is_valid():
 
-			#to do1, one employer could not create shift for other employers.#
-			#to do 2. date can't be past time, finish time could not be earlier than start time
 			if request.user.is_employer:
 				employer=request.user
 			form.save()

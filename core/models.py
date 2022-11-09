@@ -141,8 +141,8 @@ class Shift(models.Model):
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 	address=models.ForeignKey(AddressBook,on_delete=models.CASCADE,related_name="shift_street")
-	shift_start_date=models.DateField('StartDate')
-	shift_end_date=models.DateField('EndDate', blank=True,null=True)
+	shift_date=models.DateField('Shift Date')
+	#shift_end_date=models.DateField('EndDate', blank=True,null=True)
 	ROLES= (
 		('RN', 'RN'),
 		('PN', 'PN'),
@@ -160,8 +160,8 @@ class Shift(models.Model):
 
 	role = models.CharField(max_length=4, choices=ROLES,blank=False)
 
-	start_time = models.TimeField()
-	finish_time = models.TimeField()
+	start_time = models.DateTimeField()
+	finish_time = models.DateTimeField()
 	published = models.BooleanField(default=False)
 	details=models.CharField(max_length=200, blank=True, null=True)
 	status = models.CharField(max_length=200, null=True, choices=STATUS)
