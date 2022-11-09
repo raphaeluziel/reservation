@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
 <div class="form-row">
     <div class="form-group col-md-6">
 	<form method="POST">
@@ -8,8 +12,14 @@
 		
 
 		{% csrf_token %}
- 		 {{ form.non_field_errors }} 
-		
+		<ul>
+		  {% for error in form.non_field_errors %}
+		    <li>{{ error }}</li>
+		  {% endfor %}
+		</ul>
+
+				
+		         
 		 {{form.nurse |as_crispy_field}}
 		 {{form.employer |as_crispy_field}}
 		 {{form.address |as_crispy_field}}
@@ -36,6 +46,8 @@
 </div>
 </div>
 {% endblock %}
+
+
 
 
 

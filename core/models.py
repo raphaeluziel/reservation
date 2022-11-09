@@ -142,7 +142,6 @@ class Shift(models.Model):
 	updated_date = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 	address=models.ForeignKey(AddressBook,on_delete=models.CASCADE,related_name="shift_street")
 	shift_date=models.DateField('Shift Date')
-	#shift_end_date=models.DateField('EndDate', blank=True,null=True)
 	ROLES= (
 		('RN', 'RN'),
 		('PN', 'PN'),

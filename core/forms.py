@@ -15,7 +15,8 @@ from django.utils import timezone
 from datetime import datetime, date, time, timedelta
  
 import pytz
-#from datetime import datetime, timedelta
+import bootstrap_datepicker_plus
+from bootstrap_datepicker_plus.widgets import DatePickerInput,DateTimePickerInput
 
 
 
@@ -85,11 +86,15 @@ class TimeInput(forms.DateInput):
 
 
 class ShiftForm(ModelForm):
+
     class Meta:
         model = Shift
         fields = '__all__'
+
         widgets = {
-                'shift_date': DateInput(),
+                'shift_date': DatePickerInput(),
+                'start_time': DateTimePickerInput(),
+                'finish_time':DateTimePickerInput(),
 
             }
 
@@ -103,16 +108,15 @@ class ShiftForm(ModelForm):
             current_date =datetime.now()
 
             if shift_date!=start_time.date():
-                raise ValidationError("please recheck your shift input date ")
-                
+                raise ValidationError("Recheck make sure that shift date and shift start time date are the same")
             elif start_time is not None and start_time < now:   
                 raise ValidationError("shift time should not be ealier than current_date,time")
             
             elif start_time == finish_time:
-                raise ValidationError("Your finish time is equal to start_time")
+                raise ValidationError("Your finish time is equal to start time")
 
             elif finish_time <start_time:
-                raise ValidationError("finsih_time can not be ealier than start_time")       
+                raise ValidationError("The finish time can not be ealier than the start time")       
             else:
                 return cleaned_data
 

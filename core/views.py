@@ -214,7 +214,7 @@ def shift_filter(request):
     employer=Employer.objects.all()
     nurse = Nurse.objects.all()
     if request.user.is_employer:
-    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_start_date')[:5]
+    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
     else:
     	qs = Shift.objects.all()
 
@@ -227,8 +227,8 @@ def shift_filter(request):
     print(role)
     status= request.GET.get('status')
 
-    shift_start_date_min = request.GET.get('shift_start_date_min')
-    shift_start_date_max = request.GET.get('shift_start_date_max')
+    shift_date_min = request.GET.get('shift_date_min')
+    shift_date_max = request.GET.get('shift_date_max')
 
    
 
@@ -241,11 +241,11 @@ def shift_filter(request):
     if is_valid_queryparam(nurse_id_exact_query):
         qs = qs.filter(nurse=nurse_id_exact_query)
 
-    if is_valid_queryparam(shift_start_date_min):
-        qs = qs.filter(shift_start_date__gte=shift_start_date_min)
+    if is_valid_queryparam(shift_date_min):
+        qs = qs.filter(shift_date__gte=shift_date_min)
 
-    if is_valid_queryparam(shift_start_date_max):
-        qs = qs.filter(shift_start_date__lte=shift_start_date_max)
+    if is_valid_queryparam(shift_date_max):
+        qs = qs.filter(shift_date__lte=shift_date_max)
 
     if is_valid_queryparam(role) and role!='Choose...':
        qs = qs.filter(role=role)
@@ -321,10 +321,8 @@ def createShift(request):
 			messages.success(request, "The shift has been created")
 			return redirect('/')
 		else:
-			print(form.errors)
-			#form = ShiftForm()
 			
-			#messages.error(request,"something went wrong")
+			messages.error(request,"Please correct your input field and try again")
 
 	context = {'form':form}
 	return render(request, 'create_shift.html', context)
