@@ -7,7 +7,7 @@ An employer could publish, update shifts via user interface. An employer can als
 
 With the pre-approval of the employee, an employer can assign certain shift to that employee. (Reserve a shift). 
 
-An employer could view all its own shifts (open,reserved,unpublished, unfilled, done). The employer could not access to other employers published shifts. 
+An employer could view all its own shifts (open,reserved,unpublished, unfilled, done). The employer could not view other employers published shifts. 
 
 
 B. Nurse 
