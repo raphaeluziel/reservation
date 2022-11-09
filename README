@@ -1,3 +1,5 @@
+### Reservation
+
 
 This app-Reservation offers workforce leasing company a convienent tool to provide short-time work opportunities (Gag work) in healthcare sectors. There is no signup function available, only allowed users are able to use the app.  At the moment there are four user groups:
 
@@ -12,7 +14,7 @@ An employer could view all its own shifts (open,reserved,unpublished, unfilled, 
 
 B. Nurse 
 
-There are three types of nurses: registered nurse (RN), pratical nurse (PN) and assistant (ASST). RN has the right to access and reserve all avaible shifts (RN, PN and ASST). Practical nurse could only view shifts that opens to PN and ASST. Then an assistant is restricted to work on ASST shifts. A nurse could view and reserve all __OPEN__ shifts offered by all employers. 
+There are three types of nurses: registered nurse (RN), pratical nurse (PN) and assistant (ASST). RN has the right to access and reserve all avaible shifts (RN, PN and ASST). Practical nurse could only view shifts that opens to PN and ASST. Then an assistant is restricted to work on ASST shifts. A nurse could view and reserve all **OPEN** shifts offered by all employers. 
 
 Employer and Nurse are treated as customers.  A customer user can update own profile and reset password. 
 
