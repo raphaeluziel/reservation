@@ -1,6 +1,6 @@
-###########
-Reservation
-###########
+
+## Reservation
+
 
 
 This app-Reservation offers workforce leasing company a convienent tool to provide short-time work opportunities (Gag work) in healthcare sectors. There is no signup function available, only allowed users are able to use the app.  At the moment there are four user groups:
@@ -29,9 +29,16 @@ D. Admin (Superuser)
 An admin has all rights mentioned above. Admin also creates, updates and deletes users. Admin issues initial password to a user. 
 
 
+### Build on top of 
+
+1. [django framework](https://www.djangoproject.com/)
+2. [bootstrap](https://getbootstrap.com/)
+3. [crispy forms](https://django-crispy-forms.readthedocs.io/en/latest/)
+4. [bootstrap_datepicker_plus](https://aerabi.medium.com/](https://pypi.org/project/django-bootstrap-datepicker-plus/))
 
 
-#Quick start
+
+## Quick start (rewrite)
 
 $ mkdir reservation
 $ cd reservation
