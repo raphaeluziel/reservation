@@ -3,7 +3,7 @@
 
 
 
-This app-Reservation offers workforce leasing company a convienent tool to provide short-time work opportunities (Gag work) in healthcare sectors. There is no signup function available, only allowed users are able to use the app.  At the moment there are four user groups:
+The app-Reservation offers workforce leasing company a convienent tool to provide short-time work opportunities (Gag work) for healthcare professionals. There is no signup function available, only allowed users are able to use the app.  At the moment there are four user groups:
 
 A. Employer
 
