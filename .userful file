@@ -4,7 +4,13 @@
 1. Set create_shift form initial value with user is an employer. So the employer could not create shift 
    on behalf of other employers. 
 
+2. booked shifts #set a nurse could only view own reserved shifts.
 
+3. add condition in booked_shifts
+<!-- {% if shift.status=="Reserved"%}
+    <td><a class="btn btn-sm btn-success" href="{% url 'shift_done' shift.id%}">done</a></td>
+{% else %}...
+{% endif %} -->
 
 
 

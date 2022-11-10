@@ -17,7 +17,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required,user_passes_test
 
-from .decorators import user_not_authenticated,admin_staff_employer_required,employer_only,staff_only
+from .decorators import user_not_authenticated,admin_staff_employer_required,admin_staff_nurse_required,employer_only,staff_only
 
 from django import forms
 from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
@@ -454,6 +454,23 @@ def search(request):
 		
 		return render(request, "search.html", context)
 
+@login_required
+@admin_staff_nurse_required
+def booked_shifts(request,id):
+	
+	user=request.user
+	employer=Employer.objects.all()
+
+	if request.user.is_nurse:#to do a nurse could only view own reserved shifts.
+		booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
+
+	elif request.user.is_staff:
+		booked_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-shift_date')
+	else:
+		return redirect('/')
+	print(booked_shifts.values())
+	context={'booked_shifts':booked_shifts}
+	return render(request,"booked_shifts.html",context=context)
 
 def error_404_view(request, exception):
 	return render(request, 'core/404.html')

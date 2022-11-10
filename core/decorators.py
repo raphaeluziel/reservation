@@ -34,6 +34,18 @@ def admin_staff_employer_required(view_func):
             return HttpResponseRedirect(reverse('login'))
     return wrap
 
+
+def admin_staff_nurse_required(view_func):
+    def wrap(request, *args, **kwargs):
+               
+        if request.user.is_nurse or request.user.is_staff:
+            return view_func(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('login'))
+    return wrap
+
+
+
 def employer_only(view_func):
     def wrap(request, *args, **kwargs):
         if request.user.is_employer:

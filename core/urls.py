@@ -24,6 +24,7 @@ urlpatterns = [
     path('reserved_shifts', views.reversed_shifts, name="reserved_shifts"),
     path('reserve_shift/<str:pk>/', views.reserve_shift, name="reserve_shift"),
     path('search/', views.search, name='search'),
+    path('profile/<id>/booked_shifts/', views.booked_shifts, name='booked_shifts'),
 
 
 ]
