@@ -57,7 +57,13 @@ def login_view(request):
         	username = form.cleaned_data.get("email")
         	password = form.cleaned_data.get("password")
         	user = authenticate(request,username=username, password=password)
-        	if user is not None:
+        	if user is not None and user.last_login is None:
+        		login(request, user)
+
+        		messages.info(request, 'First time user please reset your password')
+        		return redirect ('password_change')
+        		
+        	elif user is not None:
         		login(request, user)
         		return redirect("shifts")
         	else:
