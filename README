@@ -29,6 +29,11 @@ D. Admin (Superuser)
 An admin has all rights mentioned above. Admin also creates, updates and deletes users. Admin issues initial password to a user. 
 
 
+### Installed third-party widgets
+
+1) crispy forms
+
+2) bootstrap_datepicker_plus
 
 
 #Quick start

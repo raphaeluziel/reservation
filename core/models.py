@@ -55,6 +55,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 	phone = PhoneNumberField(blank=True, help_text='Contact phone number', unique = True,null=True)
 
 	is_nurse = models.BooleanField(default=False)
+	is_rn= models.BooleanField(default=False, null=True)
 	is_employer = models.BooleanField(default=False)
 	is_staff=models.BooleanField(default=False)
 	is_active = models.BooleanField(default=True)
@@ -111,7 +112,7 @@ class Nurse(CustomUser):
 	bank_account_number=models.CharField(max_length=20, blank=True, null=True)
 	role = models.CharField(max_length=4, choices=ROLES,blank=False)
 	experience=models.IntegerField(choices=EXPERIENCES,blank=False)
-	is_rn= models.BooleanField(default=False)
+
 
 	class Meta:
 		verbose_name = 'Nurse'

@@ -1,3 +1,17 @@
+
+# to do:
+
+1. Set create_shift form initial value with user is an employer. So the employer could not create shift 
+   on behalf of other employers. 
+
+
+
+
+
+
+
+
+
 https://stackoverflow.com/questions/60733143/how-to-get-python-decouple-to-work-on-a-live-server
 
 From my findings I think there is just one way using every environment, either local and live server. First you need to install python-decouple library in conjunction with .env file as follows:

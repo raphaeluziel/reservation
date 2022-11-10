@@ -98,8 +98,10 @@
 {% if shifts  %}
     {% if request.user.is_employer %}
 	   {% include 'includes/employer_shifts.html' %}
+    {% elif request.user.is_rn or request.user.is_staff %}
+       {% include 'includes/staffNnurse_shifts.html' %}  
     {% else %}
-        {% include 'includes/staffNnurse_shifts.html' %}
+        {% include 'includes/notRN_shifts.html' %}
     {% endif %}
      
 {% else %}

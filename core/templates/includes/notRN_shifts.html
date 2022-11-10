@@ -1,5 +1,6 @@
 <ul>
-    {% for shift in queryset %}
+	{% for shift in queryset %}
+    {% if  shift.published and shift.status == "Open" and shift.role != "RN"  %}
 
     <div class="mt-5">
       <div class="d-style btn btn-brc-tp border-2 bgc-white btn-outline-blue btn-h-outline-blue btn-a-outline-blue w-100 my-2 py-3 shadow-sm">
@@ -7,7 +8,7 @@
         <div class="row align-items-center">
 
         
-           <div class="col-12 col-md-4">
+          <div class="col-12 col-md-4">
             <h4 class="pt-3 text-170 text-600 text-primary-d1 letter-spacing">
               {{shift.start_time|date}}-{{shift.start_time|date:"D"}}
             </h4>
@@ -36,18 +37,20 @@
             <li class="mt-25">
               <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
               <span class="text-110">
-                <mark>{{shift.status}}</mark>
+                {{shift.status}}
             </span>
             </li>
           </ul>
 
           <div class="col-12 col-md-4 text-center">
-            <a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-outline-secondary btn-raised px-4 py-25 w-75 text-600">View Details</a>
+            <a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-info btn-raised px-4 py-25 w-75 text-600">View Details</a>
         
           </div>
         </div>
 
       </div>
 
-     {% endfor %}
+        {% endif %}
+
+	 {% endfor %}
 <ul>

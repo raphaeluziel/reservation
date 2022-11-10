@@ -260,6 +260,7 @@ def shift_filter(request):
 def shifts(request):
 	user=request.user
 	employer=Employer.objects.all()
+
 	qs=shift_filter(request)
 	
 	#print(Shift.objects)
@@ -269,8 +270,6 @@ def shifts(request):
 	
 		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
 		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
-		
-
 
 	#if user is admin, job agency staff or nurse, then all shifts are visible
 	else:
@@ -308,15 +307,31 @@ def shift_detail(request,shift_id):
 def createShift(request):
 	user=request.user
 	employer=Employer.objects.all()
+	#org_name=Employer.objects.filter(org_name=org_name)
+	
 	form = ShiftForm()
 	if request.method == 'POST':
-		
-		#print('Printing POST:', request.POST)
+		"""
+		print('Printing POST:', request.POST)
+
+		Printing POST: <QueryDict: {'csrfmiddlewaretoken': ['gXSgfruBjlWSVEgnpAtAYWwPh94ita3sRjYsXsr8lOdZwGRves7sOLrILhVZ5m7Z'], 
+		'nurse': [''], 'employer': ['2'], 'address': ['1'], 'shift_date': ['11/10/2022'], 'role': ['RN'], 
+		'start_time': ['11/10/2022 09:35'], 'finish_time': ['11/10/2022 20:35'], 'published': ['on'], 
+		'details': ['sdfadf'], 'status': ['Open'], 'user': [''], 'Submit': ['']}>
+        """
+		""" don not work with initial value, check 
+		if request.user.is_employer:
+
+			form=ShiftForm(initial={"employer":employer,"address":"address"})
+		else:
+
+			form = ShiftForm(request.POST)
+
+		"""
 		form = ShiftForm(request.POST)
+
 		if form.is_valid():
 
-			if request.user.is_employer:
-				employer=request.user
 			form.save()
 			messages.success(request, "The shift has been created")
 			return redirect('/')
@@ -341,6 +356,7 @@ def updateShift(request, pk):
 		if form.is_valid():
 			
 			form.save()
+			messages.success(request, "The shift has been updated")
 			return redirect('/')
 
 	context = {'form':form}
