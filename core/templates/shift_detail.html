@@ -6,49 +6,70 @@
 {% load crispy_forms_tags %}
 
 {% if user.is_authenticated %}
-  Hi {{ user.first_name }}!
 
-
-
-<li>organization name: {{shift.employer}}</li>
-<li>shift id is: {{shift.id}}</li>
-<li> shift_employer_id:{{shift.employer_id}}</li>
-<li> employer phone:{{shift.employer.phone}}</li>
-<li> employer email:{{shift.employer.email}}</li>
-<li>shift status: {{shift.status}}</li>
-<li>shift date: {{shift.start_time|date}}</li>
-<li>shift role: {{shift.role}}</li>
-<li>shift start time: {{shift.start_time}}</li>
-<li>shift finish time:{{shift.finish_time}}</li>
-<li>shift details: {{shift.details}}</li>
-<li>organiztion address: {{shift.address}}</li>
-
-
-<td><a class="btn btn-sm btn-success" href="{% url 'reserve_shift' shift.id%}">reserve</a></td>
-
-  {% if not request.user.is_nurse %}
-   
-  <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
-
-  <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
-
-  {% endif %}
-         
-
-
-<!-- alternative to line 24 <form method="post">
-        {% csrf_token %}
-        <div class="buttons has-addons">
-       
-            <button class="button is-success" name="reserve" value="reserve" href="{% url 'reserved_shifts' %}">
-                reserve
-            </button>
-        
-        </div>
-    </form>
+<br>
+<div class="content">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+   <div class="card-box task-detail">
+      <div class="media mt-0 m-b-30">
+         <img class="d-flex mr-3 rounded-circle" alt="64x64" src="https://bootdey.com/img/Content/avatar/avatar2.png" style="width: 48px; height: 48px;">
+         <div class="media-body">
+            <h5 class="media-heading mb-0 mt-0">{{shift.employer}}</h5>
+            <span class="badge badge-pill badge-secondary">Published: {{shift.pub_date}}</span>
+            <ul class="list-inline task-dates m-b-0 mt-5">
+               Hi {{ user.first_name }}! We have <span class="badge badge-pill badge-success">Shift_id: {{shift.id}}</span> open now:
+               <br>
+               <br>
+               <li>
+                  <h5 class="m-b-5">Date</h5>
+                  <p>{{shift.start_time|date}}-<span class="text-dark">{{shift.start_time|date:"D"}}</span></p>
+               </li>
+               <li>
+                  <h5 class="m-b-5">Time </h5>
+                  <p>{{shift.start_time|time}}-{{shift.finish_time|time}}</p>
+               </li>
+               <li>
+                  <h5 class="m-b-5">Phone number</h5>
+                  <p>{{shift.employer.phone}}</p>
+               </li>
+               <li>
+                  <h5 class="m-b-5">Email</h5>
+                  <p>{{shift.employer.email}}</p>
+               </li>
+               <li>
+                  <h5 class="m-b-5">Address</h5>
+                  <p>{{shift.address}}
+               </li>
+            </ul>
+            <h5 class="m-b-20">Details</h5>
+            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, illo, iste itaque voluptas corrupti ratione reprehenderit magni similique? Tempore, quos delectus asperiores libero voluptas quod perferendis! Voluptate, quod illo rerum? Lorem ipsum dolor sit amet.</p>
+            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, illo, iste itaque voluptas corrupti ratione reprehenderit magni similique? Tempore, quos delectus asperiores libero voluptas quod perferendis! Voluptate, quod illo rerum? Lorem ipsum dolor sit amet.</p>
+            <div class="clearfix"></div>
+            <div class="task-tags mt-4">
+               <h5 class="">Tags</h5>
+               <div class="bootstrap-tagsinput">
+                  <span class="badge badge-pill badge-info">Registered Nurse</span>
+                  <span class="badge badge-pill badge-warning">University Hospital</span>
+                  <span class="badge badge-pill badge-secondary">{{shift.status}}</span>
+               </div>
+            </div>
+            <br>
+            <br>
+            <td><a class="btn btn-sm btn-success" href="{% url 'reserve_shift' shift.id%}">reserve</a></td>
+            {% if not request.user.is_nurse %}
+            <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
+            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>
+            {% endif %}  
+         </div>
+         <!-- end row -->
+         <br>
+      </div>
+      <!-- container --> 
+      <br>
+   </div>
 </div>
- -->
-
 
 {% endif %}
 {% endblock %}
