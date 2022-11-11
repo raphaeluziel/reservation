@@ -90,7 +90,6 @@ class ShiftForm(ModelForm):
     class Meta:
         model = Shift
         fields = '__all__'
-
         widgets = {
                 'shift_date': DatePickerInput(),
                 'start_time': DateTimePickerInput(),
@@ -106,6 +105,8 @@ class ShiftForm(ModelForm):
             finish_time = cleaned_data['finish_time']
             now = timezone.now()
             current_date =datetime.now()
+            
+
 
             if shift_date!=start_time.date():
                 raise ValidationError("Recheck make sure that shift date and shift start time date are the same")

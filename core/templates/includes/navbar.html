@@ -16,16 +16,25 @@
             </div>
             <!-- Nav bar search -->
             {% if user.is_authenticated %}
+           
             <nav class="navbar navbar-light">
                <form class="form-inline" action="{% url 'search' %}">
                   <input class="form-control mr-sm-2" type="query"   placeholder="Search" aria-label="query" name="query">
                   <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
                </form>
             </nav>
-            {% endif %}
+            
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
                {% if user.is_authenticated %}
+                  {% if user.is_staff %}
+                 
+                  <a class="nav-item  nav-link" href="{% url 'index' %}">Manage shifts</a>
+                  {% elif user.is_nurse %}
+                  <a class="nav-item nav-link" href="{% url 'index' %}">My shifts</a>
+                  {% endif %}
+                  
+               {% endif %}
                {% if user.is_superuser %}
                <a class="nav-item nav-link" href="{% url 'admin:login' %}">Admin_login</a>
                {% endif %}

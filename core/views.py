@@ -313,7 +313,6 @@ def shift_detail(request,shift_id):
 def createShift(request):
 	user=request.user
 	employer=Employer.objects.all()
-	#org_name=Employer.objects.filter(org_name=org_name)
 	
 	form = ShiftForm()
 	if request.method == 'POST':
@@ -325,14 +324,19 @@ def createShift(request):
 		'start_time': ['11/10/2022 09:35'], 'finish_time': ['11/10/2022 20:35'], 'published': ['on'], 
 		'details': ['sdfadf'], 'status': ['Open'], 'user': [''], 'Submit': ['']}>
         """
-		""" don not work with initial value, check 
-		if request.user.is_employer:
+	
+		initial_data={
+			'employer':group.get_employer(),
+			'address' :group.get_address()
 
-			form=ShiftForm(initial={"employer":employer,"address":"address"})
+		}
+		print(initial_data)
+		"""
+		if request.user.is_employer:
+			form = ShiftForm(initial=initial_data)
 		else:
 
 			form = ShiftForm(request.POST)
-
 		"""
 		form = ShiftForm(request.POST)
 
@@ -465,16 +469,19 @@ def search(request):
 def booked_shifts(request,id):
 	
 	user=request.user
-	employer=Employer.objects.all()
 
-	if request.user.is_nurse:#to do a nurse could only view own reserved shifts.
+	nurse = Nurse.objects.get(id=id)
+	
+
+	if request.user.is_nurse and user.id==nurse.id:#to do a nurse could only view own reserved shifts.
 		booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
 
 	elif request.user.is_staff:
 		booked_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-shift_date')
 	else:
+		
 		return redirect('/')
-	print(booked_shifts.values())
+
 	context={'booked_shifts':booked_shifts}
 	return render(request,"booked_shifts.html",context=context)
 
