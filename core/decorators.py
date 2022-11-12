@@ -53,6 +53,16 @@ def employer_only(view_func):
         else:
             return HttpResponseRedirect(reverse('login'))
     return wrap
+
+def nurse_only(view_func):
+    def wrap(request, *args, **kwargs):
+               
+        if request.user.is_nurse:
+            return view_func(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('login'))
+    return wrap
+
         
 
 def staff_only(view_func):

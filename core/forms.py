@@ -107,7 +107,6 @@ class ShiftForm(ModelForm):
             current_date =datetime.now()
             
 
-
             if shift_date!=start_time.date():
                 raise ValidationError("Recheck make sure that shift date and shift start time date are the same")
             elif start_time is not None and start_time < now:   

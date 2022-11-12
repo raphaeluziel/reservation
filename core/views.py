@@ -17,7 +17,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required,user_passes_test
 
-from .decorators import user_not_authenticated,admin_staff_employer_required,admin_staff_nurse_required,employer_only,staff_only
+from .decorators import user_not_authenticated,admin_staff_employer_required,admin_staff_nurse_required,employer_only,staff_only,nurse_only
 
 from django import forms
 from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
@@ -43,11 +43,9 @@ def landing(request):
 
 	return render(request, 'landing.html')
 
-
 def index(request):
-
+	
 	return render(request, 'index.html')
-
 
 def login_view(request):
     error = None
@@ -484,6 +482,20 @@ def booked_shifts(request,id):
 
 	context={'booked_shifts':booked_shifts}
 	return render(request,"booked_shifts.html",context=context)
+
+@nurse_only
+def nurse(request,id):
+	user=request.user
+	nurse = Nurse.objects.get(id=id)
+	if user.id==nurse.id:
+		booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
+		context={"booked_shifts":booked_shifts}
+
+		return render(request, "nurse.html", context)
+	else:
+		
+		return redirect('/')
+
 
 def error_404_view(request, exception):
 	return render(request, 'core/404.html')

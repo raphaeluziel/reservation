@@ -31,7 +31,7 @@
                  
                   <a class="nav-item  nav-link" href="{% url 'index' %}">Manage shifts</a>
                   {% elif user.is_nurse %}
-                  <a class="nav-item nav-link" href="{% url 'index' %}">My shifts</a>
+                  <a class="nav-item nav-link" href="{% url 'nurse' user.id %}">My shifts</a>
                   {% endif %}
                   
                {% endif %}

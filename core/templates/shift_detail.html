@@ -18,13 +18,17 @@
          <div class="media-body">
             <h5 class="media-heading mb-0 mt-0">{{shift.employer}}</h5>
             <span class="badge badge-pill badge-secondary">Published: {{shift.pub_date}}</span>
+          
             <ul class="list-inline task-dates m-b-0 mt-5">
-               Hi {{ user.first_name }}! We have <span class="badge badge-pill badge-success">Shift_id: {{shift.id}}</span> open now:
-               <br>
-               <br>
+            
+              
                <li>
                   <h5 class="m-b-5">Date</h5>
                   <p>{{shift.start_time|date}}-<span class="text-dark">{{shift.start_time|date:"D"}}</span></p>
+               </li>
+               <li>
+                  <h5 class="m-b-5">Role</h5>
+                  <p>{{shift.role}}</span></p>
                </li>
                <li>
                   <h5 class="m-b-5">Time </h5>
@@ -40,24 +44,31 @@
                </li>
                <li>
                   <h5 class="m-b-5">Address</h5>
-                  <p>{{shift.address}}
+                  <p>{{shift.address}}</p>
                </li>
-            </ul>
+             </ul>
+  
             <h5 class="m-b-20">Details</h5>
+          
             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, illo, iste itaque voluptas corrupti ratione reprehenderit magni similique? Tempore, quos delectus asperiores libero voluptas quod perferendis! Voluptate, quod illo rerum? Lorem ipsum dolor sit amet.</p>
             <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, illo, iste itaque voluptas corrupti ratione reprehenderit magni similique? Tempore, quos delectus asperiores libero voluptas quod perferendis! Voluptate, quod illo rerum? Lorem ipsum dolor sit amet.</p>
+
             <div class="clearfix"></div>
             <div class="task-tags mt-4">
                <h5 class="">Tags</h5>
                <div class="bootstrap-tagsinput">
-                  <span class="badge badge-pill badge-info">Registered Nurse</span>
+                  <span class="badge badge-pill badge-info">{{shift.role}}</span>
                   <span class="badge badge-pill badge-warning">University Hospital</span>
                   <span class="badge badge-pill badge-secondary">{{shift.status}}</span>
                </div>
             </div>
             <br>
             <br>
+            {% if shift.status == "Open" %}
+         
             <td><a class="btn btn-sm btn-success" href="{% url 'reserve_shift' shift.id%}">reserve</a></td>
+            {% endif %}
+
             {% if not request.user.is_nurse %}
             <td><a class="btn btn-sm btn-info" href="{% url 'update_shift' shift.id %}">Update</a></td>
             <td><a class="btn btn-sm btn-danger" href="{% url 'delete_shift' shift.id %}">Delete</a></td>

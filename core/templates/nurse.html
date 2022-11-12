@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_authenticated %}
+  {% if booked_shifts %}
+   <h3>Reserved shifts</h3>
+   {% include 'includes/booked.html' %}
+   {% else %}
+   <p>There is no reserved shifts at the moment, take a look at available shifts? 
+       &nbsp;<a href="{% url 'shifts' %}"class="f-n-hover btn btn-sm btn-outline-secondary btn-raised ">Available shifts</a>
+
+    </p>
+        
+ 
+  {% endif %}
+  <div class="col col text-center">
+  <p>
+       &nbsp;<a href="{% url 'shifts' %}"class="f-n-hover btn btn-sm btn-outline-secondary btn-raised ">Search for available shifts</a></p>
+</div>
+ {% endif %}
+
+{% endblock %}
