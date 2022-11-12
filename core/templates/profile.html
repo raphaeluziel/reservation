@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
+{% block title %}booked_shift{% endblock %}
 {% block content %}
-<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
-    <legend class="border-bottom mb-4">Profile Information:</legend>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="media">
-            <!-- {% if user.id == form.instance.id %}
+
+{% load crispy_forms_tags %}
+<!--header-->
+
+<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+   <div class="card p-4">
+   	<!-- div class="media">
+            {% if user.id == form.instance.id %}
              <input id="id_image" type="file" name="image" hidden/>
                      <label for="id_image">
                         <img class="rounded-circle account-img profile-image"
@@ -18,36 +20,31 @@
             {% else %}
                 <img class="rounded-circle account-img profile-image", src="{{ form.instance.image.url }}">
             {% endif %}  -->
-            <div class="media-body">
-             
-                <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
-                <p class="text-secondary">{{ form.instance.email }}</p>
-                <p class="text-secondary">{{ form.instance.phone }}</p>
-            </div>
-        </div>
-
-        {% if user.id == form.instance.id %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Edit Profile Information</legend>
-                <div class="form-row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.first_name|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.last_name|as_crispy_field }}
-                    </div>
-                </div> 
-                {{ form.email|as_crispy_field }}
-                {{ form.phone|as_crispy_field }}
-
-                <a href="{% url 'password_change' %}">Change password?</a>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Update</button>
-            </div>
-        {% endif %}
-    </form>
+ 
+      <div class=" image d-flex flex-column justify-content-center align-items-center">
+         <button class="btn btn-secondary"> <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /></button> <span class="name mt-3">{{user.last_name}} {{user.first_name}}</span> <span class="idd"><i class="fa fa-envelope"></i> {{user.email}}</span> 
+     
+         <div class="email mt-3"> <span><i class="fa fa-phone"></i> {{user.phone}}</div>
+         <div class="d-flex flex-row justify-content-center align-items-center gap-2"> <span class="idd1">user id {{user.id}}</span></div>
+         <div class="d-flex flex-row justify-content-center align-items-center mt-3"> <span class="number"> 
+         	{% if user.is_nurse and user.id == form.instance.id %}
+                   {% if user.is_rn %}
+                    <p>Rigerested nurse</p>
+                     {% else %}
+                   <p>Practical nurse/assistant</p>
+                   {% endif %}
+                {% elif user.is_employer and user.id == form.instance.id  %}
+                    <p>Employer</p>
+                {% else%} 
+                    <p>Staff member</p>
+                {% endif %}</span></span> </div>
+         <div class=" d-flex mt-2"> <button class="btn1 btn-dark">Contact</button> </div>
+         <div class="text mt-3"> <span>{{user.bios}} </div>
+       
+         <div class=" px-2 rounded mt-4 date "> <span class="join">Joined: {{user.date_joined|date}}</span> </div>
+      </div>
+   </div>
 </div>
-
-
-{% endblock content %}
+{% include 'includes/profile_update_form.html' %}
+</body>
+{% endblock %}

@@ -189,7 +189,7 @@ def passwordResetConfirm(request, uidb64, token):
 @login_required
 
 def profile(request,id):
-
+	
 	if request.method=="POST":
 		user=request.user
 		form=UserUpdateForm(request.POST, request.FILES, instance=user)

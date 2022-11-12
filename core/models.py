@@ -53,6 +53,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 	last_name = models.CharField(max_length=250, blank=False)
 	email = models.EmailField(('email address'), unique=True)
 	phone = PhoneNumberField(blank=True, help_text='Contact phone number', unique = True,null=True)
+	bios=models.CharField(max_length=250, blank=False,null=True)
 
 	is_nurse = models.BooleanField(default=False)
 	is_rn= models.BooleanField(default=False, null=True)

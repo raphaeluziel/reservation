@@ -74,7 +74,8 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model=get_user_model()
-        fields=['first_name','last_name','email','phone']
+        fields=['first_name','last_name','email','phone','bios','date_joined']
+        exclude = ['date_joined']
 
 
 class DateInput(forms.DateInput):

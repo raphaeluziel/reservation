@@ -111,7 +111,7 @@ class NurseAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','role','experience','bank_account_name','bank_account_number')}
+            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','role','experience','bank_account_name','bank_account_number','bios')}
         ),
     )
 
@@ -134,7 +134,7 @@ class EmployerAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','org_name','bank_account_name','bank_account_number')}
+            'fields': ('email', 'first_name','last_name','password1', 'password2','phone','org_name','bank_account_name','bank_account_number','bios')}
         ),
     )
     search_fields = ('org_name','city')
