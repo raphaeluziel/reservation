@@ -14,11 +14,13 @@
 <div class="col-lg-12">
    <div class="card-box task-detail">
       <div class="media mt-0 m-b-30">
-         <img class="d-flex mr-3 rounded-circle" alt="64x64" src="https://bootdey.com/img/Content/avatar/avatar2.png" style="width: 48px; height: 48px;">
-         <div class="media-body">
-            <h5 class="media-heading mb-0 mt-0">{{shift.employer}}</h5>
-            <span class="badge badge-pill badge-secondary">Published: {{shift.pub_date}}</span>
-          
+        
+             <div class="media mt-0 m-b-30"><img class="d-flex mr-3 rounded-circle" alt="64x64" src="https://bootdey.com/img/Content/avatar/avatar2.png" style="width: 48px; height: 48px;">
+                        <div class="media-body">
+                            <h5 class="media-heading mb-0 mt-0">{{shift.employer}}</h5>
+                         </div>
+                    </div>
+                     
             <ul class="list-inline task-dates m-b-0 mt-5">
             
               
@@ -56,11 +58,10 @@
             <div class="clearfix"></div>
             <div class="task-tags mt-4">
                <h5 class="">Tags</h5>
-               <div class="bootstrap-tagsinput">
-                  <span class="badge badge-pill badge-info">{{shift.role}}</span>
-                  <span class="badge badge-pill badge-warning">University Hospital</span>
-                  <span class="badge badge-pill badge-secondary">{{shift.status}}</span>
-               </div>
+
+               <button type="button" class="btn btn-secondary btn-sm">{{shift.role}}</button>
+               <button type="button" class="btn btn-secondary btn-sm">{{shift.status}}</button>
+            
             </div>
             <br>
             <br>

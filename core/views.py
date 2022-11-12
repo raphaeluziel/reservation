@@ -220,7 +220,7 @@ def shift_filter(request):
     employer=Employer.objects.all()
     nurse = Nurse.objects.all()
     if request.user.is_employer:
-    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
+    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
     else:
     	qs = Shift.objects.all()
 
@@ -262,6 +262,7 @@ def shift_filter(request):
     return qs
 
 
+
 @login_required
 def shifts(request):
 	user=request.user
@@ -275,7 +276,7 @@ def shifts(request):
 	#if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
 	
 		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')[:5]
+		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
 
 	#if user is admin, job agency staff or nurse, then all shifts are visible
 	else:
@@ -289,15 +290,6 @@ def shifts(request):
 	return render(request,'shifts.html',context)
 
 
-	"""
-	In shifts view, one more condition between if and else
-	elif request.user.is_nurse:
-		if self.request.user.has_perm('register RN jobs then show all vacanies'):
-    			# do this
-		else:
-   			 #show only Practical nurse or assistance vacancies
-
-    """
 
 
 ### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
@@ -363,7 +355,7 @@ def updateShift(request, pk):
 	if request.method == 'POST':
 		form = ShiftForm(request.POST, instance=shift)
 		if shift.start_time < timezone.now():
-			messages.error(request, error)
+			messages.error(request, "You can not update the shift anymore. The shift date has already passed. ")
 		else:
 			if form.is_valid():
 				
