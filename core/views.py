@@ -30,6 +30,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 import datetime
+from django.utils import timezone
+from datetime import datetime, date, time, timedelta
 
 from itertools import chain
 from django.urls import reverse,reverse_lazy
@@ -360,12 +362,14 @@ def updateShift(request, pk):
 
 	if request.method == 'POST':
 		form = ShiftForm(request.POST, instance=shift)
-
-		if form.is_valid():
-			
-			form.save()
-			messages.success(request, "The shift has been updated")
-			return redirect('/shifts')
+		if shift.start_time < timezone.now():
+			messages.error(request, error)
+		else:
+			if form.is_valid():
+				
+				form.save()
+				messages.success(request, "The shift has been updated")
+				return redirect('/shifts')
 
 	context = {'form':form}
 	return render(request, 'create_shift.html', context)

@@ -8,8 +8,6 @@
 {% if user.is_authenticated %}
   Hi {{ user.first_name }}!
 
-
-
 <li>organization name: {{shift.employer}}</li>
 <li>shift id is: {{shift.id}}</li>
 <li> shift_employer_id:{{shift.employer_id}}</li>
@@ -23,9 +21,6 @@
 <li>shift details: {{shift.details}}</li>
 <li>organiztion address: {{shift.address}}</li>
 <td><a class="btn btn-sm btn-success" href="{% url 'reserve_shift' shift_id%}">reserve</a></td>
-
-
-
 
 
 {% endif %}
