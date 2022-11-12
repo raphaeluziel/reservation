@@ -63,7 +63,7 @@ def login_view(request):
         		
         	elif user is not None:
         		login(request, user)
-        		return redirect("shifts")
+        		return redirect("/shifts")
         	else:
         		messages.info(request, 'Username or Password is incorrect')
     else:
@@ -321,15 +321,15 @@ def createShift(request):
 		'nurse': [''], 'employer': ['2'], 'address': ['1'], 'shift_date': ['11/10/2022'], 'role': ['RN'], 
 		'start_time': ['11/10/2022 09:35'], 'finish_time': ['11/10/2022 20:35'], 'published': ['on'], 
 		'details': ['sdfadf'], 'status': ['Open'], 'user': [''], 'Submit': ['']}>
-        """
-	
-		initial_data={
+        
+
+        nitial_data={
 			'employer':group.get_employer(),
 			'address' :group.get_address()
 
 		}
 		print(initial_data)
-		"""
+		
 		if request.user.is_employer:
 			form = ShiftForm(initial=initial_data)
 		else:
@@ -342,7 +342,7 @@ def createShift(request):
 
 			form.save()
 			messages.success(request, "The shift has been created")
-			return redirect('/')
+			return redirect('/shifts')
 		else:
 			
 			messages.error(request,"Please correct your input field and try again")
@@ -365,7 +365,7 @@ def updateShift(request, pk):
 			
 			form.save()
 			messages.success(request, "The shift has been updated")
-			return redirect('/')
+			return redirect('/shifts')
 
 	context = {'form':form}
 	return render(request, 'create_shift.html', context)
@@ -379,7 +379,7 @@ def deleteShift(request, pk):
 			messages.error(request,"This shift has already been reserved, please contact our customer service for further information.")
 		else:
 			shift.delete()
-			return redirect('/')
+			return redirect('/shifts')
 
 	context = {'shift':shift}
 	return render(request, 'delete_shift.html', context)
@@ -411,18 +411,6 @@ def reversed_shifts(request):
 
 
 @login_required
-
-
-# search function
-
-# case 1.
-
-# 	If login_user=="employer", then the search result shows only user name and email. For instance, employer could find a nurse 
-# 	quickly and add that nurse to both agreed shift. The employer could not however view other employers' shift info, etc.
-
-# case 2.
-
-# 	If login_user =="admin" or "staff " or "nurse", the user could search for avaible job place, employer org name, job details, etc. 
 
 
 def search(request):

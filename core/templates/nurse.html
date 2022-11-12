@@ -8,17 +8,23 @@
    <h3>Reserved shifts</h3>
    {% include 'includes/booked.html' %}
    {% else %}
-   <p>There is no reserved shifts at the moment, take a look at available shifts? 
-       &nbsp;<a href="{% url 'shifts' %}"class="f-n-hover btn btn-sm btn-outline-secondary btn-raised ">Available shifts</a>
-
-    </p>
-        
+   <p>There is no reserved shifts at the moment </p>
+       
  
   {% endif %}
-  <div class="col col text-center">
-  <p>
-       &nbsp;<a href="{% url 'shifts' %}"class="f-n-hover btn btn-sm btn-outline-secondary btn-raised ">Search for available shifts</a></p>
-</div>
+
+  <span><a href="{% url 'shifts' %}">Search for available shifts</a></span><br>
+ 
+  <span><a href="{% url 'logout' %}">Log Out</a></span><br>
+
+  <span><a href="{% url 'password_change' %}"> password change</a></span>
+
+  {% else %}
+
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a> 
+
+
  {% endif %}
 
 {% endblock %}
