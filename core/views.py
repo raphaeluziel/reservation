@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from .decorators import user_not_authenticated,admin_staff_employer_required,admin_staff_nurse_required,employer_only,staff_only,nurse_only
 
 from django import forms
-from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,ShiftForm
+from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,UpdateShiftForm,CreateShiftForm
 
 from django.core.mail import send_mail, BadHeaderError
 from django.utils.http import urlsafe_base64_encode
@@ -301,15 +301,17 @@ def shift_detail(request,shift_id):
 	shift=get_object_or_404(Shift, pk=shift_id)
 	return render(request, 'shift_detail.html',{'shift':shift})
 
+
 @login_required
 @admin_staff_employer_required
+
 def createShift(request):
 	user=request.user
 	employer=Employer.objects.all()
 	
-	form = ShiftForm()
+	form = CreateShiftForm()
 	if request.method == 'POST':
-		form = ShiftForm(request.POST)
+		form = CreateShiftForm(request.POST)
 
 		if form.is_valid():
 
@@ -326,15 +328,17 @@ def createShift(request):
 
 
 @login_required
+@admin_staff_employer_required
 def updateShift(request, pk):
 
 	shift = Shift.objects.get(id=pk)
-	form = ShiftForm(instance=shift)
-	#shift_start_date=request.shift_start_date
+	form = UpdateShiftForm(instance=shift)
+	
 
 	if request.method == 'POST':
-		form = ShiftForm(request.POST, instance=shift)
-		if shift.start_time < timezone.now():
+
+		form = UpdateShiftForm(request.POST, instance=shift)
+		if shift.start_time < timezone.now() and shift.status=="Open":
 			messages.error(request, "You can not update the shift anymore. The shift date has already passed. ")
 		else:
 			if form.is_valid():
@@ -345,6 +349,7 @@ def updateShift(request, pk):
 
 	context = {'form':form}
 	return render(request, 'create_shift.html', context)
+
 
 @login_required
 @admin_staff_employer_required

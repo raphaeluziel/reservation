@@ -17,6 +17,7 @@ from datetime import datetime, date, time, timedelta
 import pytz
 import bootstrap_datepicker_plus
 from bootstrap_datepicker_plus.widgets import DatePickerInput,DateTimePickerInput
+#from multiselectfield.forms.fields import MultiSelectFormField #added https://stackoverflow.com/questions/27332850/django-multiselectfield-cant-install
 
 
 
@@ -86,11 +87,15 @@ class TimeInput(forms.DateInput):
 
 
 
-class ShiftForm(ModelForm):
-
+class CreateShiftForm(ModelForm):
+    
     class Meta:
         model = Shift
         fields = '__all__'
+        
+        #fields=['nurse','employer','address','status','role','user','shift_date','start_time','finish_time','details','published']
+    
+
         widgets = {
                 'shift_date': DatePickerInput(),
                 'start_time': DateTimePickerInput(),
@@ -106,11 +111,12 @@ class ShiftForm(ModelForm):
             finish_time = cleaned_data['finish_time']
             now = timezone.now()
             current_date =datetime.now()
+
             
 
             if shift_date!=start_time.date():
-                raise ValidationError("Recheck make sure that shift date and shift start time date are the same")
-            elif start_time is not None and start_time < now:   
+                raise ValidationError("Please recheck and make sure that shift date and shift start time date are the same")
+            elif start_time is not None and start_time < now:
                 raise ValidationError("shift time should not be ealier than current_date,time")
             
             elif start_time == finish_time:
@@ -122,6 +128,32 @@ class ShiftForm(ModelForm):
                 return cleaned_data
 
 
+
+class UpdateShiftForm(ModelForm):
+    
+    class Meta:
+        model = Shift
+        fields = '__all__'
+        
+
+        widgets = {
+                'shift_date': DatePickerInput(),
+                'start_time': DateTimePickerInput(),
+                'finish_time':DateTimePickerInput(),
+
+            }
+
+    def clean(self):  
+
+            cleaned_data = super().clean()
+            shift_date = cleaned_data['shift_date']
+            start_time = cleaned_data['start_time']
+            
+            if shift_date!=start_time.date():
+                raise ValidationError("Please recheck and make sure that shift date and shift start time date are the same")
+              
+            else:
+                return cleaned_data
 
 
 
