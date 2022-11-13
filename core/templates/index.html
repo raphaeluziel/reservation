@@ -7,15 +7,15 @@
 
   Hi {{user.first_name }}!
 
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
+  <p><a class="text-dark" href="{% url 'logout' %}">Log Out</a></p>
 
-  <a href="{% url 'password_change' %}"> password change</a>
+  <a class="text-dark" href="{% url 'password_change' %}"> password change</a>
 {% else %}  
 
 
 
   <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a> 
+  <a  class="text-dark" href="{% url 'login' %}">Log In</a> 
 
 {% endif %}
 

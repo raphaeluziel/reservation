@@ -93,7 +93,7 @@ def password_change(request):
     form = SetPasswordForm(user)
     return render(request, 'password_reset_confirm.html', {'form': form})
 
-@user_not_authenticated
+@login_required
 def password_reset_view(request):
     user = request.user
     if request.method == 'POST':
@@ -158,6 +158,7 @@ def password_reset_request(request):
         context={"form": form}
         )
 
+@login_required
 def passwordResetConfirm(request, uidb64, token):
     User = get_user_model()
     try:
@@ -320,7 +321,7 @@ def createShift(request):
 			messages.error(request,"Please correct your input field and try again")
 
 	context = {'form':form}
-	
+
 	return render(request, 'create_shift.html', context)
 
 
