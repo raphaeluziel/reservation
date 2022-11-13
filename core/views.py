@@ -452,13 +452,35 @@ def booked_shifts(request,id):
 	context={'booked_shifts':booked_shifts}
 	return render(request,"booked_shifts.html",context=context)
 
+@login_required
+
+def shifts_done(request,id):
+	
+	user=request.user
+
+	nurse = Nurse.objects.get(id=id)
+	
+
+	if request.user.is_nurse and user.id==nurse.id:
+		shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
+
+	elif request.user.is_staff:
+		shifts_done=Shift.objects.all().filter(nurse_id=id,status="Done",).order_by('-shift_date')
+	else:
+		
+		return redirect('/')
+
+	context={'shifts_done':shifts_done}
+	return render(request,"shifts_done.html",context=context)
+
 @nurse_only
 def nurse(request,id):
 	user=request.user
 	nurse = Nurse.objects.get(id=id)
 	if user.id==nurse.id:
 		booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
-		context={"booked_shifts":booked_shifts}
+		shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
+		context={"booked_shifts":booked_shifts,'shifts_done':shifts_done}
 
 		return render(request, "nurse.html", context)
 	else:

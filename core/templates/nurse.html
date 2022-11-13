@@ -13,11 +13,20 @@
  
   {% endif %}
 
-  <span><a href="{% url 'shifts' %}">Search for available shifts</a></span><br>
+   {% if shifts_done %}
+   <h3>Finished shifts</h3>
+   {% include 'includes/finished_shifts.html' %}
+   {% else %}
+   <h4>There is no finished shifts at the moment </h4>
+       
  
-  <span><a href="{% url 'logout' %}">Log Out</a></span><br>
+  {% endif %}
 
-  <span><a href="{% url 'password_change' %}"> password change</a></span>
+  <span><a class="text-dark" href="{% url 'shifts' %}">Search for available shifts</a></span><br>
+ 
+  <span><a class="text-dark" href="{% url 'logout' %}">Log Out</a></span><br>
+
+  <span><a class="text-dark" href="{% url 'password_change' %}"> password change</a></span>
 
   {% else %}
 
