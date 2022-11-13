@@ -408,7 +408,6 @@ def reversed_shifts(request):
 
 @login_required
 
-
 def search(request):
 
 	user=request.user
@@ -445,6 +444,7 @@ def search(request):
 		    }
 		
 		return render(request, "search.html", context)
+
 
 @login_required
 @admin_staff_nurse_required

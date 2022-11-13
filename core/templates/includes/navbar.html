@@ -1,14 +1,14 @@
 <header class="site-header" style="margin-bottom: 5px">
-   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(0, 0, 0, 0.2);">
+   <nav class="navbar navbar-expand-lg navbar-light bg-warning">
       <div class="container-fluid">
          <!-- Navbar Left Side -->
          <div class="navbar-nav">
            
             {% if user.is_authenticated %}
                   {% if user.is_nurse %}
-                  <a class="nav-item nav-link text-secondary" href="{% url 'nurse' user.id %}">Home</a>
+                  <a class="nav-item nav-link text-dark" href="{% url 'nurse' user.id %}">Home</a>
                   {% else %}      
-                  <a class="nav-item  nav-link text-secondary" href="{% url 'shifts' %}">Home</a>    
+                  <a class="nav-item  nav-link text-dark" href="{% url 'shifts' %}">Home</a>    
                {% endif %}
                {% endif %}
 
@@ -21,15 +21,15 @@
          <div class="collapse navbar-collapse" id="navbarToggle">
             <!-- Navbar Left Side -->
             <div class="navbar-nav">
-               <a class="nav-item nav-link" href="/">About</a>
+               <a class="nav-item nav-link text-dark" href="/">About</a>
             </div>
             
             <!-- Nav bar search -->
             <div class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
             <form class="d-flex" action="{% url 'search' %}">
-               <input class="form-control me-2" type="query" placeholder="Search" aria-label="Search">
-               <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+               <input class="form-control me-2 text-dark" type="query" placeholder="Search" aria-label="query" name="query">
+               <button class="btn btn-outline-dark" type="submit"><i class="fa fa-search"></i></button>
 
             </form>
                
@@ -40,16 +40,16 @@
             <div class="navbar-nav">
               
                {% if user.is_superuser %}
-               <a class="nav-item nav-link" href="{% url 'admin:login' %}">Admin_login</a>
+               <a class="nav-item nav-link text-dark" href="{% url 'admin:login' %}">Admin_login</a>
                {% endif %}
-               <a class="nav-item nav-link" href="{% url 'profile' user.id %}">
+               <a class="nav-item nav-link text-dark" href="{% url 'profile' user.id %}">
                {{user.first_name}} <i class="fas fa-user"></i>
                </a>
-               <a class="nav-item nav-link" href="{% url 'logout' %}">
+               <a class="nav-item nav-link text-dark" href="{% url 'logout' %}">
                Log out <i class="fas fa-sign-out-alt"></i>
                </a>
                {% else %}
-               <a class="nav-item nav-link" href="{% url 'login' %}">
+               <a class="nav-item nav-link text-dark" href="{% url 'login' %}">
                Log in <i class="fas fa-sign-in-alt"></i>
                </a>
                {% endif %}

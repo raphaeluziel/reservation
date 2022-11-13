@@ -20,7 +20,7 @@
                     <td>{{shift.role}}</td>
                     <td>{{shift.employer}}</td>
                     <td>{{shift.status}}</td>
-                    <td><a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-sm btn-outline-secondary btn-raised">Details</a></td>
+                    <td><a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-sm btn-outline-dark btn-raised">Details</a></td>
                 </tr>
                  {% endfor %}
 
@@ -29,7 +29,7 @@
             <div class="row">
             
             <div class="col col text-center">
-            <a href="{% url 'booked_shifts' user.id %}"class="f-n-hover btn btn-outline-secondary btn-sm btn-raised px-4">More reserved shifts...</a>
+            <a href="{% url 'booked_shifts' user.id %}"class="f-n-hover btn btn-outline-dark btn-sm btn-raised px-4">More reserved shifts...</a>
         
              </div>
             </div>

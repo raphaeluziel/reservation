@@ -56,13 +56,12 @@
 	    </div>
 
 	    <div class="col-sm-4">
-	    	<br>
+	    	
 	       {{form.published |as_crispy_field}}
 	    </div>
 	   
 	  	</div> 
-	    
-	  	<br>
+	   
 		{% if '/create_shift/' in request.path %}
 			<button class="btn btn-outline-info text-dark" name="Submit" type="submit">Create</button>
 		{% else %}
@@ -70,7 +69,6 @@
 		{% endif %}
 	     
 	</form>
-	<br>
 </div>
 </div>
 {% endblock %}
