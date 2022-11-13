@@ -21,9 +21,9 @@
                          </div>
                     </div>
                      
-            <ul class="list-inline task-dates m-b-0 mt-5">
+            <ul class="list-inline task-dates m-b-0 mt-5 ">
             
-              
+             
                <li>
                   <h5 class="m-b-5">Date</h5>
                   <p>{{shift.start_time|date}}-<span class="text-dark">{{shift.start_time|date:"D"}}</span></p>
@@ -36,6 +36,7 @@
                   <h5 class="m-b-5">Time </h5>
                   <p>{{shift.start_time|time}}-{{shift.finish_time|time}}</p>
                </li>
+
                <li>
                   <h5 class="m-b-5">Phone number</h5>
                   <p>{{shift.employer.phone}}</p>
