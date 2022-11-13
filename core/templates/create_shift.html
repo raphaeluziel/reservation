@@ -28,6 +28,7 @@
 	       {{form.address |as_crispy_field}}
 	    </div>
 	  	</div>
+		<br>
 		<div class="row">
 	    <div class="col-sm">
 	       {{form.status |as_crispy_field}}
@@ -39,6 +40,7 @@
 	       {{form.user |as_crispy_field}}
 	    </div>
 	  	</div> 
+	  	<br>
 		<div class="row">
 	    <div class="col-sm">
 	       {{form.shift_date|as_crispy_field}}
@@ -49,8 +51,11 @@
 	    <div class="col-sm">
 	       {{form.finish_time|as_crispy_field}}
 	    </div>
+
 	  	</div> 
+	  	<br>
 	  	<div class="row">
+
 	    <div class="col-sm-8">
 	       {{form.details|as_crispy_field}}
 	    </div>
@@ -61,11 +66,12 @@
 	    </div>
 	   
 	  	</div> 
+	  	<br>
 	   
 		{% if '/create_shift/' in request.path %}
-			<button class="btn btn-outline-info text-dark" name="Submit" type="submit">Create</button>
+			<button class="btn btn-outline-dark" name="Submit" type="submit">Create</button>
 		{% else %}
-			<button class="btn btn-outline-info text-dark" name="Submit" type="submit">Update</button>
+			<button class="btn btn-outline-dark" name="Submit" type="submit">Update</button>
 		{% endif %}
 	     
 	</form>

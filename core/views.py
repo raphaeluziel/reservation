@@ -308,40 +308,19 @@ def createShift(request):
 	
 	form = ShiftForm()
 	if request.method == 'POST':
-		"""
-		print('Printing POST:', request.POST)
-
-		Printing POST: <QueryDict: {'csrfmiddlewaretoken': ['gXSgfruBjlWSVEgnpAtAYWwPh94ita3sRjYsXsr8lOdZwGRves7sOLrILhVZ5m7Z'], 
-		'nurse': [''], 'employer': ['2'], 'address': ['1'], 'shift_date': ['11/10/2022'], 'role': ['RN'], 
-		'start_time': ['11/10/2022 09:35'], 'finish_time': ['11/10/2022 20:35'], 'published': ['on'], 
-		'details': ['sdfadf'], 'status': ['Open'], 'user': [''], 'Submit': ['']}>
-        
-
-        nitial_data={
-			'employer':group.get_employer(),
-			'address' :group.get_address()
-
-		}
-		print(initial_data)
-		
-		if request.user.is_employer:
-			form = ShiftForm(initial=initial_data)
-		else:
-
-			form = ShiftForm(request.POST)
-		"""
 		form = ShiftForm(request.POST)
 
 		if form.is_valid():
 
 			form.save()
 			messages.success(request, "The shift has been created")
+
 			return redirect('/shifts')
 		else:
-			
 			messages.error(request,"Please correct your input field and try again")
 
 	context = {'form':form}
+	
 	return render(request, 'create_shift.html', context)
 
 

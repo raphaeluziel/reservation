@@ -16,24 +16,24 @@
             <div class="col">
                 <div class="input-group">
                     
-                    <input type="search" class="form-control" type="search" name="address_contains" placeholder="City contains..."/>
-                    <button class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+                    <input type="search" class="form-control btn-outline-dark " type="search" name="address_contains" placeholder="City contains..."/>
+                    <button class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
                 </div>
             </div>       
 
             <div class="col">
                 <div class="input-group">
                     
-                    <input type="search" class="form-control" type="search" name="org_name_contains" placeholder="Organization name contains..."/>
-                    <button class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+                    <input type="search" class="form-control btn-outline-dark" type="search" name="org_name_contains" placeholder="Organization name contains..."/>
+                    <button class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
                 </div>
             </div>       
 
             <div class="col">
                 <div class="input-group">
                     
-                    <input type="search" class="form-control" type="search" name="nurse_id_exact" placeholder="nurse id exact..."/>
-                    <button class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+                    <input type="search" class="form-control btn-outline-dark" type="search" name="nurse_id_exact" placeholder="nurse id exact..."/>
+                    <button class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
                 </div>
             </div>  
             
@@ -43,17 +43,17 @@
         <div class="row">
           <div class="col">
             <label for="shitf_date_min">Start Date</label>
-            <input type="date" class="form-control" id="shift_date_min" name="shift_date_min">
+            <input type="date" class="form-control btn-outline-dark" id="shift_date_min" name="shift_date_min">
           </div>
           <div class="col">
             <label for="shift_date_max">Finish Date</label>
-            <input type="date" class="form-control" id="shift_date_max" name="shift_date_max">
+            <input type="date" class="form-control btn-outline-dark" id="shift_date_max" name="shift_date_max">
           </div>
 
 
           <div class="col">
             <label for="role">Role</label>
-            <select id="role" class="form-control" name="role">
+            <select id="role" class="form-control btn-outline-dark" name="role">
               <option selected>Choose...</option>
 
                 {% for val,text in roles %}              
@@ -67,7 +67,7 @@
           
           <div class="col">
             <label for="status">Status</label>
-            <select id="status" class="form-control" name="status">
+            <select id="status" class="form-control btn-outline-dark" name="status">
              
               <option selected>Choose...</option>
                 {% for val,text in statuses %}
@@ -81,7 +81,7 @@
         <div class="col">
           <br>
           
-          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
   
         </div>
       </form>
