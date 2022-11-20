@@ -37,6 +37,7 @@ from itertools import chain
 from django.urls import reverse,reverse_lazy
 import datetime
 from datetime import datetime, timedelta
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -270,6 +271,8 @@ def shifts(request):
 	employer=Employer.objects.all()
 
 	qs=shift_filter(request)
+	#paginator=Paginator(qs,3) #Django Pagination by Queryset 2021.1
+	#page=request.GET.get('page')
 	
 	#print(Shift.objects)
 	if request.user.is_employer:
@@ -286,6 +289,14 @@ def shifts(request):
 	
 	roles=Shift().ROLES 
 	statuses=Shift().STATUS
+	"""
+	try:
+		qs=paginator.get_page(page)
+	except PageNotAnInteger:
+		qs=paginator.get_page(1)
+	except EmptyPage:
+		qs=paginator.get_page(paginator.num_pages)
+    """
 	context={'shifts':shifts,'queryset':qs,'statuses':statuses,'roles':roles}
 
 	return render(request,'shifts.html',context)
@@ -374,7 +385,7 @@ def reserve_shift(request, pk):
     if request.method == 'GET':
         shift.user = request.user #shift.reserved_by=request.user
         shift.status = 'Reserved'
-        shift.time_reserved = datetime.datetime.now()
+        shift.time_reserved =datetime.now()
         shift.save()
         messages.success(request, "The shift has been reserved")
     return redirect('reserved_shifts')

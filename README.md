@@ -38,7 +38,9 @@ An admin has all rights mentioned above. Admin also creates, updates and deletes
 
 
 
-## Quick start (rewrite)
+## Quick start 
+
+For Mac users:
 
 $ mkdir reservation
 $ cd reservation

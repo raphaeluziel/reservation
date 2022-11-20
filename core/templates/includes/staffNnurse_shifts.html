@@ -1,5 +1,8 @@
 <ul>
-	{% for shift in queryset %}
+  {% for shift in queryset %}
+
+  <nav class="mt-5">
+
     {% if  shift.published and shift.status == "Open" %}
 
     <div class="mt-5">
@@ -52,5 +55,8 @@
 
         {% endif %}
 
-	 {% endfor %}
+{% endfor %}
+	 
+
 <ul>
+  

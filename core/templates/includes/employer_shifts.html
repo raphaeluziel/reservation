@@ -49,5 +49,41 @@
 
       </div>
 
-     {% endfor %}
+
+      <nav class="mt-5">
+
+               {% if querySet.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                   {% if querySet.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{querySet.previous_page_number}}" tabindex="-1"><i class="mdi mdi-chevron-left"></i></a>
+                    </li>
+                   {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1"><i class="mdi mdi-chevron-left"></i></a>
+                    </li>
+                   {% endif %}
+            
+                   {% for pages in querySet.paginator.page_range %}
+                    {% if querySet.number == pages %}
+                     <li class="page-item active"><a class="page-link" style="height: 100% !important">{{pages}}</a></li>
+                    {% else %}
+                     <li class="page-item"><a class="page-link " style="height: 100% !important" href="?page={{pages}}">{{pages}}</a></li>
+                    {% endif %}
+                   {% endfor %}
+            
+                   {% if querySet.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ querySet.next_page_number }}"><i class="mdi mdi-chevron-right"></i></a>
+                    </li>
+                   {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a>
+                    </li>
+                   {% endif %}
+                </ul>
+                {% endif %}
+            </nav>
+
+     {% endfor %}  
 <ul>
