@@ -387,10 +387,11 @@ def reserve_shift(request, pk):
         if request.method == 'GET':
             shift.user = request.user #shift.reserved_by=request.user
             shift.status = 'Reserved'
+            shift.nurse= get_object_or_404(Nurse, id=request.user.id)
             shift.time_reserved =datetime.now()
             shift.save()
             messages.success(request, "The shift has been reserved")
-        return redirect('reserved_shifts')
+        return redirect('/shifts')
         
     if request.user.is_staff or request_user.is_employer:
         form = ReserveShiftForm()
@@ -413,13 +414,14 @@ def reserve_shift(request, pk):
 
         
 
-#list all reserved shifts by that employee
-
+#list all shifts that have been reserved incl. multiple users
 @login_required 
-def reserved_shifts(request):
-    shifts=Shift.objects.filter(user=request.user)
-    context = {'reserved_shifts': shifts}
-    return render(request,'reserved_shifts.html', context=context)
+@staff_only
+def all_reserved_shifts(request):
+    #shifts=Shift.objects.filter(user=request.user)
+    all_reserved_shifts=Shift.objects.filter(status="Reserved")[:3]
+    context = {'all_reserved_shifts': all_reserved_shifts}
+    return render(request,'all_reserved_shifts.html', context=context)
 
 
 
