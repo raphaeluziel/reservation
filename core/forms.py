@@ -110,9 +110,7 @@ class CreateShiftForm(ModelForm):
             start_time = cleaned_data['start_time']
             finish_time = cleaned_data['finish_time']
             now = timezone.now()
-            current_date =datetime.now()
-
-            
+            current_date =datetime.now() 
 
             if shift_date!=start_time.date():
                 raise ValidationError("Please recheck and make sure that shift date and shift start time date are the same")
@@ -126,6 +124,31 @@ class CreateShiftForm(ModelForm):
                 raise ValidationError("The finish time can not be ealier than the start time")       
             else:
                 return cleaned_data
+
+
+
+class ReserveShiftForm(ModelForm):
+    
+    class Meta:
+        model = Shift
+        fields = '__all__'
+        exclude=['employer','address','is_published','details','status','user','shift_date']
+        
+        widgets = {
+                'shift_date': DatePickerInput(),
+                'start_time': DateTimePickerInput(),
+                'finish_time':DateTimePickerInput(),
+
+            }
+        def clean(self):  
+
+            cleaned_data = super().clean()
+            #shift_date = cleaned_data['shift_date']
+            start_time = cleaned_data['start_time']
+            finish_time = cleaned_data['finish_time']
+            
+           
+            return cleaned_data
 
 
 
@@ -154,7 +177,6 @@ class UpdateShiftForm(ModelForm):
               
             else:
                 return cleaned_data
-
 
 
    

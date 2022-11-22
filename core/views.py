@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from .decorators import user_not_authenticated,admin_staff_employer_required,admin_staff_nurse_required,employer_only,staff_only,nurse_only
 
 from django import forms
-from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,UpdateShiftForm,CreateShiftForm
+from .forms import forms,CustomUserCreationForm,LoginForm,PasswordResetForm,UserUpdateForm,UpdateShiftForm,CreateShiftForm,ReserveShiftForm
 
 from django.core.mail import send_mail, BadHeaderError
 from django.utils.http import urlsafe_base64_encode
@@ -44,39 +44,39 @@ from django.core.paginator import Paginator
 
 def landing(request):
 
-	return render(request, 'landing.html')
+    return render(request, 'landing.html')
 
 def index(request):
-	
-	return render(request, 'index.html')
+    
+    return render(request, 'index.html')
 
 def login_view(request):
     error = None
     if request.method == 'POST':
         form = LoginForm(request.POST or None)
         if form.is_valid():
-        	username = form.cleaned_data.get("email")
-        	password = form.cleaned_data.get("password")
-        	user = authenticate(request,username=username, password=password)
-        	if user is not None and user.last_login is None:
-        		login(request, user)
+            username = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request,username=username, password=password)
+            if user is not None and user.last_login is None:
+                login(request, user)
 
-        		messages.info(request, 'First time user please reset your password')
-        		return redirect ('password_change')
-        		
-        	elif user is not None:
-        		login(request, user)
-        		return redirect("/shifts")
-        	else:
-        		messages.info(request, 'Username or Password is incorrect')
+                messages.info(request, 'First time user please reset your password')
+                return redirect ('password_change')
+                
+            elif user is not None:
+                login(request, user)
+                return redirect("/shifts")
+            else:
+                messages.info(request, 'Username or Password is incorrect')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form, 'error': error})
 
 
 def logout_view(request):
-	logout(request)
-	return render(request, 'index.html')
+    logout(request)
+    return render(request, 'index.html')
 
 @login_required
 def password_change(request):
@@ -143,7 +143,7 @@ def password_reset_request(request):
 
                     return redirect('login')
                 else:
-                	messages.error(request,"something went wrong, wait some minutes and check again later")
+                    messages.error(request,"something went wrong, wait some minutes and check again later")
 
             else:
                 messages.error(request, "we did not find such a user.")
@@ -191,25 +191,25 @@ def passwordResetConfirm(request, uidb64, token):
 @login_required
 
 def profile(request,id):
-	
-	if request.method=="POST":
-		user=request.user
-		form=UserUpdateForm(request.POST, request.FILES, instance=user)
-		if form.is_valid():
-			user_form=form.save()
-			messages.success(request, f'{user_form.first_name},your profile has been updated')
-			return redirect("profile",user_form.id)
-		for error in list(form.errors.values()):
-			messages.error(request,error)
-	user=get_user_model().objects.filter(id=id).first()
-	if user:
-		form=UserUpdateForm(instance=user)
+    
+    if request.method=="POST":
+        user=request.user
+        form=UserUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user_form=form.save()
+            messages.success(request, f'{user_form.first_name},your profile has been updated')
+            return redirect("profile",user_form.id)
+        for error in list(form.errors.values()):
+            messages.error(request,error)
+    user=get_user_model().objects.filter(id=id).first()
+    if user:
+        form=UserUpdateForm(instance=user)
 
-		return render(
-	 		request=request,
-	 		template_name="profile.html",
-	 		context={"form":form})
-	return redirect("/")
+        return render(
+            request=request,
+            template_name="profile.html",
+            context={"form":form})
+    return redirect("/")
 
 
 
@@ -222,9 +222,9 @@ def shift_filter(request):
     employer=Employer.objects.all()
     nurse = Nurse.objects.all()
     if request.user.is_employer:
-    	qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
+        qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
     else:
-    	qs = Shift.objects.all()
+        qs = Shift.objects.all()
 
     address_contains_query = request.GET.get('address_contains')
     org_name_contains_query = request.GET.get('org_name_contains')
@@ -267,39 +267,39 @@ def shift_filter(request):
 
 @login_required
 def shifts(request):
-	user=request.user
-	employer=Employer.objects.all()
+    user=request.user
+    employer=Employer.objects.all()
 
-	qs=shift_filter(request)
-	#paginator=Paginator(qs,3) #Django Pagination by Queryset 2021.1
-	#page=request.GET.get('page')
-	
-	#print(Shift.objects)
-	if request.user.is_employer:
-	
-	#if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
-	
-		#e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-		shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
+    qs=shift_filter(request)
+    #paginator=Paginator(qs,3) #Django Pagination by Queryset 2021.1
+    #page=request.GET.get('page')
+    
+    #print(Shift.objects)
+    if request.user.is_employer:
+    
+    #if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
+    
+        #e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
+        shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
 
-	#if user is admin, job agency staff or nurse, then all shifts are visible
-	else:
-		
-		shifts=Shift.objects.all().order_by('shift_date')
-	
-	roles=Shift().ROLES 
-	statuses=Shift().STATUS
-	"""
-	try:
-		qs=paginator.get_page(page)
-	except PageNotAnInteger:
-		qs=paginator.get_page(1)
-	except EmptyPage:
-		qs=paginator.get_page(paginator.num_pages)
+    #if user is admin, job agency staff or nurse, then all shifts are visible
+    else:
+        
+        shifts=Shift.objects.all().order_by('shift_date')
+    
+    roles=Shift().ROLES 
+    statuses=Shift().STATUS
     """
-	context={'shifts':shifts,'queryset':qs,'statuses':statuses,'roles':roles}
+    try:
+        qs=paginator.get_page(page)
+    except PageNotAnInteger:
+        qs=paginator.get_page(1)
+    except EmptyPage:
+        qs=paginator.get_page(paginator.num_pages)
+    """
+    context={'shifts':shifts,'queryset':qs,'statuses':statuses,'roles':roles}
 
-	return render(request,'shifts.html',context)
+    return render(request,'shifts.html',context)
 
 
 
@@ -309,72 +309,72 @@ def shifts(request):
 
 @login_required
 def shift_detail(request,shift_id):
-	shift=get_object_or_404(Shift, pk=shift_id)
-	return render(request, 'shift_detail.html',{'shift':shift})
+    shift=get_object_or_404(Shift, pk=shift_id)
+    return render(request, 'shift_detail.html',{'shift':shift})
 
 
 @login_required
 @admin_staff_employer_required
 
 def createShift(request):
-	user=request.user
-	employer=Employer.objects.all()
-	
-	form = CreateShiftForm()
-	if request.method == 'POST':
-		form = CreateShiftForm(request.POST)
+    user=request.user
+    employer=Employer.objects.all()
+    
+    form = CreateShiftForm()
+    if request.method == 'POST':
+        form = CreateShiftForm(request.POST)
 
-		if form.is_valid():
+        if form.is_valid():
 
-			form.save()
-			messages.success(request, "The shift has been created")
+            form.save()
+            messages.success(request, "The shift has been created")
 
-			return redirect('/shifts')
-		else:
-			messages.error(request,"Please correct your input field and try again")
+            return redirect('/shifts')
+        else:
+            messages.error(request,"Please correct your input field and try again")
 
-	context = {'form':form}
+    context = {'form':form}
 
-	return render(request, 'create_shift.html', context)
+    return render(request, 'create_shift.html', context)
 
 
 @login_required
 @admin_staff_employer_required
 def updateShift(request, pk):
 
-	shift = Shift.objects.get(id=pk)
-	form = UpdateShiftForm(instance=shift)
-	
+    shift = Shift.objects.get(id=pk)
+    form = UpdateShiftForm(instance=shift)
+    
 
-	if request.method == 'POST':
+    if request.method == 'POST':
 
-		form = UpdateShiftForm(request.POST, instance=shift)
-		if shift.start_time < timezone.now() and shift.status=="Open":
-			messages.error(request, "You can not update the shift anymore. The shift date has already passed. ")
-		else:
-			if form.is_valid():
-				
-				form.save()
-				messages.success(request, "The shift has been updated")
-				return redirect('/shifts')
+        form = UpdateShiftForm(request.POST, instance=shift)
+        if shift.start_time < timezone.now() and shift.status=="Open":
+            messages.error(request, "You can not update the shift anymore. The shift date has already passed. ")
+        else:
+            if form.is_valid():
+                
+                form.save()
+                messages.success(request, "The shift has been updated")
+                return redirect('/shifts')
 
-	context = {'form':form}
-	return render(request, 'create_shift.html', context)
+    context = {'form':form}
+    return render(request, 'create_shift.html', context)
 
 
 @login_required
 @admin_staff_employer_required
 def deleteShift(request, pk):
-	shift = Shift.objects.get(id=pk)
-	if request.method == "POST":
-		if request.user.is_employer and shift.status=="Reserved":
-			messages.error(request,"This shift has already been reserved, please contact our customer service for further information.")
-		else:
-			shift.delete()
-			return redirect('/shifts')
+    shift = Shift.objects.get(id=pk)
+    if request.method == "POST":
+        if request.user.is_employer and shift.status=="Reserved":
+            messages.error(request,"This shift has already been reserved, please contact our customer service for further information.")
+        else:
+            shift.delete()
+            return redirect('/shifts')
 
-	context = {'shift':shift}
-	return render(request, 'delete_shift.html', context)
+    context = {'shift':shift}
+    return render(request, 'delete_shift.html', context)
 
 
 # reserve one shift and then redirect to all reversed_shifts list view
@@ -382,20 +382,41 @@ def deleteShift(request, pk):
 def reserve_shift(request, pk):
     
     shift = Shift.objects.get(id=pk)
-    if request.method == 'GET':
-        shift.user = request.user #shift.reserved_by=request.user
-        shift.status = 'Reserved'
-        shift.time_reserved =datetime.now()
-        shift.save()
-        messages.success(request, "The shift has been reserved")
-    return redirect('reserved_shifts')
+    
+    if request.user.is_nurse:
+        if request.method == 'GET':
+            shift.user = request.user #shift.reserved_by=request.user
+            shift.status = 'Reserved'
+            shift.time_reserved =datetime.now()
+            shift.save()
+            messages.success(request, "The shift has been reserved")
+        return redirect('reserved_shifts')
+        
+    if request.user.is_staff or request_user.is_employer:
+        form = ReserveShiftForm()
+        if request.method=="POST":
+            form = ReserveShiftForm(request.POST,instance=shift)
+            if form.is_valid():
+                shift.nurse==nurse
+                shift.status = 'Reserved'
+                shift.time_reserved =datetime.now()
+                shift.user = request.user 
+                shift.save()
+                messages.success(request, "The shift has been reserved")
+           
+            else:
+                messages.error(request, 'Something went wrong, redirecting back to Homepage')
+                return redirect ("/")
+           
+        context = {'form':form}
+        return render(request, 'reserve_shift.html', context)
 
+        
 
 #list all reserved shifts by that employee
 
-
 @login_required 
-def reversed_shifts(request):
+def reserved_shifts(request):
     shifts=Shift.objects.filter(user=request.user)
     context = {'reserved_shifts': shifts}
     return render(request,'reserved_shifts.html', context=context)
@@ -406,100 +427,100 @@ def reversed_shifts(request):
 
 def search(request):
 
-	user=request.user
-	employers=Employer.objects.all()
-	query = request.GET.get('query')
-	if not query:
-		return HttpResponse("Please input search text..")
-	else:
-		if request.user.is_employer:
+    user=request.user
+    employers=Employer.objects.all()
+    query = request.GET.get('query')
+    if not query:
+        return HttpResponse("Please input search text..")
+    else:
+        if request.user.is_employer:
 
-		    results = CustomUser.objects.filter(
-		         Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
-		    )
+            results = CustomUser.objects.filter(
+                 Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
+            )
 
-		else:
+        else:
 
-		    shift_results = Shift.objects.filter(
-		         Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
-		    )
-		    #print(type(shift_results))
-		    customuser_results = CustomUser.objects.filter(
-		         Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
-		    )
+            shift_results = Shift.objects.filter(
+                 Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
+            )
+            #print(type(shift_results))
+            customuser_results = CustomUser.objects.filter(
+                 Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
+            )
 
-		    employer_results = Employer.objects.filter(
-		         Q(org_name__icontains=query)
-		    )
-		    results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
-		    print(type(results))
-		context={
-		   	"results": results,
-		    "query": query,
+            employer_results = Employer.objects.filter(
+                 Q(org_name__icontains=query)
+            )
+            results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
+            print(type(results))
+        context={
+            "results": results,
+            "query": query,
 
-		    }
-		
-		return render(request, "search.html", context)
+            }
+        
+        return render(request, "search.html", context)
 
 
 @login_required
 @admin_staff_nurse_required
 def booked_shifts(request,id):
-	
-	user=request.user
+    
+    user=request.user
 
-	nurse = Nurse.objects.get(id=id)
-	
+    nurse = Nurse.objects.get(id=id)
+    
 
-	if request.user.is_nurse and user.id==nurse.id:#to do a nurse could only view own reserved shifts.
-		booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
+    if request.user.is_nurse and user.id==nurse.id:#to do a nurse could only view own reserved shifts.
+        booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
 
-	elif request.user.is_staff:
-		booked_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-shift_date')
-	else:
-		
-		return redirect('/')
+    elif request.user.is_staff:
+        booked_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-shift_date')
+    else:
+        
+        return redirect('/')
 
-	context={'booked_shifts':booked_shifts}
-	return render(request,"booked_shifts.html",context=context)
+    context={'booked_shifts':booked_shifts}
+    return render(request,"booked_shifts.html",context=context)
 
 @login_required
 
 def shifts_done(request,id):
-	
-	user=request.user
+    
+    user=request.user
 
-	nurse = Nurse.objects.get(id=id)
-	
+    nurse = Nurse.objects.get(id=id)
+    
 
-	if request.user.is_nurse and user.id==nurse.id:
-		shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
+    if request.user.is_nurse and user.id==nurse.id:
+        shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
 
-	elif request.user.is_staff:
-		shifts_done=Shift.objects.all().filter(nurse_id=id,status="Done",).order_by('-shift_date')
-	else:
-		
-		return redirect('/')
+    elif request.user.is_staff:
+        shifts_done=Shift.objects.all().filter(nurse_id=id,status="Done",).order_by('-shift_date')
+    else:
+        
+        return redirect('/')
 
-	context={'shifts_done':shifts_done}
-	return render(request,"shifts_done.html",context=context)
+    context={'shifts_done':shifts_done}
+    return render(request,"shifts_done.html",context=context)
 
 @nurse_only
 def nurse(request,id):
-	user=request.user
-	nurse = Nurse.objects.get(id=id)
-	if user.id==nurse.id:
-		booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
-		shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
-		context={"booked_shifts":booked_shifts,'shifts_done':shifts_done}
+    user=request.user
+    nurse = Nurse.objects.get(id=id)
+    if user.id==nurse.id:
+        booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
+        shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
+        context={"booked_shifts":booked_shifts,'shifts_done':shifts_done}
 
-		return render(request, "nurse.html", context)
-	else:
-		
-		return redirect('/')
+        return render(request, "nurse.html", context)
+    else:
+        
+        return redirect('/')
 
 
 def error_404_view(request, exception):
-	return render(request, 'core/404.html')
+    return render(request, 'core/404.html')
 
 

@@ -1,27 +1,56 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}reserveshift-tobedeleted{% endblock %}
-{% block content %}
-
 {% load crispy_forms_tags %}
-
-{% if user.is_authenticated %}
-  Hi {{ user.first_name }}!
-
-<li>organization name: {{shift.employer}}</li>
-<li>shift id is: {{shift.id}}</li>
-<li> shift_employer_id:{{shift.employer_id}}</li>
-<li> employer phone:{{shift.employer.phone}}</li>
-<li> employer email:{{shift.employer.email}}</li>
-<li>shift status: {{shift.status}}</li>
-<li>shift date: {{shift.shift_date}}</li>
-<li>shift role: {{shift.role}}</li>
-<li>shift start time: {{shift.start_time}}</li>
-<li>shift finish time:{{shift.finish_time}}</li>
-<li>shift details: {{shift.details}}</li>
-<li>organiztion address: {{shift.address}}</li>
-<td><a class="btn btn-sm btn-success" href="{% url 'reserve_shift' shift_id%}">reserve</a></td>
-
-
-{% endif %}
+{% block content %}
+{% block extrahead %}
+{{ form.media }}
 {% endblock %}
+
+<div class="form-row">
+    <div class="form-group col-md-12">
+	<form method="POST">
+			
+
+		{% csrf_token %}
+		<ul>
+		  {% for error in form.non_field_errors %}
+		    <li>{{ error }}</li>
+		  {% endfor %}
+		</ul>
+
+		<div class="row">
+	    <div class="col-sm">
+	       {{form.nurse |as_crispy_field}}
+	    </div>
+	  
+	  	</div>
+		<br>
+		<div class="row">
+	  
+	    <div class="col-sm">
+	       {{form.role |as_crispy_field}}
+	    </div>
+	   
+	  	</div> 
+	  	<br>
+		<div class="row">
+	 
+	    <div class="col-sm">
+	       {{form.start_time |as_crispy_field}}
+	    </div>
+	    <div class="col-sm">
+	       {{form.finish_time|as_crispy_field}}
+	    </div>
+
+	  	</div> 
+	  	<br>
+	  	
+	  	<br>
+	  
+		<button class="btn btn-outline-dark" name="Submit" type="submit">Reserve</button>
+	
+	     
+	</form>
+</div>
+</div>
+{% endblock %}
+
