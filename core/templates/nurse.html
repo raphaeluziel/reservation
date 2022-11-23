@@ -4,9 +4,9 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {% if user.is_authenticated %}
-  {% if booked_shifts %}
+  {% if reserved_shifts %}
    <h3>Reserved shifts</h3>
-   {% include 'includes/booked.html' %}
+   {% include 'includes/reserved.html' %}
    {% else %}
    <p>There is no reserved shifts at the moment </p>
        

@@ -1,12 +1,11 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}booked_shift{% endblock %}
-{% block content %}
-
-{% load crispy_forms_tags %}
-
 <ul>
-    {% for shift in booked_shifts%}
+  {% for shift in queryset %}
+
+  <nav class="mt-5">
+
+  
+    {% if  shift.published and shift.status == "Open" %}
+
 
     <div class="mt-5">
       <div class="d-style btn btn-brc-tp border-2 bgc-white btn-outline-blue btn-h-outline-blue btn-a-outline-blue w-100 my-2 py-3 shadow-sm">
@@ -14,19 +13,19 @@
         <div class="row align-items-center">
 
         
-           <div class="col-12 col-md-4">
-            <h4 class="pt-3 text-170 text-600 text-dark-d1 letter-spacing">
+          <div class="col-12 col-md-4">
+            <h4 class="pt-3 text-170 text-600 text-primary-d1 letter-spacing">
               {{shift.start_time|date}}-{{shift.start_time|date:"D"}}
             </h4>
 
-            <div class="text-dark-d1 text-120">
+            <div class="text-secondary-d1 text-120">
               <span class="text-180">{{shift.role}}-{{shift.start_time|time}}-{{shift.finish_time|time}}</span>
             </div>
           </div>
 
           <ul class="list-unstyled mb-0 col-12 col-md-4 text-dark-l1 text-90 text-left my-4 my-md-0">
             <li>
-              <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
+              <i class="fa text-dark-m2 text-110 mr-2 mt-1"></i>
               <span>
                 <span class="text-110"><b>{{shift.employer}}</b></span>
              
@@ -34,30 +33,32 @@
             </li>
 
             <li class="mt-25">
-              <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
+              <i class="fa text-dark-m2 text-110 mr-2 mt-1"></i>
               <span class="text-110">
                 {{shift.address}}
             </span>
             </li>
 
             <li class="mt-25">
-              <i class="fa text-success-m2 text-110 mr-2 mt-1"></i>
+              <i class="fa text-dark-m2 text-110 mr-2 mt-1"></i>
               <span class="text-110">
-                <mark>{{shift.status}}</mark>
+                {{shift.status}}
             </span>
             </li>
           </ul>
 
           <div class="col-12 col-md-4 text-center">
-            <a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-outline-secondary btn-raised px-4 py-25 w-75 text-600">View Details</a>
+            <a href="{% url 'shift_detail' shift.id %}"class="f-n-hover btn btn-outline-dark btn-raised px-4 py-25 w-75 text-600">View Details</a>
         
           </div>
         </div>
 
       </div>
 
-    {% endfor %}
+        {% endif %}
+
+{% endfor %}
+	 
+
 <ul>
-
-{% endblock %}
-
+  

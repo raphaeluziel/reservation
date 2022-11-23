@@ -4,7 +4,6 @@ from django.http import HttpResponse,Http404,JsonResponse
 
 from django.db import models
 from django.db.models import Q
-#from django.db.models.query_utils import Q
 from django.core.mail import EmailMessage
 from .models import CustomUser,Shift,Employer,AddressBook,CustomUserManager,Nurse
 
@@ -377,8 +376,8 @@ def deleteShift(request, pk):
     return render(request, 'delete_shift.html', context)
 
 
-# reserve one shift and then redirect to all reversed_shifts list view
-@login_required #here employee reserves that offered jobs on job list
+
+@login_required 
 def reserve_shift(request, pk):
     
     shift = Shift.objects.get(id=pk)
@@ -411,17 +410,6 @@ def reserve_shift(request, pk):
            
         context = {'form':form}
         return render(request, 'reserve_shift.html', context)
-
-        
-
-#list all shifts that have been reserved incl. multiple users
-@login_required 
-@staff_only
-def all_reserved_shifts(request):
-    #shifts=Shift.objects.filter(user=request.user)
-    all_reserved_shifts=Shift.objects.filter(status="Reserved")[:3]
-    context = {'all_reserved_shifts': all_reserved_shifts}
-    return render(request,'all_reserved_shifts.html', context=context)
 
 
 
@@ -467,7 +455,7 @@ def search(request):
 
 @login_required
 @admin_staff_nurse_required
-def booked_shifts(request,id):
+def reserved_shifts(request,id):
     
     user=request.user
 
@@ -475,16 +463,16 @@ def booked_shifts(request,id):
     
 
     if request.user.is_nurse and user.id==nurse.id:#to do a nurse could only view own reserved shifts.
-        booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
+        reserved_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
 
     elif request.user.is_staff:
-        booked_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-shift_date')
+        reserved_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-shift_date')
     else:
         
         return redirect('/')
 
-    context={'booked_shifts':booked_shifts}
-    return render(request,"booked_shifts.html",context=context)
+    context={'reserved_shifts':reserved_shifts}
+    return render(request,"reserved_shifts.html",context=context)
 
 @login_required
 
@@ -512,9 +500,9 @@ def nurse(request,id):
     user=request.user
     nurse = Nurse.objects.get(id=id)
     if user.id==nurse.id:
-        booked_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
+        reserved_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
         shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
-        context={"booked_shifts":booked_shifts,'shifts_done':shifts_done}
+        context={"reserved_shifts":reserved_shifts,'shifts_done':shifts_done}
 
         return render(request, "nurse.html", context)
     else:
