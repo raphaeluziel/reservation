@@ -1,6 +1,6 @@
 <ul>
 	{% for shift in queryset %}
-    {% if  shift.published and shift.role != "RN" and shift.status =="Open" %}
+    {% if  shift.published and shift.role != "RN" and shift.status == "Open" %}
 
     <div class="mt-5">
       <div class="d-style btn btn-brc-tp border-2 bgc-white btn-outline-blue btn-h-outline-blue btn-a-outline-blue w-100 my-2 py-3 shadow-sm">

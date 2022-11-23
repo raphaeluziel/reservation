@@ -411,8 +411,6 @@ def reserve_shift(request, pk):
         context = {'form':form}
         return render(request, 'reserve_shift.html', context)
 
-
-
 @login_required
 
 def search(request):
