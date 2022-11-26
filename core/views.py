@@ -30,7 +30,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 import datetime
 from django.utils import timezone
-from datetime import datetime, date, time, timedelta
+from datetime import datetime, date, time
 
 from itertools import chain
 from django.urls import reverse,reverse_lazy
@@ -387,11 +387,13 @@ def is_available(wanted_shift, nurse:Nurse):
 
     return wanted_shift.start_time.date() not in dates #True-> is available
 
+
+
 @login_required 
 def reserve_shift(request, pk):
     
     shift = Shift.objects.get(id=pk)
-    
+ 
     if request.user.is_nurse:
         if request.method == 'GET':
             shift.user = request.user #reserved by
@@ -403,12 +405,17 @@ def reserve_shift(request, pk):
         return redirect('/shifts')
         
     if request.user.is_staff or request_user.is_employer:
-        form = ReserveShiftForm()
+        form = ReserveShiftForm(instance=shift) 
+
+        if shift.status!="Open": #avoid repeated reserve  the same shift
+                return redirect("/")
+        
         if request.method=="POST":
             form = ReserveShiftForm(request.POST,instance=shift)
             if form.is_valid():
                 if not is_available(shift,shift.nurse):
                     messages.error(request, "The nurse is not available.")
+              
                 else:
                     shift.nurse==nurse
                     shift.status = 'Reserved'
@@ -474,10 +481,10 @@ def reserved_shifts(request,id):
     
 
     if request.user.is_nurse and user.id==nurse.id:#to do a nurse could only view own reserved shifts.
-        reserved_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
+        reserved_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-start_time')
 
     elif request.user.is_staff:
-        reserved_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-shift_date')
+        reserved_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-start_time')
     else:
         
         return redirect('/')
@@ -494,10 +501,10 @@ def shifts_done(request,id):
     
 
     if request.user.is_nurse and user.id==nurse.id:
-        shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
+        shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-start_time')
 
     elif request.user.is_staff:
-        shifts_done=Shift.objects.all().filter(nurse_id=id,status="Done",).order_by('-shift_date')
+        shifts_done=Shift.objects.all().filter(nurse_id=id,status="Done",).order_by('-start_time')
     else:
         
         return redirect('/')
@@ -510,8 +517,8 @@ def nurse(request,id):
     user=request.user
     nurse = Nurse.objects.get(id=id)
     if user.id==nurse.id:
-        reserved_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-shift_date')
-        shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-shift_date')
+        reserved_shifts=Shift.objects.all().filter(nurse_id=user.id,status="Reserved").order_by('-start_time')
+        shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-start_time')
         context={"reserved_shifts":reserved_shifts,'shifts_done':shifts_done}
 
         return render(request, "nurse.html", context)

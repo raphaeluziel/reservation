@@ -95,7 +95,7 @@ class CreateShiftForm(ModelForm):
         
         #fields=['nurse','employer','address','status','role','user','start_time','finish_time','details','published']
     
-
+      
         widgets = {
              
                 'start_time': DateTimePickerInput(),
@@ -103,11 +103,13 @@ class CreateShiftForm(ModelForm):
 
             }
 
-    def clean(self):  
+        def clean(self):  
+
 
             cleaned_data = super().clean()
-        
+            
             start_time = cleaned_data['start_time']
+            
             finish_time = cleaned_data['finish_time']
             now = timezone.now()
             current_date =datetime.now() 
@@ -125,26 +127,28 @@ class CreateShiftForm(ModelForm):
 
 
 
-class ReserveShiftForm(ModelForm):
+class ReserveShiftForm(forms.ModelForm):
     
     class Meta:
         model = Shift
-        fields = '__all__'
+        nurse = forms.ChoiceField(choices=Nurse, widget=forms.TextInput())
+        fields="__all__"
+
         exclude=['employer','address','is_published','details','status','user','shift_date']
         
         widgets = {
-                'shift_date': DatePickerInput(),
+                #'nurse':forms.TextInput(),#without this line it would be multiple selection field
                 'start_time': DateTimePickerInput(),
                 'finish_time':DateTimePickerInput(),
 
             }
+
         def clean(self):  
 
             cleaned_data = super().clean()
-            #shift_date = cleaned_data['shift_date']
+
             start_time = cleaned_data['start_time']
-            finish_time = cleaned_data['finish_time']
-            
+            finish_time = cleaned_data['finish_time']         
            
             return cleaned_data
 
@@ -156,9 +160,8 @@ class UpdateShiftForm(ModelForm):
         model = Shift
         fields = '__all__'
         
-
         widgets = {
-                'shift_date': DatePickerInput(),
+                
                 'start_time': DateTimePickerInput(),
                 'finish_time':DateTimePickerInput(),
 
@@ -167,14 +170,9 @@ class UpdateShiftForm(ModelForm):
     def clean(self):  
 
             cleaned_data = super().clean()
-            shift_date = cleaned_data['shift_date']
             start_time = cleaned_data['start_time']
-            
-            if shift_date!=start_time.date():
-                raise ValidationError("Please recheck and make sure that shift date and shift start time date are the same")
-              
-            else:
-                return cleaned_data
+          
+            return cleaned_data
 
 
    

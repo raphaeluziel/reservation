@@ -319,18 +319,11 @@ def my_view(request):
     return render('your_template_for_basic_user.html', {})
 
 
-
-view 
-
-def index(request):
-    latest_person_list2 = Person.objects.filter(to_be_listed=True)
-    return object_list(request, template_name='polls/schol.html',
-                       queryset=latest_person_list, paginate_by=5)
-
- paginate_by=5
-
-
-
+set form field having both text infut and multiple selections
+how to change field type and retain choices defined in model django 3.0
+https://stackoverflow.com/questions/60730518/how-to-change-field-type-and-retain-choices-defined-in-model-django-3-0
+https://stackoverflow.com/questions/21926114/how-do-i-render-one-django-modelform-charfield-as-both-a-select-box-and-a-text-b
+How do I render one Django ModelForm CharField as both a select box and a text box?
 
 
 
