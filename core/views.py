@@ -380,8 +380,11 @@ def is_available(wanted_shift, nurse:Nurse):
     shifts_reserved=Shift.objects.filter(nurse=nurse,status="Reserved")
     dates=[]
     for shift in shifts_reserved:
-        dates.append(wanted_shift.start_time.date())
-       
+        #print(shift.start_time.date(), shift.id)
+        dates.append(shift.start_time.date(),)
+        #print (dates)
+        #print("wanted_shift.start_time", wanted_shift.start_time.date())
+
     return wanted_shift.start_time.date() not in dates #True-> is available
 
 @login_required 
