@@ -375,7 +375,14 @@ def deleteShift(request, pk):
     context = {'shift':shift}
     return render(request, 'delete_shift.html', context)
 
-
+#if the nurse is not open to the wanted shift date, then return False
+def is_available(wanted_shift, nurse:Nurse): 
+    shifts_reserved=Shift.objects.filter(nurse=nurse,status="Reserved")
+    dates=[]
+    for shift in shifts_reserved:
+        dates.append(wanted_shift.start_time.date())
+       
+    return wanted_shift.start_time.date() not in dates #True-> is available
 
 @login_required 
 def reserve_shift(request, pk):
@@ -384,7 +391,7 @@ def reserve_shift(request, pk):
     
     if request.user.is_nurse:
         if request.method == 'GET':
-            shift.user = request.user #shift.reserved_by=request.user
+            shift.user = request.user #reserved by
             shift.status = 'Reserved'
             shift.nurse= get_object_or_404(Nurse, id=request.user.id)
             shift.time_reserved =datetime.now()
@@ -397,12 +404,15 @@ def reserve_shift(request, pk):
         if request.method=="POST":
             form = ReserveShiftForm(request.POST,instance=shift)
             if form.is_valid():
-                shift.nurse==nurse
-                shift.status = 'Reserved'
-                shift.time_reserved =datetime.now()
-                shift.user = request.user 
-                shift.save()
-                messages.success(request, "The shift has been reserved")
+                if not is_available(shift,shift.nurse):
+                    messages.error(request, "The nurse is not available.")
+                else:
+                    shift.nurse==nurse
+                    shift.status = 'Reserved'
+                    shift.time_reserved =datetime.now()
+                    shift.user = request.user 
+                    shift.save()
+                    messages.success(request, "The shift has been reserved")
            
             else:
                 messages.error(request, 'Something went wrong, redirecting back to Homepage')
@@ -473,7 +483,6 @@ def reserved_shifts(request,id):
     return render(request,"reserved_shifts.html",context=context)
 
 @login_required
-
 def shifts_done(request,id):
     
     user=request.user
@@ -508,7 +517,7 @@ def nurse(request,id):
         return redirect('/')
 
 
+
 def error_404_view(request, exception):
     return render(request, 'core/404.html')
-
 
