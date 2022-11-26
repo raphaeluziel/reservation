@@ -132,6 +132,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+DATETIME_FORMAT = 'd.m.Y - H:i:s'
+
+
 LOGIN_REDIRECT_URL = "index"
 #LOGOUT_REDIRECT_URL = "login/"
 

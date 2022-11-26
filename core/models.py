@@ -143,7 +143,6 @@ class Shift(models.Model):
 	pub_date=models.DateTimeField('Date published',auto_now_add=True)
 	updated_date = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 	address=models.ForeignKey(AddressBook,on_delete=models.CASCADE,related_name="shift_street")
-	shift_date=models.DateField('Shift Date')
 	ROLES= (
 		('RN', 'RN'),
 		('PN', 'PN'),
@@ -168,6 +167,7 @@ class Shift(models.Model):
 	status = models.CharField(max_length=200, null=True, choices=STATUS)
 	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True) # the user could be employer, admin, staff or nurse. And if nurse reserves the shift, this field will be the same as nurse field.
 	time_reserved = models.DateTimeField(auto_now_add=True,null=True)
+	
 	#reserved_by=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
 	
 	def __str__(self):

@@ -143,9 +143,9 @@ class EmployerAdmin(BaseUserAdmin):
 
 
 class ShiftAdmin(admin.ModelAdmin):
- 
+   
 
-    list_display=('id','employer','role','shift_date','pub_date','updated_date','nurse','status')
+    list_display=('id','employer','role','get_date_formatted','pub_date','updated_date','nurse','status')
 
     
     add_fieldsets = (
@@ -154,7 +154,13 @@ class ShiftAdmin(admin.ModelAdmin):
             'fields': ('pub_date','role','start_time','finish_time','description')},
         ),
     )
- 
+    #get shift date that convert start_time (datetime field) to date field
+    def get_date_formatted(self, Shift):
+        if Shift:
+            return Shift.start_time.date()
+    get_date_formatted.date= 'date'
+    get_date_formatted.short_description = 'shift date'
+
 
 
 
