@@ -93,11 +93,11 @@ class CreateShiftForm(ModelForm):
         model = Shift
         fields = '__all__'
         
-        #fields=['nurse','employer','address','status','role','user','shift_date','start_time','finish_time','details','published']
+        #fields=['nurse','employer','address','status','role','user','start_time','finish_time','details','published']
     
 
         widgets = {
-                'shift_date': DatePickerInput(),
+             
                 'start_time': DateTimePickerInput(),
                 'finish_time':DateTimePickerInput(),
 
@@ -106,15 +106,13 @@ class CreateShiftForm(ModelForm):
     def clean(self):  
 
             cleaned_data = super().clean()
-            shift_date = cleaned_data['shift_date']
+        
             start_time = cleaned_data['start_time']
             finish_time = cleaned_data['finish_time']
             now = timezone.now()
             current_date =datetime.now() 
-
-            if shift_date!=start_time.date():
-                raise ValidationError("Please recheck and make sure that shift date and shift start time date are the same")
-            elif start_time is not None and start_time < now:
+          
+            if start_time is not None and start_time < now:
                 raise ValidationError("shift time should not be ealier than current_date,time")
             
             elif start_time == finish_time:

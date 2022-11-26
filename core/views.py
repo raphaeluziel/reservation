@@ -284,7 +284,7 @@ def shifts(request):
     #if user is admin, job agency staff or nurse, then all shifts are visible
     else:
         
-        shifts=Shift.objects.all().order_by('shift_date')
+        shifts=Shift.objects.all().order_by('start_time')
     
     roles=Shift().ROLES 
     statuses=Shift().STATUS
