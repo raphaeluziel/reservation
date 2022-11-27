@@ -66,8 +66,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 	objects = CustomUserManager()
 
 
-	def get_fullname(self):
-		return first_name+last_name
+	def full_name(self):
+		return self.first_name+ ' '+self.last_name
 
 	def has_perm(self, perm, obj=None):
 		return self.is_staff
@@ -167,7 +167,7 @@ class Shift(models.Model):
 	status = models.CharField(max_length=200, null=True, choices=STATUS)
 	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True) # the user could be employer, admin, staff or nurse. And if nurse reserves the shift, this field will be the same as nurse field.
 	time_reserved = models.DateTimeField(auto_now_add=True,null=True)
-	
+
 	#reserved_by=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
 	
 	def __str__(self):

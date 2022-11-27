@@ -46,7 +46,7 @@ def landing(request):
     return render(request, 'landing.html')
 
 def index(request):
-    
+    employer=Employer.objects.all()
     return render(request, 'index.html')
 
 def login_view(request):
@@ -221,7 +221,7 @@ def shift_filter(request):
     employer=Employer.objects.all()
     nurse = Nurse.objects.all()
     if request.user.is_employer:
-        qs = Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
+        qs = Shift.objects.all().filter(employer_id=user.id).order_by('-start_time')
     else:
         qs = Shift.objects.all()
 
@@ -279,7 +279,7 @@ def shifts(request):
     #if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
     
         #e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-        shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-shift_date')
+        shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-start_time')
 
     #if user is admin, job agency staff or nurse, then all shifts are visible
     else:
@@ -411,7 +411,9 @@ def reserve_shift(request, pk):
                 return redirect("/")
         
         if request.method=="POST":
+            #all_available_nurses(shift)
             form = ReserveShiftForm(request.POST,instance=shift)
+            
             if form.is_valid():
                 if not is_available(shift,shift.nurse):
                     messages.error(request, "The nurse is not available.")
@@ -444,7 +446,7 @@ def search(request):
         if request.user.is_employer:
 
             results = CustomUser.objects.filter(
-                 Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
+                 Q(full_name__icontains=query)|Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
             )
 
         else:
@@ -526,7 +528,16 @@ def nurse(request,id):
         
         return redirect('/')
 
+def all_available_nurses(wanted_shift):
+    nurses=Nurse.objects.all()
+    list_available_nurses=[]
 
+    for nurse in nurses:
+        list_available_nurses.append(nurse.id)
+        if is_available(wanted_shift,nurse.id):
+            list_available_nurses.remove(nurse.id)
+
+    return list_available_nurses
 
 def error_404_view(request, exception):
     return render(request, 'core/404.html')

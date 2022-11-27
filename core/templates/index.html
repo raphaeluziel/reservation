@@ -4,8 +4,13 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {% if user.is_authenticated %}
+{% if user.is_nurse %}
 
-  Hi {{user.first_name }}!
+  Hi {{user.full_name}}!
+
+  {% else %}
+   Hi {{user.last_name}}!
+  {% endif %}
 
   <p><a class="text-dark" href="{% url 'logout' %}">Log Out</a></p>
 
