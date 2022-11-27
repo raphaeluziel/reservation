@@ -24,8 +24,15 @@
                     <th>Profile</th>
 
                 </tr>
+                 <p><strong> temporary location for rendered results</strong></p>
             {% for result in results%}
-          
+           
+               
+                address: {{ result.address}}<br>
+         
+                details: {{ result.details }}<br>
+                employer_org_name: {{ result.org_name }}
+             
              {% if not request.user.is_employer %}
                 <tr>
                     <td>{{result.id}}</td>
@@ -53,6 +60,8 @@
                 
             {% endif %}
             {% endfor %}
+
+
 
             </table>
            
