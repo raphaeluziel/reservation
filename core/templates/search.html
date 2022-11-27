@@ -35,9 +35,9 @@
                     <td>{{ result.last_name }}</td>
                     <td>{{ result.first_name }}</td>
                     <td>{{ result.email }}</td>
-                    <td><a href="{% url 'profile' result.user.id %}"class="f-n-hover btn btn-sm btn-outline-dark btn-raised">Profile</a></td>
+                    <td><a href="{% url 'profile' result.id %}"class="f-n-hover btn btn-sm btn-outline-dark btn-raised">Profile</a></td>
                 </tr>
-                {% else %}
+            {% else %}
 
                     <tr>
                     <td>{{ result.id}}</td>
@@ -47,11 +47,11 @@
                     <td>{{ result.last_name }}</td>
                     <td>{{ result.first_name }}</td>
                     <td>{{ result.email }}</td>
-                    <td><a href="{% url 'profile' result.user.id %}"class="f-n-hover btn btn-sm btn-outline-dark btn-raised">Profile</a></td>
+                    <td><a href="{% url 'profile' result.id %}"class="f-n-hover btn btn-sm btn-outline-dark btn-raised">Profile</a></td>
                 </tr>
 
                 
-                {% endif %}
+            {% endif %}
             {% endfor %}
 
             </table>
@@ -63,8 +63,7 @@
         
              </div>
             </div>
-            <hr>
-          </div>
+        </div>
          
         <!--/div-->
     </div>

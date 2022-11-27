@@ -456,7 +456,7 @@ def search(request):
             )
         if request.user.is_staff:
    
-            results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
+            results= list(chain(shift_results, customuser_results))#from itertools import chain
             print(type(results))
 
         elif request.user.is_nurse:
