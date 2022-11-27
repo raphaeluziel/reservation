@@ -190,7 +190,7 @@ def passwordResetConfirm(request, uidb64, token):
 @login_required
 
 def profile(request,id):
-    
+  
     if request.method=="POST":
         user=request.user
         form=UserUpdateForm(request.POST, request.FILES, instance=user)
@@ -208,8 +208,8 @@ def profile(request,id):
             request=request,
             template_name="profile.html",
             context={"form":form})
-    return redirect("/")
 
+    return redirect("/")
 
 
 def is_valid_queryparam(param):
@@ -443,27 +443,29 @@ def search(request):
     if not query:
         return HttpResponse("Please input search text..")
     else:
-        if request.user.is_employer:
-
-            results = CustomUser.objects.filter(
-                 Q(full_name__icontains=query)|Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
-            )
-
-        else:
-
-            shift_results = Shift.objects.filter(
+        shift_results = Shift.objects.filter(
                  Q(role__icontains=query)| Q(details__icontains=query)| Q(address__city__icontains=query)
             )
             #print(type(shift_results))
-            customuser_results = CustomUser.objects.filter(
+        customuser_results = CustomUser.objects.filter(
                  Q(last_name__icontains=query)| Q(first_name__icontains=query)|Q(email__icontains=query)
             )
 
-            employer_results = Employer.objects.filter(
+        employer_results = Employer.objects.filter(
                  Q(org_name__icontains=query)
             )
+        if request.user.is_staff:
+   
             results= list(chain(shift_results, customuser_results,employer_results))#from itertools import chain
             print(type(results))
+
+        elif request.user.is_nurse:
+            results=list(chain(shift_results, employer_results ))
+
+        else:
+            results=shift_results
+
+
         context={
             "results": results,
             "query": query,

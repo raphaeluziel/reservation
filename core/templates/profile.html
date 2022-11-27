@@ -22,32 +22,36 @@
             {% endif %}  -->
  
       <div class=" image d-flex flex-column justify-content-center align-items-center">
-         <button class="btn btn-secondary"> <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /></button> <span class="name mt-3">{{user.last_name}} {{user.first_name}}</span> 
+       
+         <button class="btn btn-secondary"> <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /></button> <span class="name mt-3">{{form.instance.last_name}} {{form.instance.first_name}}</span> 
          <br>
-         <span class="idd"><i class="fa fa-envelope"></i> {{user.email}}</span> 
+         <span class="idd"><i class="fa fa-envelope"></i> {{form.instance.email}}</span> 
      	 
-         <div class="email mt-3"> <span><i class="fa fa-phone"></i> {{user.phone}}</div>
-         <div class="d-flex flex-row justify-content-center align-items-center gap-2"> <span class="idd1">user id {{user.id}}</span></div>
+         <div class="email mt-3"> <span><i class="fa fa-phone"></i> {{form.instance.phone}}</div>
+         <div class="d-flex flex-row justify-content-center align-items-center gap-2"> <span class="idd1">user id {{form.instance.id}}</span></div>
          <div class="d-flex flex-row justify-content-center align-items-center mt-3"> <span class="number"> 
          	{% if user.is_nurse and user.id == form.instance.id %} 
-                   {% if user.is_rn %}
+                   {% if form.instance.is_rn %}
                     <p>Rigerested nurse</p>
                      {% else %}
                    <p>Practical nurse/assistant</p>
                    {% endif %}
-                {% elif user.is_employer and user.id == form.instance.id  %}
+                {% elif form.instance.is_employer and user.id == form.instance.id  %}
                     <p>Employer</p>
                 {% else%} 
                     <p>Staff member</p>
                 {% endif %}</span></span> </div>
          <div class=" d-flex mt-2"> <button class="btn1 btn-dark">Contact</button> </div>
-         <div class="text mt-3"> <span>{{user.bios}} </div>
+         <div class="text mt-3"> <span>{{form.instance.bios}} </div>
          
-         <div class=" px-2 rounded mt-4 date "> <span class="join">Joined: {{user.date_joined|date}}</span> </div>
+         <div class=" px-2 rounded mt-4 date "> <span class="join">Joined: {{form.instance.date_joined|date}}</span> </div>
       </div>
    </div>
+   
+</span>
 </div>
 {% include 'includes/profile_update_form.html' %}
+
 </body>
 {% endblock %}
 

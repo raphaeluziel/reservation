@@ -9,35 +9,68 @@
 {% else %}
 
 
-    {% for result in results %}
+    <div class="row">
+    <div class="col-md">
+        <!--div class="card card-body"-->
+            <table class="table table-sm">
+                <tr>
+                    <th>User_Id</th>
+                    {% if result.is_nurse %}
+                    <th>Role</th>
+                    {% endif %}
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Email</th>
+                    <th>Profile</th>
 
-        <ul>
-         {% if not request.user.is_employer %}
-            <li>user_id: {{ result.id}}</li>
-              {% if result.is_nurse %}
-                <li>role: {{ result.nurse.role }}</li>
-             {% endif %}
+                </tr>
+            {% for result in results%}
+          
+             {% if not request.user.is_employer %}
+                <tr>
+                    <td>{{result.id}}</td>
+                    {% if result.is_nurse %}
+                    <td>{{ result.nurse.role }}</td>
+                    {% endif %}
+                    <td>{{ result.last_name }}</td>
+                    <td>{{ result.first_name }}</td>
+                    <td>{{ result.email }}</td>
+                    <td><a href="{% url 'profile' result.user.id %}"class="f-n-hover btn btn-sm btn-outline-dark btn-raised">Profile</a></td>
+                </tr>
+                {% else %}
+
+                    <tr>
+                    <td>{{ result.id}}</td>
+                    {% if result.is_nurse %}
+                    <td>{{ result.nurse.role }}</td>
+                    {% endif %}
+                    <td>{{ result.last_name }}</td>
+                    <td>{{ result.first_name }}</td>
+                    <td>{{ result.email }}</td>
+                    <td><a href="{% url 'profile' result.user.id %}"class="f-n-hover btn btn-sm btn-outline-dark btn-raised">Profile</a></td>
+                </tr>
+
+                
+                {% endif %}
+            {% endfor %}
+
+            </table>
            
-            <li>lastname: {{ result.last_name }}</li>
-            <li>lastname: {{ result.first_name }}</li>
-             <li>email: {{ result.email }}</li>
+            <div class="row">
+            
+            <div class="col col text-center">
+          
+        
+             </div>
+            </div>
+            <hr>
+          </div>
          
-         {% else %}
-         
-            <ul class="list-unstyled card-columns" style="column-count: 2;">
-                <li><i class="fa fa-user"></i>  {{result.id}}</li>
-                <li><i class="fa fa-user"></i>  {{result.last_name}}</li>
-                <hr>
-                <li>{{result.email}}</li>
-                <hr>
-
-            </ul>
-                          
-         {% endif %}
-         </ul>
-        {% endfor %}
+        <!--/div-->
+    </div>
 
 
- {% endif %}
+{% endif %}
+
  {% endblock %}
 
