@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}here will add double"{{section.title}}"{% endblock %}
+{% block title %}"{{section.search}}"{% endblock %}
 {% block content %}
 
 
@@ -13,16 +13,19 @@
 
         <ul>
          {% if not request.user.is_employer %}
-            <li>address: {{ result.address}}</li>
-            <li>role: {{ result.role }}</li>
-             <li>details: {{ result.details }}</li>
-             <li>employer_org_name: {{ result.org_name }}</li>
-             <li>lastname: {{ result.last_name }}</li>
+            <li>user_id: {{ result.id}}</li>
+              {% if result.is_nurse %}
+                <li>role: {{ result.nurse.role }}</li>
+             {% endif %}
+           
+            <li>lastname: {{ result.last_name }}</li>
+            <li>lastname: {{ result.first_name }}</li>
              <li>email: {{ result.email }}</li>
          
          {% else %}
          
             <ul class="list-unstyled card-columns" style="column-count: 2;">
+                <li><i class="fa fa-user"></i>  {{result.id}}</li>
                 <li><i class="fa fa-user"></i>  {{result.last_name}}</li>
                 <hr>
                 <li>{{result.email}}</li>
