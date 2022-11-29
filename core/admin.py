@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from import_export.admin import ImportExportMixin
 
 
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -142,12 +143,12 @@ class EmployerAdmin(BaseUserAdmin):
 
 
 
-class ShiftAdmin(admin.ModelAdmin):
+class ShiftAdmin(ImportExportMixin,admin.ModelAdmin):
    
 
     list_display=('id','employer','role','get_date_formatted','pub_date','updated_date','nurse','status')
+    list_filter= ('employer', 'role','start_time')
 
-    
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
