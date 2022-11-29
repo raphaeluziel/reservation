@@ -1,5 +1,11 @@
-#idone {
+/*#idone {
   background-color: skyblue;
 }
 
-don't delete it. The stylesheets is linked to mainfile, use firefox, remove cookies. 
+don't delete it. The stylesheets is linked to mainfile, use firefox, remove cookies. */
+
+/*password toggle*/
+.showPassWordToggle {
+  cursor:pointer;
+ 
+}

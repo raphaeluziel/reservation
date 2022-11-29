@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'crispy_forms',
     'bootstrap_datepicker_plus',
+    'import_export',
 
     
 ]
