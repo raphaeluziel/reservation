@@ -144,9 +144,10 @@ class EmployerAdmin(BaseUserAdmin):
 
 
 class ShiftAdmin(ImportExportMixin,admin.ModelAdmin):
+#class ShiftAdmin(admin.ModelAdmin):
    
 
-    list_display=('id','employer','role','get_date_formatted','pub_date','updated_date','nurse','status')
+    list_display=('id','employer','role','get_date_formatted','pub_date','updated_date','nurse','status','user')
     list_filter= ('employer', 'role','start_time')
 
     add_fieldsets = (

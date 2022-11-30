@@ -37,6 +37,7 @@ from django.urls import reverse,reverse_lazy
 import datetime
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
+import csv
 
 
 # Create your views here.
@@ -234,8 +235,8 @@ def shift_filter(request):
     print(role)
     status= request.GET.get('status')
 
-    shift_date_min = request.GET.get('shift_date_min')
-    shift_date_max = request.GET.get('shift_date_max')
+    start_time_min = request.GET.get('start_time_min.date()')
+    start_time_max = request.GET.get('start_time_max.date()')
 
    
 
@@ -248,11 +249,11 @@ def shift_filter(request):
     if is_valid_queryparam(nurse_id_exact_query):
         qs = qs.filter(nurse=nurse_id_exact_query)
 
-    if is_valid_queryparam(shift_date_min):
-        qs = qs.filter(shift_date__gte=shift_date_min)
+    if is_valid_queryparam(start_time_min):
+        qs = qs.filter(start_time__gte=start_time_min)
 
-    if is_valid_queryparam(shift_date_max):
-        qs = qs.filter(shift_date__lte=shift_date_max)
+    if is_valid_queryparam(start_time_max):
+        qs = qs.filter(start_time__lte=start_time_max)
 
     if is_valid_queryparam(role) and role!='Choose...':
        qs = qs.filter(role=role)
@@ -543,4 +544,18 @@ def all_available_nurses(wanted_shift):
 
 def error_404_view(request, exception):
     return render(request, 'core/404.html')
+
+@login_required
+def export_csv(request):
+    # test purpose, do not set here conditions if user is.. employer, nurse, admin....
+    shifts = Shift.objects.filter(employer=request.user)
+    response=HttpResponse(content_type="text/csv")
+    response['Content-Disposition']='attachment; filename=shifts'+ str(datetime.now()) + '.csv'
+    writer=csv.writer(response)
+    writer.writerow(['id','employer','role','address','start_time','status'])
+
+   
+    for shift in shifts:
+        writer.writerow([shift.id,shift.employer,shift.role, shift.address, shift.start_time,shift.status])
+    return response
 
