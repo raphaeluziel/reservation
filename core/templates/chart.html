@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}booked_shift{% endblock %}
+{% block content %}
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels:[{%for employer in employers%}'{{employer}}',{%endfor%}],
+
+      datasets: [{
+        label: '# of Shifts',
+        data: [{%for count in counts%}{{count}},{%endfor%}],
+        backgroundColor: [ "rgba(44,198,127,0.55)", "rgba(61,209,202,0.55)", "blue", "red"],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}

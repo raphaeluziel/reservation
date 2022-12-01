@@ -6,6 +6,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
 
 
+
 urlpatterns = [
     path('', views.index, name="index"),
     path('landing/', views.landing, name="landing"),
@@ -26,7 +27,9 @@ urlpatterns = [
     path('reserved_shifts/<id>/', views.reserved_shifts, name='reserved_shifts'),
     path('shifts_done/<id>/', views.shifts_done, name='shifts_done'),
     path('nurse/<id>/', views.nurse, name='nurse'),
-    path('export_csv',views.export_csv,name="export_csv")
+    path('export_csv',views.export_csv,name="export_csv"),
+    path('chart',views.chart,name="chart")
+   
 
 
 ]

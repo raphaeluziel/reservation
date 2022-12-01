@@ -38,6 +38,7 @@ import datetime
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
 import csv
+from django.db.models import Count
 
 
 # Create your views here.
@@ -559,3 +560,28 @@ def export_csv(request):
         writer.writerow([shift.id,shift.employer,shift.role, shift.address, shift.start_time,shift.status])
     return response
 
+
+def chart(request):
+
+    queryset = Shift.objects.values('employer__org_name').annotate(count=Count('id'))
+    result=list(queryset)
+    employers=[]
+    counts=[]
+    for dic in result:
+        for i in dic:
+            employers.append(dic[i])  #print out  ['employer1_org', 10, 'employer2_org', 9]
+        counts.append(dic[i]) #print out [10,9] i.e. count 10 and 9
+
+    employers=employers[::2]#take every other item from employers list now employers is ['employer1_org','employer2_org'] 
+    #print(employers)
+  
+    #print(counts)
+    context={
+    
+        'employers': employers,
+        'counts': counts,
+    }
+    
+   
+    return render(request,'chart.html',context)
+   

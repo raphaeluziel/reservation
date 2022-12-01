@@ -16,7 +16,7 @@
                 <div class="input-group">
                     
                     <input type="search" class="form-control btn-outline-dark " type="search" name="address_contains" placeholder="City contains..."/>
-                    <button class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-outline"><i class="fa fa-search"></i></button>
                 </div>
             </div>       
 
@@ -24,7 +24,7 @@
                 <div class="input-group">
                     
                     <input type="search" class="form-control btn-outline-dark" type="search" name="org_name_contains" placeholder="Organization name contains..."/>
-                    <button class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-outline"><i class="fa fa-search"></i></button>
                 </div>
             </div>       
 
@@ -32,7 +32,7 @@
                 <div class="input-group">
                     
                     <input type="search" class="form-control btn-outline-dark" type="search" name="nurse_id_exact" placeholder="nurse id exact..."/>
-                    <button class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-outline"><i class="fa fa-search"></i></button>
                 </div>
             </div>  
             
@@ -80,8 +80,9 @@
         <div class="col">
           <br>
           
-          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"><a style="text-decoration: none;" href ="{% url 'export_csv'%}">Export CSV</a></button>
+          <button class="btn btn-outline-dark my-sm-0" type="submit">Search</button>
+          <button class="btn btn-outline-dark my-sm-0" type="submit"><a style="text-decoration: none;" href ="{% url 'chart'%}">Chart</a></button>
+          <button class="btn btn-outline-dark my-sm-0" type="submit"><a style="text-decoration: none;" href ="{% url 'export_csv'%}">CSV</a></button>
   
         </div>
       </form>
