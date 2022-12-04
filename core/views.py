@@ -233,7 +233,9 @@ def shift_filter(request):
     #id_exact_query = request.GET.get('id_exact')
     nurse_id_exact_query=request.GET.get('nurse_id_exact')
     role= request.GET.get('role') 
-    print(role)
+    
+
+    #print(role)
     status= request.GET.get('status')
 
     start_time_min = request.GET.get('start_time_min.date()')
@@ -372,6 +374,7 @@ def deleteShift(request, pk):
             messages.error(request,"This shift has already been reserved, please contact our customer service for further information.")
         else:
             shift.delete()
+            messages.success(request,"This shift has been deleted.")
             return redirect('/shifts')
 
     context = {'shift':shift}
@@ -459,7 +462,7 @@ def search(request):
         if request.user.is_staff:
    
             results= list(chain(shift_results, customuser_results))#from itertools import chain
-            print(type(results))
+            #print(type(results))
 
         elif request.user.is_nurse:
             results=list(chain(shift_results, employer_results ))

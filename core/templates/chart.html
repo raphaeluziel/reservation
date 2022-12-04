@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}booked_shift{% endblock %}
 {% block content %}
+
+
 <div>
   <canvas id="myChart"></canvas>
 </div>
@@ -19,7 +21,7 @@
       datasets: [{
         label: '# of Shifts',
         data: [{%for count in counts%}{{count}},{%endfor%}],
-        backgroundColor: [ "rgba(44,198,127,0.55)", "rgba(61,209,202,0.55)", "blue", "red"],
+        backgroundColor: [ "rgba(44,198,127,0.55)", "rgba(61,209,202,0.55)", "rgba(222, 155, 67,0.55)", "red"],
         borderWidth: 1
       }]
     },
@@ -29,7 +31,9 @@
           beginAtZero: true
         }
       }
-    }
+ 
+  }
+    
   });
 </script>
 {% endblock %}

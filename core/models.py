@@ -167,6 +167,7 @@ class Shift(models.Model):
 	status = models.CharField(max_length=200, null=True, choices=STATUS)
 	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True) # the user could be employer, admin, staff or nurse. And if nurse reserves the shift, this field will be the same as nurse field.
 	time_reserved = models.DateTimeField(auto_now_add=True,null=True)
+	#title_tracker = FieldTracker(fields=['title']) https://django-model-utils.readthedocs.io/en/latest/utilities.html
 
 	#reserved_by=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
 	
