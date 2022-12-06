@@ -1,7 +1,7 @@
 from .models import Shift
 from django.db.models.signals import post_save,post_delete,pre_save
 from django.dispatch import receiver
-from . import views
+
 
 
 from django.core.mail import send_mail

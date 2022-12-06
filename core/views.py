@@ -53,18 +53,21 @@ def index(request):
 
 def login_view(request):
     error = None
+    default_password ="Monday_123"
     if request.method == 'POST':
         form = LoginForm(request.POST or None)
         if form.is_valid():
             username = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             user = authenticate(request,username=username, password=password)
-            if user is not None and user.last_login is None:
+
+            if user is not None and password == default_password:
+               
                 login(request, user)
 
-                messages.info(request, 'First time user please reset your password')
+                messages.info(request, 'For security reasons, please change the default password')
                 return redirect ('password_change')
-                
+           
             elif user is not None:
                 login(request, user)
                 return redirect("/shifts")
@@ -82,6 +85,7 @@ def logout_view(request):
 @login_required
 def password_change(request):
     user = request.user
+
     if request.method == 'POST':
         form = SetPasswordForm(user, request.POST)
         if form.is_valid():
@@ -94,6 +98,8 @@ def password_change(request):
 
     form = SetPasswordForm(user)
     return render(request, 'password_reset_confirm.html', {'form': form})
+   
+
 
 @login_required
 def password_reset_view(request):
@@ -311,8 +317,8 @@ def shifts(request):
 #to add if nurse, then it's not allowed to create shift
 
 @login_required
-def shift_detail(request,shift_id):
-    shift=get_object_or_404(Shift, pk=shift_id)
+def shift_detail(request,pk):
+    shift=get_object_or_404(Shift, id=pk)
     return render(request, 'shift_detail.html',{'shift':shift})
 
 

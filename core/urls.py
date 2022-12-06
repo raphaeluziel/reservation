@@ -10,7 +10,7 @@ from django.contrib.auth import logout
 urlpatterns = [
     path('', views.index, name="index"),
     path('landing/', views.landing, name="landing"),
-    path('shifts/<int:shift_id>/',views.shift_detail,name="shift_detail"),
+    path('shifts/<str:pk>/',views.shift_detail,name="shift_detail"),
     path('shifts/',views.shifts, name="shifts"),
     path('login/',views.login_view, name="login"),
     path('logout/',views.logout_view, name="logout"),
@@ -24,7 +24,7 @@ urlpatterns = [
     path('delete_shift/<str:pk>/', views.deleteShift, name="delete_shift"),
     path('reserve_shift/<str:pk>/', views.reserve_shift, name="reserve_shift"),
     path('search/', views.search, name='search'),
-    path('reserved_shifts/<id>/', views.reserved_shifts, name='reserved_shifts'),
+    path('reserved_shifts/<id>/', views.reserved_shifts, name='reserved_shifts'),#the id is user id, check how many shifts that user has reserved, employer is not allowed to access
     path('shifts_done/<id>/', views.shifts_done, name='shifts_done'),
     path('nurse/<id>/', views.nurse, name='nurse'),
     path('export_csv',views.export_csv,name="export_csv"),
