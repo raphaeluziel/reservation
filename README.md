@@ -5,7 +5,7 @@ The app-Reservation offers a convenient tool for a workforce leasing company to 
 A. Employer:
 
 - An employer can use the user interface to publish and update shifts.
-- An employer can delete a shift if it has not been reserved by nurses, agency staff, or admins. If the shift has been reserved, only agency staff can delete it.
+- An employer can delete a shift if it has not been reserved by nurses, agency staff, or admins. Otherwise, only agency staff can delete it.
 - With an employee's pre-approval, an employer can assign a specific shift to that employee (reserve a shift). A reserved nurse cannot be reserved on the same day by another employer.
 - An employer can view all of their own shifts (open, reserved, unpublished, unfilled, done), but cannot view other employers' published shifts.
 
