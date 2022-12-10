@@ -1,29 +1,36 @@
-
 ## Reservation
 
-The app-Reservation offers a convenient tool for a workforce leasing company to provide short-time work opportunities (Gig work) for healthcare professionals. Currently, there is no signup function available, and only allowed users can use the app. At the moment, there are four user groups:
+The app-Reservation offers a convenient tool for a workforce leasing company to provide short-time work opportunities (gig work) for healthcare professionals. Currently, only approved users can use the app, and there are four user groups:
 
-A. Employer
+A. Employer:
 
-An employer can publish, update shifts via the user interface. An employer can also delete a shift if it hasn't been reserved (by nurses, agency staff, or admin) yet. Otherwise, only job agency staff can delete it.
+- An employer can use the user interface to publish and update shifts.
+- An employer can delete a shift if it has not been reserved by nurses, agency staff, or admins. If the shift has been reserved, only agency staff can delete it.
+- With an employee's pre-approval, an employer can assign a specific shift to that employee (reserve a shift). A reserved nurse cannot be reserved on the same day by another employer.
+- An employer can view all of their own shifts (open, reserved, unpublished, unfilled, done), but cannot view other employers' published shifts.
 
-With the employee's pre-approval, an employer can assign a specific shift to that employee (reserve a shift).
+B. Nurse:
 
-An employer can view all of their own shifts (open, reserved, unpublished, unfilled, done). The employer cannot view other employers' published shifts.
+- Nurses are divided into three categories: registered nurses (RNs), practical nurses (PNs), and assistants (ASSTs).
+- RNs can access and reserve all available shifts (RN, PN, and ASST).
+- PNs can only view shifts that are open to PNs and ASSTs.
+- Assistants are restricted to working on ASST shifts only.
+- A nurse can view and reserve all open shifts offered by all employers.
 
-B. Nurse
+Employers and nurses are treated as customers. As a customer, a user can update their own profile and reset their password.
 
-There are three types of nurses: registered nurse (RN), practical nurse (PN), and assistant (ASST). RNs have the right to access and reserve all available shifts (RN, PN, and ASST). Practical nurses can only view shifts that are open to PN and ASST. Assistants are restricted to working on ASST shifts. A nurse can view and reserve all **OPEN** shifts offered by all employers.
+C. Agency staff:
 
-Employers and nurses are treated as customers. A customer user can update their own profile and reset their password.
+- Agency staff can access all open shifts offered by different employers.
+- Agency staff can assign a shift to a nurse with mutual agreement.
+- Agency staff can publish, update, and delete shifts.
 
-C. Agency staff
+D. Admin (Superuser):
 
-Agency staff can access all open shifts offered by different employers. Agency staff can assign a shift to a nurse under mutual agreement. Agency staff can publish, update, and delete shifts.
+- Admins have all the rights mentioned above.
+- Admins can also create, update, and delete users.
+- Admins issue initial passwords to users.
 
-D. Admin (Superuser)
-
-An admin has all the rights mentioned above. Admins also create, update, and delete users. Admins issue initial passwords to users.
 
 ### Built on top of:
 
@@ -31,6 +38,15 @@ An admin has all the rights mentioned above. Admins also create, update, and del
 2. [bootstrap](https://getbootstrap.com/)
 3. [crispy forms](https://django-crispy-forms.readthedocs.io/en/latest/)
 4. [bootstrap_datepicker_plus](https://pypi.org/project/django-bootstrap-datepicker-plus/))
+
+
+## Features
+
+1. Admins, staff, and employers can import or export shifts using CSV, XLSX, JSON, YAML, Pandas, and HTML formats.
+2. The search and multiple filter options allow users to easily find what they're looking for without violating privacy by accessing other users' data or reserved shifts.
+3. Admins/staff can view live shift data on the admin panel by checking the data or viewing visualized charts.
+4. A chart bot can make the user interface more user-friendly and accessible for accessing the service.-todo
+
 
 ## Quick start
 
