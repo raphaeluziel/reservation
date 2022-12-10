@@ -108,5 +108,26 @@
 
 {% endif %}
 
+<!-- Generate pagination links using the paginator variable -->
+{% if paginator.num_pages > 1 %}
+
+    <ul>
+        {% if page.has_previous %}
+            <li><a href="?page={{ page.previous_page_number }}">Previous</a></li>
+        {% endif %}
+
+        {% for page_number in paginator.page_range %}
+            {% if page.number == page_number %}
+                <li>{{ page_number }}</li>
+            {% else %}
+                <li><a href="?page={{ page_number }}">{{ page_number }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page.has_next %}
+            <li><a href="?page={{ page.next_page_number }}">Next</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
 </main>
 {% endblock %}

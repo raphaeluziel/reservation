@@ -37,6 +37,9 @@ from django.urls import reverse,reverse_lazy
 import datetime
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
+
+
+
 import csv
 from django.db.models import Count
 
@@ -272,49 +275,45 @@ def shift_filter(request):
 
     return qs
 
-
-
 @login_required
 def shifts(request):
-    user=request.user
-    employer=Employer.objects.all()
+    user = request.user
 
-    qs=shift_filter(request)
-    #paginator=Paginator(qs,3) #Django Pagination by Queryset 2021.1
-    #page=request.GET.get('page')
-    
-    #print(Shift.objects)
-    if request.user.is_employer:
-    
-    #if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
-    
-        #e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
-        shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-start_time')
+    qs = shift_filter(request)
 
-    #if user is admin, job agency staff or nurse, then all shifts are visible
+    # If the user is an employer, only show their own published shifts
+    if user.is_employer:
+        shifts = Shift.objects.filter(employer=user).order_by('-start_time')
+
+    # If the user is a nurse, show all published and status="Open" shifts by all employers
+    elif user.is_nurse:
+        shifts = Shift.objects.filter(status="Open").order_by('start_time')
+
+    # If the user is an admin, show all published shifts by all employers
     else:
-        
-        shifts=Shift.objects.all().order_by('start_time')
-    
-    roles=Shift().ROLES 
-    statuses=Shift().STATUS
-    """
+        shifts = Shift.objects.filter(published = True).order_by('start_time')
+
+    # Use Django's built-in pagination to split the list of shifts into multiple pages
+    paginator = Paginator(shifts, 2)  # Show 2 shifts per page
+    #print(paginator.count) #7
+    page = request.GET.get('page', 1)  # Use 1 as the default page number
+
+    # Handle any errors that may occur when trying to retrieve the page of shifts
     try:
-        qs=paginator.get_page(page)
-    except PageNotAnInteger:
-        qs=paginator.get_page(1)
+        shifts = paginator.page(page)
     except EmptyPage:
-        qs=paginator.get_page(paginator.num_pages)
-    """
-    context={'shifts':shifts,'queryset':qs,'statuses':statuses,'roles':roles}
+        # If the page is out of range (e.g. 9999), return an empty page
+        shifts = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+         shifts = paginator.page(1)
+    roles = Shift().ROLES
+    statuses = Shift().STATUS
 
-    return render(request,'shifts.html',context)
+    context = {"shifts": shifts, "queryset": qs, "statuses": statuses, "roles": roles}
+
+    return render(request, "shifts.html", context)
 
 
-
-
-### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
-#to add if nurse, then it's not allowed to create shift
 
 @login_required
 def shift_detail(request,pk):
@@ -594,3 +593,6 @@ def chart(request):
    
     return render(request,'chart.html',context)
    
+
+    
+

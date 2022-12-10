@@ -1,3 +1,5 @@
+
+"""
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from core.views import *
@@ -111,3 +113,4 @@ class TestUrls(SimpleTestCase):
 		self.assertEquals(resolve(url).func,chart)
 
 
+"""
