@@ -45,7 +45,7 @@ D. Admin (Superuser):
 1. Admins, staff, and employers can import or export shifts using CSV, XLSX, JSON, YAML, Pandas, and HTML formats. The imported data can then be updated in the database.
 2. The search and multiple filter options allow users to easily find what they're looking for without violating privacy by accessing other users' data or reserved shifts.
 3. Admins/staff can view live shift data on the admin panel by checking the data or viewing visualized charts.
-4. A chart bot can make the user interface more user-friendly and accessible for accessing the service.-todo
+4. A charbot can make the user interface more user-friendly and accessible for accessing the service.-todo
 
 
 ## Quick start
