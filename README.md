@@ -15,7 +15,7 @@ B. Nurse:
 - RNs can access and reserve all available shifts (RN, PN, and ASST).
 - PNs can only view shifts that are open to PNs and ASSTs.
 - Assistants are restricted to working on ASST shifts only.
-- A nurse can view and reserve all open shifts offered by all employers.
+- A nurse can view and reserve his or her role permitted shifts offered by all employers.
 
 Employers and nurses are treated as customers. As a customer, a user can update their own profile and reset their password.
 
