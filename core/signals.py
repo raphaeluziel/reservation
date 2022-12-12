@@ -1,51 +1,58 @@
-from .models import Shift
-from django.db.models.signals import post_save,post_delete,pre_save
+import logging
+
+from django.core.mail import send_mail, EmailMessage
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 
+from .models import Shift,CustomUser
 
 
-from django.core.mail import send_mail
-
-
-@receiver(pre_save, sender=Shift)
-def shift_pre_save_receiver(sender, instance,**kwargs):
-    if instance.id is None:
-        print(f"This is from presave, I am creating shift now,{sender},kwargs:{kwargs}")
-        
-    else:
-        previous = Shift.objects.get(id=instance.id)
-        print(f"Hello from pre-save, Shift id ,{previous.id}, has been updated,{sender},kwargs:{kwargs}")
-        
+logger = logging.getLogger(__name__)
 
 @receiver(post_save, sender=Shift)
-def shift_post_save_receiver(sender, instance,created,**kwargs):
+def shift_post_save_receiver(sender, instance, created, **kwargs):
+   
     if created:
-        id = instance.id
-        print(f"This is from post save, shift {id} has been created,{sender},kwargs:{kwargs}")
-        print(f"send email to blablabla,{sender},kwargs:{kwargs}")
-        
- 
+        # Shift was created
+        subject = "Shift created"
+        message = f"Shift with id {instance.id} by {instance.user}"
+        recipients = ["yi.yuan.glo@gmail.com", "yi.yuan.new@gmail.com"]
+        email = EmailMessage(subject, message, to=recipients)
+        email.send()
     else:
+        """
+        # Shift was updated
+        # Get the list of fields that have been updated
+        updated_fields = []
         previous = Shift.objects.get(id=instance.id)
-        print("This is from post save, Shift id ",previous.id, "has been updated")
-        print(f"{sender},kwargs:{kwargs}")
- 
+        for field in instance._meta.fields:
+            # Check if the field has been updated
+            if instance.has_changed(field.name):
+          
+                # The field has been updated
+                updated_fields.append(field.name)
+        """
+        subject = "Shift updated"
+        message = f"Shift with id {instance.id} was updated by {instance.user}."
+        recipients = ["yi.yuan.glo@gmail.com", "yi.yuan.new@gmail.com"]
+        email = EmailMessage(subject, message, to=recipients)
+        email.send()
 
-@receiver(post_delete,sender=Shift)
-def delete_shift(sender,instance,**kwargs):
-    print(f"Shift has been deleted,{sender},kwargs:{kwargs}")
+
+
+@receiver(post_delete, sender=Shift)
+def delete_shift(sender, instance, **kwargs):
+       
+    logger.info(f"Shift with id {instance.id} was deleted by {instance.user}")
+    subject = "Shift deleted"
+    message = f"Shift with id {instance.id} was deleted by {instance.user}"
+    recipients = ["yi.yuan.glo@gmail.com", "yi.yuan.new@gmail.com"]
+    email = EmailMessage(subject, message, to=recipients)
+    email.send()
 
 
 
 
-"""
-def send_mail_to_user(sender, instance, created, **kwargs):
-    if created:
-        send_mail(
-                'Subject here',
-                'Here is the message.',
-                'from@example.com',
-                ['to@example.com'],
-                fail_silently=False,
-            )
-"""
+
+
+

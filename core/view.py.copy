@@ -177,4 +177,52 @@ class UpdateShiftForm(ModelForm):
                 return cleaned_data
 
 
+
+
+
+"""
+@login_required
+def shifts(request):
+    user=request.user
+    employer=Employer.objects.all()
+
+    qs=shift_filter(request)
+    #paginator=Paginator(qs,3) #Django Pagination by Queryset 2021.1
+    #page=request.GET.get('page')
+    
+    #print(Shift.objects)
+    if request.user.is_employer:
+    
+    #if login user is an employer, then this employer could see only his/her own published shifts (not other employers')
+    
+        #e.g. in shell, query  was  print(Shift.objects.all().filter(employer_id=2))
+        shifts=Shift.objects.all().filter(employer_id=user.id).order_by('-start_time')
+
+    #if user is admin, job agency staff or nurse, then all shifts are visible
+    else:
+        
+        shifts=Shift.objects.all().order_by('start_time')
+    
+    roles=Shift().ROLES 
+    statuses=Shift().STATUS
+    """
+    """
+    try:
+        qs=paginator.get_page(page)
+    except PageNotAnInteger:
+        qs=paginator.get_page(1)
+    except EmptyPage:
+        qs=paginator.get_page(paginator.num_pages)
+    """
+    """
+    context={'shifts':shifts,'queryset':qs,'statuses':statuses,'roles':roles}
+
+    return render(request,'shifts.html',context)
+
+
+
+"""
+### Create, Update, Delete, Pulish a draft shift part. Only employer /staff /admin have the access rights###
+#to add if nurse, then it's not allowed to create shift
+
    
