@@ -354,8 +354,8 @@ def updateShift(request, pk):
 
     shift = Shift.objects.get(id=pk)
     form = UpdateShiftForm(instance=shift)
-    
-
+    nurse=shift.nurse
+    employer=shift.employer
     if request.method == 'POST':
 
         form = UpdateShiftForm(request.POST, instance=shift)
