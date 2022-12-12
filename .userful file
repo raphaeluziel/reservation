@@ -325,5 +325,20 @@ https://stackoverflow.com/questions/60730518/how-to-change-field-type-and-retain
 https://stackoverflow.com/questions/21926114/how-do-i-render-one-django-modelform-charfield-as-both-a-select-box-and-a-text-b
 How do I render one Django ModelForm CharField as both a select box and a text box?
 
+# Create a CustomUser instance
+custom_user = CustomUser.objects.create(email="some_email2@example.com", password="some_password")
 
+# Get a Shift instance
+shift = Shift.objects.get(id=23)
 
+# Get a Nurse instance
+nurse = Nurse.objects.get(id=17)
+
+# Change the nurse, status, role, and user fields
+shift.nurse = nurse
+shift.status = "Cancelled"
+shift.role = "RN"
+shift.user = custom_user
+
+# Save the Shift instance
+shift.save()

@@ -96,7 +96,6 @@ class CreateShiftForm(ModelForm):
         
         #fields=['nurse','employer','address','status','role','user','start_time','finish_time','details','published']
     
-      
         widgets = {
              
                 'start_time': DateTimePickerInput(),

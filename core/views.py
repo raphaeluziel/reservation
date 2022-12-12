@@ -38,6 +38,7 @@ import datetime
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
 
+from core.logging.logging_config import logger
 
 
 import csv
@@ -325,15 +326,16 @@ def shift_detail(request,pk):
 @admin_staff_employer_required
 
 def createShift(request):
-    user=request.user
     employer=Employer.objects.all()
-    
+    shift = Shift.objects.all()
     form = CreateShiftForm()
     if request.method == 'POST':
         form = CreateShiftForm(request.POST)
+        form.user=request.user
 
         if form.is_valid():
-
+            #shift.user=request.user #got in siganl
+            print("create_shift user",form.user) #print out user email
             form.save()
             messages.success(request, "The shift has been created")
 
@@ -361,7 +363,7 @@ def updateShift(request, pk):
             messages.error(request, "You can not update the shift anymore. The shift date has already passed. ")
         else:
             if form.is_valid():
-                
+                shift.user=request.user
                 form.save()
                 messages.success(request, "The shift has been updated")
                 return redirect('/shifts')
@@ -375,6 +377,7 @@ def updateShift(request, pk):
 def deleteShift(request, pk):
     shift = Shift.objects.get(id=pk)
     if request.method == "POST":
+        shift.user=request.user
         if request.user.is_employer and shift.status=="Reserved":
             messages.error(request,"This shift has already been reserved, please contact our customer service for further information.")
         else:

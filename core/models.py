@@ -9,6 +9,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
 import datetime
 from datetime import datetime, timedelta
+from core.logging.logging_config import logger
+
 
 
 # Create your models here.
@@ -170,6 +172,13 @@ class Shift(models.Model):
 	#title_tracker = FieldTracker(fields=['title']) https://django-model-utils.readthedocs.io/en/latest/utilities.html
 
 	#reserved_by=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
+
+	def save(self, *args, **kwargs):
+		# Log the new value of the start_time field
+		logger.info('Shift start_time changed to %s', self.start_time)
+        
+		# Call the save() method of the superclass
+		super().save(*args, **kwargs)
 	
 	def __str__(self):
 		return f'{self.pub_date}'
