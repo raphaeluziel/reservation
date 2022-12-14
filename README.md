@@ -62,7 +62,7 @@ $ source myvenv/bin/activate
 ## install django before that make sure pip is update
 ```
 ~$ python3 -m pip install --upgrade pip
-(myvenv) ~$ pip3 install -r requirements.txt
+(myvenv) ~$ pip freeze requirements.txt
 ~$ git init
 ~$ django-admin startproject reservation .
 ~$ pip3 install python-decouple
