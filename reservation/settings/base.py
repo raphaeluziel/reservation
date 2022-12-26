@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap_datepicker_plus',
     'import_export',
+    'compressor',
 
     
 ]
@@ -149,6 +150,22 @@ STATIC_ROOT= 'staticfiles'
 STATICFILES_DIRS=[
    os.path.join(BASE_DIR,'static')
 ]
+
+
+
+STATICFILES_FINDERS =[
+    'django.contrib.staticfiles.finders.FileSystemFinder',  
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',    
+    'compressor.finders.CompressorFinder',
+]
+
+COMPRESS_PRECOMPILERS = [
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+]
+
+
+
+
 
 
 MEDIA_URL= '/imgs/'

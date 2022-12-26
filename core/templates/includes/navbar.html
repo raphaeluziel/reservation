@@ -7,9 +7,9 @@
            
               {% if user.is_authenticated %}
                   {% if user.is_nurse %}
-                  <a class="nav-item nav-link text-dark" href="{% url 'nurse' user.id %}">Home</a>
+                  <a class="nav-item nav-link text-light" href="{% url 'nurse' user.id %}">Home</a>
                   {% else %}      
-                  <a class="nav-item  nav-link text-dark" href="{% url 'shifts' %}">Home</a>    
+                  <a class="nav-item  nav-link text-light" href="{% url 'shifts' %}">Home</a>    
                   {% endif %}
             {% endif %}
           
@@ -22,7 +22,7 @@
          <div class="collapse navbar-collapse" id="navbarToggle">
             <!-- Navbar Left Side -->
             <div class="navbar-nav">
-               <a class="nav-item nav-link text-dark" href="/">About</a>
+               <a class="nav-item nav-link text-light" href="/">About</a>
             </div>
             
             <!-- Nav bar search -->
@@ -30,7 +30,7 @@
             {% if user.is_authenticated %}
             <form class="d-flex" action="{% url 'search' %}">
                <input class="form-control me-2 text-dark" type="query" placeholder="Search" aria-label="query" name="query">
-               <button class="btn btn-outline-dark" type="submit"><i class="fa fa-search"></i></button>
+               <button class="btn btn-outline-light" type="submit"><i class="fa fa-search"></i></button>
 
             </form>
                
@@ -41,17 +41,17 @@
             <div class="navbar-nav">
               
                {% if user.is_superuser %}
-               <a class="nav-item nav-link text-dark" href="{% url 'admin:login' %}">Admin_login</a>
+               <a class="nav-item nav-link text-light" href="{% url 'admin:login' %}">Admin_login</a>
                {% endif %}
-               <a class="nav-item nav-link text-dark" href="{% url 'profile' user.id %}">
+               <a class="nav-item nav-link text-light" href="{% url 'profile' user.id %}">
                {{user.first_name}} <i class="fas fa-user"></i>
                </a>
 
-               <a class="nav-item nav-link text-dark" href="{% url 'logout' %}">
+               <a class="nav-item nav-link text-light" href="{% url 'logout' %}">
                Log out <i class="fas fa-sign-out-alt"></i>
                </a>
                {% else %}
-               <a class="nav-item nav-link text-dark" href="{% url 'login' %}">
+               <a class="nav-item nav-link text-light" href="{% url 'login' %}">
                Log in <i class="fas fa-sign-in-alt"></i>
                </a>
                {% endif %}

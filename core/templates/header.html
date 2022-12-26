@@ -13,7 +13,10 @@
 
      <!-- Custom CSS -->
      <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
-   
+     {% load compress %}
+     {% compress css %}
+    <link type="text/x-scss" href="{% static 'core/style.scss' %}" rel="stylesheet" media="screen">
+    {% endcompress %}
 
     <!-- reference to your installed Font Awesome Free package's files here -->
     <script src="{% static 'fontawesomefree/all.min.js' %}"></script>

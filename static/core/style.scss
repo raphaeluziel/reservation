@@ -1,0 +1,26 @@
+
+.bg-warning{
+	background-color:#7e55c7!important;
+}
+.btn-outline-dark{
+	color:#7e55c7!important;
+}
+
+.form-control::placeholder {
+  color: #110724 !important;
+  opacity: 0.9;
+}
+
+.form-control::placeholder:hover {
+  color: white!important;
+  opacity: 1;
+}
+.btn-outline-dark:hover {
+  color:white!important;
+  background-color:#7e55c7!important;
+  border-color: grey;
+}
+
+.text-dark{
+	color:#7e55c7!important;
+}

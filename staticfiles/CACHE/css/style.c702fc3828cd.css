@@ -1,0 +1,23 @@
+/* line 2, static/core/style.scss */
+.bg-warning {
+  background-color: #7e55c7 !important; }
+
+/* line 5, static/core/style.scss */
+.btn-outline-dark {
+  color: #7e55c7 !important; }
+
+/* line 9, static/core/style.scss */
+.form-control::placeholder {
+  color: #7e55c7 !important;
+  opacity: 1; }
+
+/* line 14, static/core/style.scss */
+.form-control:hover {
+  color: white !important;
+  opacity: 1; }
+
+/* line 18, static/core/style.scss */
+.btn-outline-dark:hover {
+  color: white !important;
+  background-color: #7e55c7 !important;
+  border-color: grey; }
