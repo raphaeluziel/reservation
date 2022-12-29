@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="{% static 'bot/css/bot.css' %}">
+
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Chatbot</title>
+
+</head>
+<body>
+<div class="container">
+    <div class="chatbox">
+
+        <div class="chatbox__support">
+            <div class="chatbox__header">
+                <div class="chatbox__image--header">
+                    <img src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/48x48/Reddit-Icon.png" alt="image">
+                </div>
+                <div class="chatbox__content--header">
+                    <h4 class="chatbox__heading--header">Chat support</h4>
+                    <p class="chatbox__description--header">Hi. My name is Sam. How can I help you?</p>
+                </div>
+               
+            </div>
+             
+            <div class="chatbox__messages"> </div>
+
+            <div class="chatbox__footer">
+                   <div>{% csrf_token %}</div>
+                    <!-- Input -->
+                    <input type="text" name="message"  class="input" placeholder="Type your message here..."> 
+                    <button type="button" class="chatbox__send__footer send__button" >Send</button>
+            </div>
+
+        </div>
+       
+
+        
+
+        <div class="chatbox__button">
+            <button><img src="https://raw.githubusercontent.com/patrickloeber/chatbot-deployment/ce309f3aae1ccc3783059876a1b66e4d7d77ca9f/standalone-frontend/images/chatbox-icon.svg" /></button>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script type="text/javascript" src="{% static 'bot/js/bot.js' %}"></script>
+
+</body>
+</html>

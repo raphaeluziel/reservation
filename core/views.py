@@ -49,11 +49,11 @@ from django.db.models import Count
 
 def landing(request):
 
-    return render(request, 'core/landing.html')
+    return render(request, 'landing.html')
 
 def index(request):
     employer=Employer.objects.all()
-    return render(request, 'core/index.html')
+    return render(request, 'index.html')
 
 def login_view(request):
     error = None
@@ -70,21 +70,21 @@ def login_view(request):
                 login(request, user)
 
                 messages.info(request, 'For security reasons, please change the default password')
-                return redirect ('core/password_change')
+                return redirect ('password_change')
            
             elif user is not None:
                 login(request, user)
-                return redirect("/core/shifts")
+                return redirect("/shifts")
             else:
                 messages.info(request, 'Username or Password is incorrect')
     else:
         form = LoginForm()
-    return render(request, 'core/login.html', {'form': form, 'error': error})
+    return render(request, 'login.html', {'form': form, 'error': error})
 
 
 def logout_view(request):
     logout(request)
-    return render(request, 'core/index.html')
+    return render(request, 'index.html')
 
 @login_required
 def password_change(request):
@@ -95,13 +95,13 @@ def password_change(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your password has been changed")
-            return redirect('core/login')
+            return redirect('login')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
 
     form = SetPasswordForm(user)
-    return render(request, 'core/password_reset_confirm.html', {'form': form})
+    return render(request, 'password_reset_confirm.html', {'form': form})
    
 
 
@@ -113,13 +113,13 @@ def password_reset_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your password has been changed")
-            return redirect('core/login')
+            return redirect('login')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
 
     form = SetPasswordForm(user)
-    return render(request, 'core/password_reset_confirm.html', {'form': form})
+    return render(request, 'password_reset_confirm.html', {'form': form})
 
 
 
@@ -152,7 +152,7 @@ def password_reset_request(request):
                         """
                     )
 
-                    return redirect('core/login')
+                    return redirect('login')
                 else:
                     messages.error(request,"something went wrong, wait some minutes and check again later")
 
@@ -160,7 +160,7 @@ def password_reset_request(request):
                 messages.error(request, "we did not find such a user.")
                   
 
-            return redirect('core/password_reset_request')
+            return redirect('password_reset_request')
 
   
     form = PasswordResetForm()
@@ -185,7 +185,7 @@ def passwordResetConfirm(request, uidb64, token):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Your password has been set. You may go ahead and <b>log in </b> now.")
-                return redirect('core/login')
+                return redirect('login')
             else:
                 for error in list(form.errors.values()):
                     messages.error(request, error)
@@ -196,7 +196,7 @@ def passwordResetConfirm(request, uidb64, token):
         messages.error(request, "Link is expired")
 
     messages.error(request, 'Something went wrong, redirecting back to Homepage')
-    return redirect("/core/")
+    return redirect("/")
 
 
 @login_required
@@ -218,10 +218,10 @@ def profile(request,id):
 
         return render(
             request=request,
-            template_name="core/profile.html",
+            template_name="profile.html",
             context={"form":form})
 
-    return redirect("/core/")
+    return redirect("/")
 
 
 def is_valid_queryparam(param):
@@ -312,14 +312,14 @@ def shifts(request):
 
     context = {"shifts": shifts, "queryset": qs, "statuses": statuses, "roles": roles}
 
-    return render(request, "core/shifts.html", context)
+    return render(request, "shifts.html", context)
 
 
 
 @login_required
 def shift_detail(request,pk):
     shift=get_object_or_404(Shift, id=pk)
-    return render(request, 'core/shift_detail.html',{'shift':shift})
+    return render(request, 'shift_detail.html',{'shift':shift})
 
 
 @login_required
@@ -339,13 +339,13 @@ def createShift(request):
             form.save()
             messages.success(request, "The shift has been created")
 
-            return redirect('/core/shifts')
+            return redirect('/shifts')
         else:
             messages.error(request,"Please correct your input field and try again")
 
     context = {'form':form}
 
-    return render(request, 'core/create_shift.html', context)
+    return render(request, 'create_shift.html', context)
 
 
 @login_required
@@ -366,7 +366,7 @@ def updateShift(request, pk):
                 shift.user=request.user
                 form.save()
                 messages.success(request, "The shift has been updated")
-                return redirect('/core/shifts')
+                return redirect('/shifts')
 
     context = {'form':form}
     return render(request, 'create_shift.html', context)
@@ -383,10 +383,10 @@ def deleteShift(request, pk):
         else:
             shift.delete()
             messages.success(request,"This shift has been deleted.")
-            return redirect('/core/shifts')
+            return redirect('/shifts')
 
     context = {'shift':shift}
-    return render(request, 'core/delete_shift.html', context)
+    return render(request, 'delete_shift.html', context)
 
 #if the nurse is not open to the wanted shift date, then return False
 def is_available(wanted_shift, nurse:Nurse): 
@@ -415,13 +415,13 @@ def reserve_shift(request, pk):
             shift.time_reserved =datetime.now()
             shift.save()
             messages.success(request, "The shift has been reserved")
-        return redirect('/core/shifts')
+        return redirect('/shifts')
         
     if request.user.is_staff or request_user.is_employer:
         form = ReserveShiftForm(instance=shift) 
 
         if shift.status!="Open": #avoid repeated reserve  the same shift
-                return redirect("/core/")
+                return redirect("/")
         
         if request.method=="POST":
             #all_available_nurses(shift)
@@ -441,10 +441,10 @@ def reserve_shift(request, pk):
            
             else:
                 messages.error(request, 'Something went wrong, redirecting back to Homepage')
-                return redirect ("/core/")
+                return redirect ("/")
            
         context = {'form':form}
-        return render(request, 'core/reserve_shift.html', context)
+        return render(request, 'reserve_shift.html', context)
 
 @login_required
 
@@ -485,7 +485,7 @@ def search(request):
 
             }
         
-        return render(request, "core/search.html", context)
+        return render(request, "search.html", context)
 
 
 @login_required
@@ -504,10 +504,10 @@ def reserved_shifts(request,id):
         reserved_shifts=Shift.objects.all().filter(nurse_id=id,status="Reserved",).order_by('-start_time')
     else:
         
-        return redirect('/core/')
+        return redirect('/')
 
     context={'reserved_shifts':reserved_shifts}
-    return render(request,"core/reserved_shifts.html",context=context)
+    return render(request,"reserved_shifts.html",context=context)
 
 @login_required
 def shifts_done(request,id):
@@ -527,7 +527,7 @@ def shifts_done(request,id):
         return redirect('/')
 
     context={'shifts_done':shifts_done}
-    return render(request,"core/shifts_done.html",context=context)
+    return render(request,"shifts_done.html",context=context)
 
 @nurse_only
 def nurse(request,id):
@@ -538,10 +538,10 @@ def nurse(request,id):
         shifts_done=Shift.objects.all().filter(nurse_id=user.id,status="Done").order_by('-start_time')
         context={"reserved_shifts":reserved_shifts,'shifts_done':shifts_done}
 
-        return render(request, "core/nurse.html", context)
+        return render(request, "nurse.html", context)
     else:
         
-        return redirect('/core/')
+        return redirect('/')
 
 def all_available_nurses(wanted_shift):
     nurses=Nurse.objects.all()
@@ -555,7 +555,7 @@ def all_available_nurses(wanted_shift):
     return list_available_nurses
 
 def error_404_view(request, exception):
-    return render(request, 'core/404.html')
+    return render(request, '404.html')
 
 @login_required
 def export_csv(request):
@@ -594,7 +594,7 @@ def chart(request):
     }
     
    
-    return render(request,'core/chart.html',context)
+    return render(request,'chart.html',context)
    
 
     

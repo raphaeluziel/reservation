@@ -1,4 +1,4 @@
-{% extends "core/base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% block title %}Home{% endblock %}
 {% load crispy_forms_tags %}
@@ -11,6 +11,7 @@
   {% else %}
    Hi {{user.last_name}}!
   {% endif %}
+
 
   <p><a class="text-dark" href="{% url 'logout' %}">Log Out</a></p>
 

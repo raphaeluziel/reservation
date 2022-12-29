@@ -1,0 +1,196 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi",
+        "Hey",
+        "How are you",
+        "How are you doing",
+        "Is anyone there?",
+        "Hello",
+        "Good day",
+        "hello",
+        "good morning",
+        "good evening",
+        "hey there"
+      ],
+      "responses": [
+        "Hey :-)",
+        "Hello, thanks for visiting",
+        "Hi there, what can I do for you?",
+        "Hi there, how can I help?"
+      ]
+    },
+    {
+      "tag": "mood_happy",
+      "patterns": [
+        "perfect",
+        "very good",
+        "great",
+        "amazing",
+        "wonderful",
+        "I am feeling very good",
+        "I am great",
+        "I'm good",
+        "nice"
+      ],
+      "responses": [
+        "Glad to hear that :D"
+      ]
+    },
+    {
+      "tag": "hire",
+      "patterns": [
+        "I want to hire some nurses",
+        "We would like to look for practical nurses or healthcare assistants. Do you have any?",
+        "Hey, we are looking for someone to work for us.",
+        "We are a university hospital and we need some nurses or assistances",
+        "We need healthcare assistance to work for our nursing homes",
+        "I am an employer looking for a registered nurse to fill a staff shortage at my healthcare facility. Can your agency assist me in finding a suitable candidate?",
+        "I am looking for some good nurses to help us",
+        "We have shortages of nurses, do you have any?",
+        "I am a manager in a hospital..",
+        "we have shortages of staffs",
+        "we need more hands to take care of our patients"
+      ],
+      "responses": [
+        "Great! Please visit https://www.openshifts.com/hire and our staff will contact you within one hour on business days.",
+        "Yes, we can certainly help you find a qualified nurse to fill your staff shortage. Please provide us with details about the position, including the required qualifications and any specific skills or experience you are looking for in a candidate. We will then search our database of qualified nurses and present you with a list of potential candidates for your review."
+      ]
+    },
+    {
+      "tag": "hours",
+      "patterns": [
+        "when are you guys open",
+        "what are your office working hours",
+        "what time is your office open",
+        "hours of operation",
+        "what are the hours of operation of your job agency?",
+        "What are your business hours?"
+      ],
+      "responses": [
+        "We are open 7am-4pm Monday-Friday!"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "Bye",
+        "See you later",
+        "Goodbye",
+        "no, thanks, have a nice day there",
+        "You too bye"
+      ],
+      "responses": [
+        "See you later, thanks for visiting",
+        "Thanks, have a nice day",
+        "Bye! Come back again soon."
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": [
+        "Sure, will do",
+        "Thanks",
+        "Thank you",
+        "That's helpful",
+        "Thank's a lot!"
+      ],
+      "responses": [
+        "Happy to help!",
+        "Any time!",
+        "My pleasure"
+      ]
+    },
+    {
+      "tag": "cooperation",
+      "patterns": [
+        "We are a healthcare agency, we would like to establish business relationship with you",
+        "We are a nursing school, our students need nursing practice placements."
+      ],
+      "responses": [
+        "Please fill our contact form https://www.contact.com and our customer service will go back to you within a couple of hours on business days."
+      ]
+    },
+    {
+      "tag": "end",
+      "patterns": [
+        "sure will do",
+        "ok, i will fill it",
+        "thanks will send my application to your customer service",
+        "thank you i will fill the form",
+        "thanks, i will contact your staff then"
+      ],
+      "responses": [
+        "Thank you so much, anything else I can do for you?",
+        "Thank you, do you need any other help?"
+      ]
+    },
+    {
+      "tag": "job",
+      "patterns": [
+        "I am a nurse.",
+        "Hi, I am looking for a job",
+        "Do you have any job openings for registered nurses?",
+        "I am a registered nurse looking for temporary job opportunities. Can your agency help me find work?",
+        "Do you have any jobs available now?",
+        "I am a nurse, I 'm looking for a job",
+        "Hey, I would like to work for your agency",
+        "I want to check out what shifts are available",
+        "I am a healthcare assistant, do you have any shifts open now",
+        "i am looking for a job, do you have any available now?",
+        "I want to find a job to get some extra money :)"
+      ],
+      "responses": [
+        "Hi, welcome. We have a lot of jobs open now. Would you mind filling the application from this link www.openshifts.com/open_positions and our job staff will go back to you within one day during weekdays.",
+        "Our agency specializes in placing nurses in temporary job opportunities. Please provide us with your resume and any specific requirements or preferences you have for your next assignment, and we will do our best to match you with a suitable position.",
+        "Great,we do have lots of shifts available.   Here is the link www.openshifts.com/open_positions  please fill the form and our customer service will contact you.",
+        "We currently have several job openings for registered nurses. Please visit www.openshifts.com/open_positions and our staff will contact you within one hour on business days."
+      ]
+    },
+    {
+      "tag": "challenge",
+      "patterns": [
+        "Are you a bot?",
+        "Are you a robot?",
+        "Are you a human?",
+        "Am I talking to a bot?",
+        "Am I talking to a human?"
+      ],
+      "responses": [
+        "Hi I am an AI bot using machine learning and natural language processing technique to answer your questions. When needed, I can forward your question to my human colleagues and they will reach you within two working days."
+      ]
+    },
+    {
+      "tag": "contact",
+      "patterns": [
+        "what is your email address",
+        "do you have any phone numbers",
+        "what are your contact phone number",
+        "I want to make a complaint, how can i contact you",
+        "How can I reach your manager?",
+        "Can you ask your manager to call us?",
+        "I would send you a letter, what is your company address?"
+      ],
+      "responses": [
+        "You can find more details from this contact link https://www.openshits.com/contact"
+      ]
+    },
+    {
+      "tag": "deny",
+      "patterns": [
+        "no",
+        "never",
+        "I don't think so",
+        "don't like that",
+        "no way",
+        "not really",
+        "you are stupid"
+      ],
+      "responses": [
+        "Oh, sorry to hear about that"
+      ]
+    }
+  ]
+}
