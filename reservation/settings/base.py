@@ -164,12 +164,8 @@ COMPRESS_PRECOMPILERS = [
 ]
 
 
-
-
-
-
-MEDIA_URL= '/imgs/'
-MEDIA_ROOT= BASE_DIR/'static/imgs'
+MEDIA_URL= '/img/'
+MEDIA_ROOT= BASE_DIR/'static/img/'
 
 
 

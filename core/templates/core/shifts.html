@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
 {% load static %}
 {% block title %}shifts{% endblock %}
 {% load crispy_forms_tags %}
@@ -91,15 +91,15 @@
 
 {% if shifts  %}
     {% if request.user.is_employer %}
-	   {% include 'includes/employer_shifts.html' %}
+	   {% include 'core/includes/employer_shifts.html' %}
 
     {% elif request.user.is_staff %}
-       {% include 'includes/staff_shifts.html' %} 
+       {% include 'core/includes/staff_shifts.html' %} 
  
     {% elif request.user.is_rn %}
-       {% include 'includes/rn_shifts.html' %}  
+       {% include 'core/includes/rn_shifts.html' %}  
     {% else %}
-        {% include 'includes/notRN_shifts.html' %}
+        {% include 'core/includes/notRN_shifts.html' %}
     {% endif %}
      
 {% else %}
