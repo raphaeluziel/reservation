@@ -4,11 +4,14 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+import datetime
+
+from datetime import datetime, timedelta
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
-import datetime
-from datetime import datetime, timedelta
+
+
 from core.logging.logging_config import logger
 
 
@@ -169,10 +172,7 @@ class Shift(models.Model):
 	status = models.CharField(max_length=200, null=True, choices=STATUS)
 	user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True) # the user could be employer, admin, staff or nurse. And if nurse reserves the shift, this field will be the same as nurse field.
 	time_reserved = models.DateTimeField(auto_now_add=True,null=True)
-	#title_tracker = FieldTracker(fields=['title']) https://django-model-utils.readthedocs.io/en/latest/utilities.html
-
-	#reserved_by=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,null=True,blank=True)
-
+	
 	def save(self, *args, **kwargs):
 		# Log the new value of the start_time field
 		logger.info('Shift start_time changed to %s', self.start_time)

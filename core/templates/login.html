@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{%include 'bot/chatbot.html'%}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -34,11 +35,8 @@
                 <a  class="text-dark" href="{% url 'password_reset_request' %}">Forgot password?</a>
             </small>
           </form>
-      
+    
     </div>
-<!-- test to link js file
-<button class="mycolor" onclick="myFunction()">Click Me</button>
 
-<div id="idone">This div has a special ID on it!</div> -->
 
 {% endblock content %}

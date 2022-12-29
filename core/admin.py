@@ -17,7 +17,6 @@ import datetime
 from datetime import datetime, timedelta
 
 
-
 class CustomUserCreationForm(forms.ModelForm):
 
     """A form for creating new users. Includes all the required
