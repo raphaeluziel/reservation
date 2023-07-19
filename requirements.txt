@@ -7,7 +7,7 @@ filelock==3.8.2
 idna==3.4
 joblib==1.2.0
 distlib==0.3.6
-Django==3.2.0
+Django==3.2.20
 django-appconf==1.0.5
 django-compressor==4.1
 django-crispy-forms==1.11.0
