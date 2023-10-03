@@ -40,5 +40,5 @@ tqdm==4.64.1
 types-pytz==2022.6.0.1
 typing_extensions==4.4.0
 virtualenv-clone==0.5.7
-urllib3==1.26.13
+urllib3==1.26.17
 whitenoise==6.2.0
